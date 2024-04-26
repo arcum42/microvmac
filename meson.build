@@ -1,5 +1,5 @@
 # Project definition
-project('microvmac', ['c', 'cpp'], default_options: ['warning_level=3', 'prefer_static=true', 'c_std=c17', 'cpp_std=c++17'])
+project('microvmac', ['c', 'cpp'], default_options: ['warning_level=3', 'prefer_static=true', 'c_std=c2x', 'cpp_std=c++20'])
 # Note: TOML parser is still c. Replace with C++ library? FIXME
 
 # Configuration data
