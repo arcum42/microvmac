@@ -37,7 +37,7 @@
 
 uimr SpecialModes = 0;
 bool NeedWholeScreenDraw = false;
-uint8_t * CntrlDisplayBuff = nullpr;
+uint8_t * CntrlDisplayBuff = nullptr;
 
 #define ControlBoxh0 0
 #define ControlBoxw 62

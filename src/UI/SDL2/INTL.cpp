@@ -41,7 +41,7 @@ MacErr_t ChildPath(char *x, char *y, char **r)
 		}
 		{
 			int nr = nx + 1 + ny;
-			char *p = malloc(nr + 1);
+			char *p = (char*)malloc(nr + 1);
 			if (p != NULL) {
 				char *p2 = p;
 				(void) memcpy(p2, x, nx);

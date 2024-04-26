@@ -57,7 +57,7 @@ static void CheckSavedMacMsg(void)
 {
 	/* called only on quit, if error saved but not yet reported */
 
-	if (nullpr != SavedBriefMsg) {
+	if (nullptr != SavedBriefMsg) {
 		char briefMsg0[ClStrMaxLength + 1];
 		char longMsg0[ClStrMaxLength + 1];
 
@@ -75,7 +75,7 @@ static void CheckSavedMacMsg(void)
 			fprintf(stderr, "%s\n", longMsg0);
 		}
 
-		SavedBriefMsg = nullpr;
+		SavedBriefMsg = nullptr;
 	}
 }
 
@@ -998,7 +998,7 @@ static bool AllocMemory(void)
 	bool IsOk = false;
 
 	ReserveAllocOffset = 0;
-	ReserveAllocBigBlock = nullpr;
+	ReserveAllocBigBlock = nullptr;
 	ReserveAllocAll();
 	n = ReserveAllocOffset;
 	ReserveAllocBigBlock = (uint8_t *)calloc(1, n);
@@ -1019,7 +1019,7 @@ static bool AllocMemory(void)
 
 static void UnallocMemory(void)
 {
-	if (nullpr != ReserveAllocBigBlock) {
+	if (nullptr != ReserveAllocBigBlock) {
 		free((char *)ReserveAllocBigBlock);
 	}
 }

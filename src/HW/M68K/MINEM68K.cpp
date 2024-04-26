@@ -1200,9 +1200,9 @@ static uint32_t reg_call DecodeAddr_PCIndex(uint8_t ArgDat)
 typedef uint32_t (reg_call *DecodeAddrP)(uint8_t ArgDat);
 
 static const DecodeAddrP DecodeAddrDispatch[kNumAMds] = {
-	(DecodeAddrP)nullpr /* kAMdRegB */,
-	(DecodeAddrP)nullpr /* kAMdRegW */,
-	(DecodeAddrP)nullpr /* kAMdRegL */,
+	(DecodeAddrP)nullptr /* kAMdRegB */,
+	(DecodeAddrP)nullptr /* kAMdRegW */,
+	(DecodeAddrP)nullptr /* kAMdRegL */,
 	DecodeAddr_Indirect /* kAMdIndirectB */,
 	DecodeAddr_Indirect /* kAMdIndirectW */,
 	DecodeAddr_Indirect /* kAMdIndirectL */,
@@ -1232,10 +1232,10 @@ static const DecodeAddrP DecodeAddrDispatch[kNumAMds] = {
 	DecodeAddr_PCIndex /* kAMdPCIndexB */,
 	DecodeAddr_PCIndex /* kAMdPCIndexW */,
 	DecodeAddr_PCIndex /* kAMdPCIndexL */,
-	(DecodeAddrP)nullpr /* kAMdImmedB */,
-	(DecodeAddrP)nullpr /* kAMdImmedW */,
-	(DecodeAddrP)nullpr /* kAMdImmedL */,
-	(DecodeAddrP)nullpr /* kAMdDat4 */
+	(DecodeAddrP)nullptr /* kAMdImmedB */,
+	(DecodeAddrP)nullptr /* kAMdImmedW */,
+	(DecodeAddrP)nullptr /* kAMdImmedL */,
+	(DecodeAddrP)nullptr /* kAMdDat4 */
 };
 
 static uint32_t DecodeAddrSrcDst(DecArgR *f)
@@ -1762,10 +1762,10 @@ static const DecodeSetSrcDstP DecodeSetSrcDstDispatch[kNumAMds] = {
 	DecodeSetSrcDst_PCIndexB /* kAMdPCIndexB */,
 	DecodeSetSrcDst_PCIndexW /* kAMdPCIndexW */,
 	DecodeSetSrcDst_PCIndexL /* kAMdPCIndexL */,
-	(DecodeSetSrcDstP)nullpr /* kAMdImmedB */,
-	(DecodeSetSrcDstP)nullpr /* kAMdImmedW */,
-	(DecodeSetSrcDstP)nullpr /* kAMdImmedL */,
-	(DecodeSetSrcDstP)nullpr /* kAMdDat4 */
+	(DecodeSetSrcDstP)nullptr /* kAMdImmedB */,
+	(DecodeSetSrcDstP)nullptr /* kAMdImmedW */,
+	(DecodeSetSrcDstP)nullptr /* kAMdImmedL */,
+	(DecodeSetSrcDstP)nullptr /* kAMdDat4 */
 };
 
 static void DecodeSetSrcDst(uint32_t v, DecArgR *f)
@@ -2096,10 +2096,10 @@ static const DecodeGetSetSrcDstP
 	DecodeGetSetSrcDst_PCIndexB /* kAMdPCIndexB */,
 	DecodeGetSetSrcDst_PCIndexW /* kAMdPCIndexW */,
 	DecodeGetSetSrcDst_PCIndexL /* kAMdPCIndexL */,
-	(DecodeGetSetSrcDstP)nullpr /* kAMdImmedB */,
-	(DecodeGetSetSrcDstP)nullpr /* kAMdImmedW */,
-	(DecodeGetSetSrcDstP)nullpr /* kAMdImmedL */,
-	(DecodeGetSetSrcDstP)nullpr /* kAMdDat4 */
+	(DecodeGetSetSrcDstP)nullptr /* kAMdImmedB */,
+	(DecodeGetSetSrcDstP)nullptr /* kAMdImmedW */,
+	(DecodeGetSetSrcDstP)nullptr /* kAMdImmedL */,
+	(DecodeGetSetSrcDstP)nullptr /* kAMdDat4 */
 };
 
 static uint32_t DecodeGetSetSrcDst(DecArgR *f)
@@ -8301,7 +8301,7 @@ static ATTep LocalFindATTel(CPTR addr)
 		{
 			ATTep next = p->Next;
 
-			if (nullpr == next) {
+			if (nullptr == next) {
 				/* don't move the end guard */
 			} else {
 				/* move to first */
@@ -8853,9 +8853,9 @@ void m68k_reset(void)
 	V_MaxCyclesToGo = 0;
 	V_regs.MoreCyclesToGo = 0;
 	V_regs.ResidualCycles = 0;
-	V_pc_p = (uint8_t *)nullpr;
-	V_pc_pHi = (uint8_t *)nullpr;
-	V_regs.pc_pLo = (uint8_t *)nullpr;
+	V_pc_p = (uint8_t *)nullptr;
+	V_pc_pHi = (uint8_t *)nullptr;
+	V_regs.pc_pLo = (uint8_t *)nullptr;
 
 	do_put_mem_word(V_regs.fakeword, 0x4AFC);
 		/* illegal instruction opcode */

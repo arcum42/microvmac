@@ -118,7 +118,7 @@ label_1:
 		}
 	}
 
-	if (nullpr != Sony_ActCount) {
+	if (nullptr != Sony_ActCount) {
 		*Sony_ActCount = Sony_Count - n;
 	}
 	return result;
@@ -196,7 +196,7 @@ static MacErr_t DC42BlockChecksum(tDrive Drive_No,
 		}
 
 		result = vSonyTransfer(false, Buffer, Drive_No, offset,
-			n, nullpr);
+			n, nullptr);
 		if (mnvm_noErr != result) {
 			return result;
 		}
@@ -279,7 +279,7 @@ static void Drive_UpdateChecksums(tDrive Drive_No)
 
 			/* write Checksums */
 			vSonyTransfer(true, Buffer, Drive_No,
-				kDC42offset_dataChecksum, Sony_Count, nullpr);
+				kDC42offset_dataChecksum, Sony_Count, nullptr);
 		}
 #endif
 	}
@@ -323,7 +323,7 @@ static MacErr_t vSonyNextPendingInsert(tDrive *Drive_No)
 				bool gotFormat = false;
 
 				result = vSonyTransfer(false, Temp, i,
-					checkheaderoffset, Sony_Count, nullpr);
+					checkheaderoffset, Sony_Count, nullptr);
 				if (mnvm_noErr == result) {
 #if Sony_SupportDC42
 					/* Detect Disk Copy 4.2 image */
@@ -477,7 +477,7 @@ static MacErr_t Drive_Transfer(bool IsWrite, CPTR Buffera,
 
 	QuietEnds();
 
-	if (nullpr != Sony_ActCount) {
+	if (nullptr != Sony_ActCount) {
 		*Sony_ActCount = 0;
 	}
 
@@ -1050,7 +1050,7 @@ static MacErr_t Sony_PrimeTags(tDrive Drive_No,
 		if (0 != TheTagBuffer) {
 			uint32_t count = 12 * n;
 			result = vSonyTransferVM(IsWrite, TheTagBuffer, Drive_No,
-				TagOffset, count, nullpr);
+				TagOffset, count, nullptr);
 			if (mnvm_noErr == result) {
 				MoveBytesVM(TheTagBuffer + count - 12, 0x02FC, 12);
 			}
@@ -1060,14 +1060,14 @@ static MacErr_t Sony_PrimeTags(tDrive Drive_No,
 				uint32_t count = 12;
 				TagOffset += 12 * (n - 1);
 				result = vSonyTransferVM(false, 0x02FC, Drive_No,
-					TagOffset, count, nullpr);
+					TagOffset, count, nullptr);
 			} else {
 				uint32_t count = 12;
 				uint16_t BufTgFBkNum = get_vm_word(0x0302);
 				do {
 					put_vm_word(0x0302, BufTgFBkNum);
 					result = vSonyTransferVM(true, 0x02FC, Drive_No,
-						TagOffset, count, nullpr);
+						TagOffset, count, nullptr);
 					if (mnvm_noErr != result) {
 						goto label_fail;
 					}

@@ -132,7 +132,7 @@ GLOBALOSGLUFUNC MacErr_t PbufGetSize(tPbuf Pbuf_No, uint32_t *Count)
 
 	for (i = 0; i < NumDrives; ++i) {
 		if (! vSonyIsInserted(i)) {
-			if (nullpr != Drive_No) {
+			if (nullptr != Drive_No) {
 				*Drive_No = i;
 			}
 			return true;
@@ -167,7 +167,7 @@ void DiskEjectedNotify(tDrive Drive_No)
 	vSonyInsertedMask &= ~ ((uint32_t)1 << Drive_No);
 }
 
- uint8_t * screencomparebuff = nullpr;
+ uint8_t * screencomparebuff = nullptr;
 
 #if WantColorTransValid
 static bool ColorTransValid = false;
@@ -215,14 +215,14 @@ static void SetLongs(uint32_t *p, long n)
 }
 
  uimr ReserveAllocOffset;
- uint8_t * ReserveAllocBigBlock = nullpr;
+ uint8_t * ReserveAllocBigBlock = nullptr;
 
 GLOBALOSGLUPROC ReserveAllocOneBlock(uint8_t * *p, uimr n,
 	uint8_t align, bool FillOnes)
 {
 	ReserveAllocOffset = CeilPow2Mult(ReserveAllocOffset, align);
-	if (nullpr == ReserveAllocBigBlock) {
-		*p = nullpr;
+	if (nullptr == ReserveAllocBigBlock) {
+		*p = nullptr;
 	} else {
 		*p = ReserveAllocBigBlock + ReserveAllocOffset;
 		if (FillOnes) {
@@ -237,7 +237,7 @@ GLOBALOSGLUPROC ReserveAllocOneBlock(uint8_t * *p, uimr n,
 #if dbglog_HAVE
 
 static uimr dbglog_bufpos = 0;
-static char *dbglog_bufp = nullpr;
+static char *dbglog_bufp = nullptr;
 
 static void dbglog_ReserveAlloc(void)
 {
@@ -382,7 +382,7 @@ static uint16_t EvtQOut = 0;
 
 GLOBALOSGLUFUNC EvtQEl * EvtQOutP(void)
 {
-	EvtQEl *p = nullpr;
+	EvtQEl *p = nullptr;
 	if (EvtQIn != EvtQOut) {
 		p = &EvtQA[EvtQOut & EvtQIMask];
 	}
@@ -543,8 +543,8 @@ void EvtQTryRecoverFromFull(void)
 
 /* MacMsg */
 
- char *SavedBriefMsg = nullpr;
- char *SavedLongMsg = nullpr;
+ char *SavedBriefMsg = nullptr;
+ char *SavedLongMsg = nullptr;
 #if WantAbnormalReports
  uint16_t SavedIDMsg = 0;
 #endif
@@ -552,7 +552,7 @@ void EvtQTryRecoverFromFull(void)
 
 void MacMsg(char *briefMsg, char *longMsg, bool fatal)
 {
-	if (nullpr != SavedBriefMsg) {
+	if (nullptr != SavedBriefMsg) {
 		/*
 			ignore the new message, only display the
 			first error.

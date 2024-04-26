@@ -372,14 +372,14 @@ void PmuToReady_ChangeNtfy(void)
 			} else {
 				uint8_t v = GetPMUbus();
 				if (0 == PMU_rem) {
-					PMU_p = nullpr;
+					PMU_p = nullptr;
 					PmuCheckCommandOp();
-					if (nullpr == PMU_p) {
+					if (nullptr == PMU_p) {
 						/* default handler */
 						LocBuffSetUpNextChunk();
 					}
 				}
-				if (nullpr == PMU_p) {
+				if (nullptr == PMU_p) {
 					/* mini vmac bug if ever happens */
 					ReportAbnormalID(0x0E0D,
 						"PMU_p null while kPMUStateRecievingBuffer");
@@ -413,9 +413,9 @@ void PmuToReady_ChangeNtfy(void)
 					SetPMUbus(0xFF);
 				} else {
 					if (0 == PMU_rem) {
-						PMU_p = nullpr;
+						PMU_p = nullptr;
 						PmuCheckCommandOp();
-						if (nullpr == PMU_p) {
+						if (nullptr == PMU_p) {
 							/* default handler */
 							LocBuffSetUpNextChunk();
 						}

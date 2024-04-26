@@ -34,7 +34,7 @@
 typedef uint32_t uimr;
 typedef int32_t simr;
 
-#define nullpr ((void *) 0)
+//#define nullpr ((void *) 0)
 
 #define anyp uint8_t *
 

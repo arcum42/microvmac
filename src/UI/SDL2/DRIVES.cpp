@@ -52,7 +52,7 @@ MacErr_t vSonyTransfer(bool IsWrite, uint8_t * Buffer,
 		}
 	}
 
-	if (nullpr != Sony_ActCount) {
+	if (nullptr != Sony_ActCount) {
 		*Sony_ActCount = NewSony_Count;
 	}
 
@@ -101,7 +101,7 @@ MacErr_t vSonyEjectDelete(tDrive Drive_No)
 // TODO: complete the stub
 MacErr_t vSonyGetName (uint16_t Drive_No, uint16_t* r)
 {
-	memcpy("TEST\0", r, 5);
+	memcpy((void*)"TEST\0", r, 5);
 	return mnvm_noErr;
 }
 
@@ -185,7 +185,7 @@ bool Sony_InsertIth(int i)
 {
 	bool v;
 
-	if ((i > 9) || ! FirstFreeDisk(nullpr)) {
+	if ((i > 9) || ! FirstFreeDisk(nullptr)) {
 		v = false;
 	} else {
 		char s[] = "disk?.dsk";

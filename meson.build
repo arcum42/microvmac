@@ -1,5 +1,6 @@
 # Project definition
-project('microvmac', 'c', default_options: ['warning_level=3', 'prefer_static=true', 'c_std=c17'])
+project('microvmac', ['c', 'cpp'], default_options: ['warning_level=3', 'prefer_static=true', 'c_std=c17', 'cpp_std=c++17'])
+# Note: TOML parser is still c. Replace with C++ library? FIXME
 
 # Configuration data
 conf = configuration_data({
@@ -80,60 +81,60 @@ endif
 # Hardware libraries
 HW_SRC = {
 	'ADB':  [
-		'src/HW/ADB/ADBEMDEV.c'
+		'src/HW/ADB/ADBEMDEV.cpp'
 	],
 	'DISK': [
-		'src/HW/DISK/IWMEMDEV.c',
-		'src/HW/DISK/SONYEMDV.c',
-		'src/PATCHES/SONYDRV.c'
+		'src/HW/DISK/IWMEMDEV.cpp',
+		'src/HW/DISK/SONYEMDV.cpp',
+		'src/PATCHES/SONYDRV.cpp'
     ],
     'KBRD': [
-		'src/HW/KBRD/KBRDEMDV.c',
+		'src/HW/KBRD/KBRDEMDV.cpp',
 	],
 	'M68K': [
-#		'src/HW/M68K/DISAM68K.c',
-		'src/HW/M68K/M68KITAB.c',
-		'src/HW/M68K/MINEM68K.c',
-#		'src/HW/M68K/FPCPEMDV.c',
+#		'src/HW/M68K/DISAM68K.cpp',
+		'src/HW/M68K/M68KITAB.cpp',
+		'src/HW/M68K/MINEM68K.cpp',
+#		'src/HW/M68K/FPCPEMDV.cpp',
 	],
 	'MOUSE': [
-		'src/HW/MOUSE/MOUSEMDV.c',
+		'src/HW/MOUSE/MOUSEMDV.cpp',
 	],
 	'POWERMAN': [
-		'src/HW/POWERMAN/PMUEMDEV.c',
+		'src/HW/POWERMAN/PMUEMDEV.cpp',
 	],
 	'RTC': [
-		'src/HW/RTC/RTCEMDEV.c',
+		'src/HW/RTC/RTCEMDEV.cpp',
 	],
 	'SCC': [
-		'src/HW/SCC/SCCEMDEV.c',
+		'src/HW/SCC/SCCEMDEV.cpp',
 	],
 	'SCREEN': [
-		'src/HW/SCREEN/SCRNEMDV.c',
-		'src/PATCHES/SCRNHACK.c',
+		'src/HW/SCREEN/SCRNEMDV.cpp',
+		'src/PATCHES/SCRNHACK.cpp',
 	],
 	'SCSI': [
-		'src/HW/SCSI/SCSIEMDV.c',
+		'src/HW/SCSI/SCSIEMDV.cpp',
 	],
 	'SOUND': [
-		'src/HW/SOUND/SNDEMDEV.c',
+		'src/HW/SOUND/SNDEMDEV.cpp',
 	],
 	'SOUND_ASC': [
-		'src/HW/SOUND/ASCEMDEV.c',
+		'src/HW/SOUND/ASCEMDEV.cpp',
 	],
 	'VIA1': [
-		'src/HW/VIA/VIAEMDEV.c',
+		'src/HW/VIA/VIAEMDEV.cpp',
 	],
 	'VIA2': [
-		'src/HW/VIA/VIA2EMDV.c',
+		'src/HW/VIA/VIA2EMDV.cpp',
 	],
 	'VIDCARD': [
-		'src/HW/VIDCARD/VIDEMDEV.c',
+		'src/HW/VIDCARD/VIDEMDEV.cpp',
 	],
 	'RAM': [
 	],
 	'ROM': [
-		'src/HW/ROM/ROMEMDEV.c',
+		'src/HW/ROM/ROMEMDEV.cpp',
 	]
 }
 
@@ -154,28 +155,28 @@ MAC_SRC = {
 
 # User interface definitions
 UI_SRC = [
-	'src/UI/COMOSGLU.c',
-	'src/UI/CONTROLM.c',
-	'src/UI/SDL2/OSGLUSD2.c',
-	#'src/UI/SDL2/CLIPBRD.c',
-	'src/UI/SDL2/DBGLOG.c',
-	'src/UI/SDL2/DRIVES.c',
-	'src/UI/SDL2/INTL.c',
-	'src/UI/SDL2/KEYBOARD.c',
-	'src/UI/SDL2/MOUSE.c',
-	'src/UI/SDL2/ROM.c',
-	'src/UI/SDL2/SOUND.c',
-	'src/UI/SDL2/TIMEDATE.c',
-	'src/UI/SDL2/VIDEO.c',
+	'src/UI/COMOSGLU.cpp',
+	'src/UI/CONTROLM.cpp',
+	'src/UI/SDL2/OSGLUSD2.cpp',
+	#'src/UI/SDL2/CLIPBRD.cpp',
+	'src/UI/SDL2/DBGLOG.cpp',
+	'src/UI/SDL2/DRIVES.cpp',
+	'src/UI/SDL2/INTL.cpp',
+	'src/UI/SDL2/KEYBOARD.cpp',
+	'src/UI/SDL2/MOUSE.cpp',
+	'src/UI/SDL2/ROM.cpp',
+	'src/UI/SDL2/SOUND.cpp',
+	'src/UI/SDL2/TIMEDATE.cpp',
+	'src/UI/SDL2/VIDEO.cpp',
 ]
 
 EMU_SRC = [
-	'src/PROGMAIN.c',
-	'src/GLOBGLUE.c',
-	'src/CFGMAN.c',
-	'src/PATCHES/ROMEMDEV.c',
-	'src/UTIL/DATE2SEC.c',
-	'src/LANG/INTLCHAR.c',
+	'src/PROGMAIN.cpp',
+	'src/GLOBGLUE.cpp',
+	'src/CFGMAN.cpp',
+	'src/PATCHES/ROMEMDEV.cpp',
+	'src/UTIL/DATE2SEC.cpp',
+	'src/LANG/INTLCHAR.cpp',
 	'lib/tomlc99/toml.c',
 ]
 

@@ -3,7 +3,7 @@
 #include "HW/ROM/ROMEMDEV.h"
 #include "UTIL/ENDIANAC.h"
 
-uint8_t * ROM = nullpr;
+uint8_t * ROM = nullptr;
 bool ROM_loaded = false;
 
 uint32_t Calc_Checksum(uint8_t *rom, uint32_t len)

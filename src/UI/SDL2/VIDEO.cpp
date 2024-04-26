@@ -30,7 +30,7 @@ SDL_Renderer *renderer = NULL;
 SDL_Texture *texture = NULL;
 SDL_PixelFormat *format = NULL;
 
-uint8_t * ScalingBuff = nullpr;
+uint8_t * ScalingBuff = nullptr;
 uint8_t * CLUT_final;
 
 SDL_Color bwpalette[2];
@@ -54,7 +54,7 @@ static SDL_Color HexToColor(const char *hexIn, SDL_Color fallback) {
 void LoadCustomPalette()
 {
 	if (bwpalette_loaded) { return; }
-	SDL_Color fallbacks[] = { {.r=255,.g=255,.b=255}, {.r=0,.b=0,.g=0} };
+	SDL_Color fallbacks[] = { {.r=255,.g=255,.b=255}, {.r=0,.g=0,.b=0} };
 	bwpalette[0] = HexToColor(ScreenColorWhite, fallbacks[0]);
 	bwpalette[1] = HexToColor(ScreenColorBlack, fallbacks[1]);
 	bwpalette_loaded = true;

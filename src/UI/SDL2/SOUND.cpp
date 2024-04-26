@@ -15,7 +15,7 @@
 #if SoundEnabled
 
 
-tpSoundSamp TheSoundBuffer = nullpr;
+tpSoundSamp TheSoundBuffer = nullptr;
 volatile static uint16_t ThePlayOffset;
 volatile static uint16_t TheFillOffset;
 volatile static uint16_t MinFilledSoundBuffs;

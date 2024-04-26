@@ -115,7 +115,12 @@ MacErr_t LoadMacRomFrom(char *path)
 				err = mnvm_miscErr;
 			}
 		} else {
-			err = ROM_IsValid();
+			bool valid = ROM_IsValid();
+			if (valid)
+				err = mnvm_noErr;
+			else
+				// Throw a misc error. Why not? FIXME.
+				err= mnvm_miscErr;
 		}
 		FileClose(ROM_File);
 	}

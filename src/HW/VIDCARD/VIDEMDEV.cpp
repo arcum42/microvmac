@@ -176,7 +176,7 @@ static void PatchAnEndOfLst(void)
 	uint8_t * pTo_sMacOS68020;
 	uint8_t * pTo_OneBitMode;
 	uint8_t * pTo_OneVidParams;
-	uint8_t * pTo_ColorBitMode = nullpr;
+	uint8_t * pTo_ColorBitMode = nullptr;
 	uint8_t * pTo_ColorVidParams;
 
 	pPatch = VidROM;

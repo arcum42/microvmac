@@ -60,7 +60,7 @@ void Mouse_Update(void)
 #if HaveMasterEvtQLock
 			(0 == MasterEvtQLock) &&
 #endif
-			(nullpr != (p = EvtQOutP())))
+			(nullptr != (p = EvtQOutP())))
 		{
 #if EmClassicKbrd
 #if EnableMouseMotion
@@ -107,7 +107,7 @@ void Mouse_Update(void)
 #if HaveMasterEvtQLock
 			(0 == MasterEvtQLock) &&
 #endif
-			(nullpr != (p = EvtQOutP())))
+			(nullptr != (p = EvtQOutP())))
 		{
 			if (EvtQElKindMouseButton == p->kind) {
 				MouseBtnUp = p->u.press.down ? 0 : 1;

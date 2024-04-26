@@ -146,7 +146,7 @@ bool Config_GetString(const char table[], const char key[], char **value, const 
 	if (!found) { 
 		// TODO: write default to TOML file
 		int defaultLen = strlen(defaultValue)+1;
-		*value = malloc(defaultLen);
+		*value = (char*)malloc(defaultLen);
 		strncpy(*value, defaultValue, defaultLen);
 		
 		return true;
