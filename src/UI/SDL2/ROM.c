@@ -82,6 +82,7 @@ bool LoadMacRom(void)
 #endif
 	if (mnvm_fnfErr == (err = LoadMacRomFrom(RomFileName)))
 	{
+		printf("Cannot load ROM '%s'\n", RomFileName);
 	}
 
 	return true; /* keep launching Mini vMac, regardless */
