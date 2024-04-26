@@ -73,6 +73,8 @@
  uint32_t QuietSubTicks = 0;
 
 #if IncludePbufs
+ uint32_t PbufAllocatedMask;
+ uint32_t PbufSize[NumPbufs];
  bool FirstFreePbuf(tPbuf *r)
 {
 	tPbuf i;
@@ -174,6 +176,11 @@ static bool ColorTransValid = false;
  bool EmVideoDisable = false;
  int8_t EmLagTime = 0;
  uint32_t OnTrueTime = 0;
+ 
+ int16_t ScreenChangedTop;
+ int16_t ScreenChangedLeft;
+ int16_t ScreenChangedBottom;
+ int16_t ScreenChangedRight;
 
 void ScreenClearChanges(void)
 {

@@ -80,8 +80,8 @@ extern uint32_t QuietSubTicks;
 #endif
 
 #if IncludePbufs
- uint32_t PbufAllocatedMask;
- uint32_t PbufSize[NumPbufs];
+ extern uint32_t PbufAllocatedMask;
+ extern uint32_t PbufSize[NumPbufs];
 #define PbufIsAllocated(i) ((PbufAllocatedMask & ((uint32_t)1 << (i))) != 0)
 
  bool FirstFreePbuf(tPbuf *r);
@@ -143,10 +143,10 @@ extern uint32_t OnTrueTime;
 void ScreenClearChanges(void);
 void ScreenChangedAll(void);
 
- int16_t ScreenChangedTop;
- int16_t ScreenChangedLeft;
- int16_t ScreenChangedBottom;
- int16_t ScreenChangedRight;
+extern int16_t ScreenChangedTop;
+extern int16_t ScreenChangedLeft;
+extern int16_t ScreenChangedBottom;
+extern int16_t ScreenChangedRight;
 
 GLOBALOSGLUPROC Screen_OutputFrame(uint8_t * screencurrentbuff);
 
