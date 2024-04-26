@@ -18,7 +18,7 @@ conf = configuration_data({
 	'MayNotFullScreen': 1,
 	# Start magnified?
 	'WantInitMagnify': 0,
-	# Magnificaton power
+	# Magnification power
 	'WindowScale': 2,
 	# Allow background running by default?
 	'WantInitRunInBackground': 1,
@@ -193,6 +193,6 @@ executable(
 	sources: MAC_SRC['Plus'] + UI_SRC + EMU_SRC + WIN_RSRC,
 	dependencies: [lSDL2],
 	include_directories: EMU_INC,
-	gui_app: true
+	win_subsystem: 'windows'
 )
 
