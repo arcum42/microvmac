@@ -204,9 +204,9 @@ void SoundRampTo(trSoundTemp *last_val, trSoundTemp dst_val,
 
 struct SoundR {
 	tpSoundSamp fTheSoundBuffer;
-	volatile uint16_t (*fPlayOffset);
-	volatile uint16_t (*fFillOffset);
-	volatile uint16_t (*fMinFilledSoundBuffs);
+	volatile uint16_t *fPlayOffset;
+	volatile uint16_t *fFillOffset;
+	volatile uint16_t *fMinFilledSoundBuffs;
 
 	volatile trSoundTemp lastv;
 

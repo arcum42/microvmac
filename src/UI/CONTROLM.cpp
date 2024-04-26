@@ -51,17 +51,17 @@ typedef void (*SpclModeBody) (void);
 #define Keyboard_UpdateKeyMap1 Keyboard_UpdateKeyMap
 #define DisconnectKeyCodes1 DisconnectKeyCodes
 
-void MacMsgOverride(char *title, char *msg)
+void MacMsgOverride(const char *title, const char *msg)
 {
 	SDL_ShowSimpleMessageBox(SDL_MESSAGEBOX_ERROR, title, msg, main_wind);
 }
 
-static void WarnMsgCorruptedROM(void)
+[[maybe_unused]] static void WarnMsgCorruptedROM(void)
 {
 	MacMsgOverride(kStrCorruptedROMTitle, kStrCorruptedROMMessage);
 }
 
-static void WarnMsgUnsupportedROM(void)
+[[maybe_unused]] static void WarnMsgUnsupportedROM(void)
 {
 	MacMsgOverride(kStrUnsupportedROMTitle,
 		kStrUnsupportedROMMessage);

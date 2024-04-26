@@ -275,10 +275,10 @@ extern const uint16_t Cell2UnicodeMap[];
 #define kUnMappedKey kStrCntrlKyName
 #endif
 
-char * GetSubstitutionStr(char x);
-int ClStrSizeSubstCStr(char *s);
+const char * GetSubstitutionStr(const char x);
+int ClStrSizeSubstCStr(const char *s);
 void ClStrAppendChar(int *L0, uint8_t *r, uint8_t c);
-void ClStrAppendSubstCStr(int *L, uint8_t *r, char *s);
-void ClStrFromSubstCStr(int *L, uint8_t *r, char *s);
+void ClStrAppendSubstCStr(int *L, uint8_t *r, const char *s);
+void ClStrFromSubstCStr(int *L, uint8_t *r, const char *s);
 
 #endif // INTLCHAR_H

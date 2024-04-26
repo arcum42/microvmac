@@ -258,7 +258,7 @@ bool InitLocationDat();
 void IncrNextTime(void);
 // ROM.c
 bool LoadMacRom();
-MacErr_t LoadMacRomFrom(char *path);
+MacErr_t LoadMacRomFrom(const char *path);
 // OSGLUSD2.c
 void EnterSpeedStopped();
 void LeaveSpeedStopped();

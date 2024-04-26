@@ -264,7 +264,7 @@ const DevMethods_t DEVICES[] = {
 
 static void EmulatedHardwareZap(void)
 {
-	int i;
+	uint32_t i;
 	for ( i = 0; i < ARRAY_SIZE(DEVICES); i++ ) {
 		if (DEVICES[i].reset != NULL) { DEVICES[i].reset(); }
 	}
@@ -292,7 +292,7 @@ static void InterruptReset_Update(void)
 
 static void SubTickNotify(int SubTick)
 {
-	int i;
+	uint32_t i;
 	for ( i = 0; i < ARRAY_SIZE(DEVICES); i++ ) {
 		if (DEVICES[i].subtick != NULL) { DEVICES[i].subtick(SubTick); }
 	}
@@ -331,7 +331,7 @@ static void SubTickTaskEnd(void)
 
 static void SixtiethSecondNotify(void)
 {
-	/*int i;
+	/*uint32_t i;
 	// Begin new frame
 	InterruptReset_Update();
 	for ( i = 0; i < ARRAY_SIZE(DEVICES); i++ ) {
@@ -359,7 +359,7 @@ static void SixtiethSecondNotify(void)
 
 static void SixtiethEndNotify(void)
 {
-	int i;
+	uint32_t i;
 	SubTickTaskEnd();
 	for ( i = 0; i < ARRAY_SIZE(DEVICES); i++ ) {
 		if (DEVICES[i].endtick != NULL) { DEVICES[i].endtick(); }
@@ -369,7 +369,7 @@ static void SixtiethEndNotify(void)
 
 static void ExtraTimeBeginNotify(void)
 {
-	int i;
+	uint32_t i;
 	for ( i = 0; i < ARRAY_SIZE(DEVICES); i++ ) {
 		if (DEVICES[i].timebegin != NULL) { DEVICES[i].timebegin(); }
 	}
@@ -377,7 +377,7 @@ static void ExtraTimeBeginNotify(void)
 
 static void ExtraTimeEndNotify(void)
 {
-	int i;
+	uint32_t i;
 	for ( i = 0; i < ARRAY_SIZE(DEVICES); i++ ) {
 		if (DEVICES[i].timeend != NULL) { DEVICES[i].timeend(); }
 	}
@@ -399,7 +399,7 @@ void EmulationReserveAlloc(void)
 
 static bool InitEmulation(void)
 {
-	int i;
+	uint32_t i;
 	for ( i = 0; i < ARRAY_SIZE(DEVICES); i++ ) {
 		if (DEVICES[i].init != NULL) {
 			assert(DEVICES[i].init());

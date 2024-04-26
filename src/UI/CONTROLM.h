@@ -15,6 +15,6 @@ extern bool NeedWholeScreenDraw;
 extern uint8_t * CntrlDisplayBuff;
 
 /* Public Functions */
-void MacMsgOverride(char *title, char *msg);
+void MacMsgOverride(const char *title, const char *msg);
 
 #endif // CONTROLM_H

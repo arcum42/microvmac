@@ -88,7 +88,7 @@ bool LoadMacRom(void)
 	return true; /* keep launching Mini vMac, regardless */
 }
 
-MacErr_t LoadMacRomFrom(char *path)
+MacErr_t LoadMacRomFrom(const char *path)
 {
 	MacErr_t err;
 	FilePtr ROM_File;

@@ -1390,108 +1390,105 @@ const uint16_t Cell2UnicodeMap[] = {
 	'\0' /* just so last above line can end in ',' */
 };
 
-char * GetSubstitutionStr(char x)
+const char * GetSubstitutionStr(const char x)
 {
-	char *s;
-
 	switch (x) {
 		case 'w':
-			s = kStrHomePage;
+			return kStrHomePage;
 			break;
 		case 'y':
-			s = kStrCopyrightYear;
+			return kStrCopyrightYear;
 			break;
 		case 'p':
-			s = kStrAppName;
+			return kStrAppName;
 			break;
 		case 'v':
-			s = kAppVariationStr;
+			return kAppVariationStr;
 			break;
 		case 'r':
-			s = RomFileName;
+			return RomFileName;
 			break;
 		case 'c':
-			s = kControlModeKey;
+			return kControlModeKey;
 			break;
 		case 'm':
-			s = kUnMappedKey;
+			return kUnMappedKey;
 			break;
 #if UseControlKeys
 		case 'k':
 			if (ControlKeyPressed) {
-				s = kStrPressed;
+				return kStrPressed;
 			} else {
-				s = kStrReleased;
+				return kStrReleased;
 			}
 			break;
 #endif
 		case 'g':
 			if (WantMagnify) {
-				s = kStrOn;
+				return kStrOn;
 			} else {
-				s = kStrOff;
+				return kStrOff;
 			}
 			break;
 #if 1
 		case 'f':
 			if (WantFullScreen) {
-				s = kStrOn;
+				return kStrOn;
 			} else {
-				s = kStrOff;
+				return kStrOff;
 			}
 			break;
 #endif
 		case 'b':
 			if (RunInBackground) {
-				s = kStrOn;
+				return kStrOn;
 			} else {
-				s = kStrOff;
+				return kStrOff;
 			}
 			break;
 		case 'h':
 			if (SpeedStopped) {
-				s = kStrStoppedOn;
+				return kStrStoppedOn;
 			} else {
-				s = kStrStoppedOff;
+				return kStrStoppedOff;
 			}
 			break;
 		case 's':
 			switch (SpeedValue) {
 				case 0:
-					s = "1x";
+					return "1x";
 					break;
 				case 1:
-					s = "2x";
+					return "2x";
 					break;
 				case 2:
-					s = "4x";
+					return "4x";
 					break;
 				case 3:
-					s = "8x";
+					return "8x";
 					break;
 				case 4:
-					s = "16x";
+					return "16x";
 					break;
 				case 5:
-					s = "32x";
+					return "32x";
 					break;
 				default:
-					s = kStrSpeedValueAllOut;
+					return kStrSpeedValueAllOut;
 					break;
 			}
 			break;
 		default:
-			s = "???";
+			return "???";
 			break;
 	}
-	return s;
 }
 
-int ClStrSizeSubstCStr(char *s)
+int ClStrSizeSubstCStr(const char *s)
 {
 	/* must match ClStrAppendSubstCStr ! */
 
-	char *p = s;
+	const char *p = s;
 	char c;
 	int L = 0;
 
@@ -1540,7 +1537,7 @@ l_exit:
 	return L;
 }
 
-void ClStrAppendChar(int *L0, uint8_t *r, uint8_t c)
+void ClStrAppendChar(int *L0, uint8_t *r, const uint8_t c)
 {
 	int L = *L0;
 
@@ -1549,11 +1546,11 @@ void ClStrAppendChar(int *L0, uint8_t *r, uint8_t c)
 	*L0 = L;
 }
 
-void ClStrAppendSubstCStr(int *L, uint8_t *r, char *s)
+void ClStrAppendSubstCStr(int *L, uint8_t *r, const char *s)
 {
 	/* must match ClStrSizeSubstCStr ! */
 
-	char *p = s;
+	const char *p = s;
 	char c;
 	uint8_t x;
 
@@ -1865,7 +1862,7 @@ void ClStrAppendSubstCStr(int *L, uint8_t *r, char *s)
 	}
 }
 
-void ClStrFromSubstCStr(int *L, uint8_t *r, char *s)
+void ClStrFromSubstCStr(int *L, uint8_t *r, const char *s)
 {
 	int n = ClStrSizeSubstCStr(s);
 

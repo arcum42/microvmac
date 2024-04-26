@@ -43,18 +43,18 @@ static int SetPalette(SDL_Palette *palette, const SDL_Color *macColors, int ncol
 }
 
 static SDL_Color HexToColor(const char *hexIn, SDL_Color fallback) {
-	unsigned int r, g, b;
+	unsigned char r, g, b;
 	assert(hexIn != NULL);
-	int numRead = sscanf(hexIn, "#%02x%02x%02x", &r, &g, &b);
+	int numRead = sscanf(hexIn, "#%02hhx%02hhx%02hhx", &r, &g, &b);
 	if (numRead != 3) { return fallback; }
-	SDL_Color result = {.r = r, .g = g, .b = b};
+	SDL_Color result = {.r = r, .g = g, .b = b, .a = 255};
 	return result;
 }
 
 void LoadCustomPalette()
 {
 	if (bwpalette_loaded) { return; }
-	SDL_Color fallbacks[] = { {.r=255,.g=255,.b=255}, {.r=0,.g=0,.b=0} };
+	SDL_Color fallbacks[] = { {.r=255,.g=255,.b=255, .a=255}, {.r=0,.g=0,.b=0, .a=255} };
 	bwpalette[0] = HexToColor(ScreenColorWhite, fallbacks[0]);
 	bwpalette[1] = HexToColor(ScreenColorBlack, fallbacks[1]);
 	bwpalette_loaded = true;
