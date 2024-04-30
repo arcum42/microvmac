@@ -178,7 +178,7 @@ bool Sony_Insert1a(char *drivepath, bool silentfail)
 // TODO: implement stub function (or don't, lol)
 bool Sony_Insert2(char *s)
 {
-	return Sony_Insert1a(s, true);
+	return Sony_Insert1(s, true);
 	//return false;
 }
 
@@ -206,7 +206,6 @@ bool LoadInitialImages(void)
 
 		for (i = 1; Sony_InsertIth(i); ++i) {
 			/* stop on first error (including file not found) */
-			Sony_InsertIth(i);
 		}
 	}
 
