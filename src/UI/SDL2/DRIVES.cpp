@@ -126,7 +126,7 @@ bool Sony_Insert0(FilePtr refnum, bool locked, char *drivepath)
 		MacMsg(kStrTooManyImagesTitle, kStrTooManyImagesMessage,
 			false);
 	} else {
-		/* printf("Sony_Insert0 %d\n", (int)Drive_No); */
+		printf("Sony_Insert0 %d\n", (int)Drive_No);
 
 		{
 			Drives[Drive_No] = refnum;
@@ -146,7 +146,7 @@ bool Sony_Insert0(FilePtr refnum, bool locked, char *drivepath)
 bool Sony_Insert1(char *drivepath, bool silentfail)
 {
 	bool locked = false;
-	/* printf("Sony_Insert1 %s\n", drivepath); */
+	printf("Sony_Insert1 %s\n", drivepath);
 	FilePtr refnum = FileOpen(drivepath, "rb+");
 	if (NULL == refnum) {
 		locked = true;
@@ -178,7 +178,8 @@ bool Sony_Insert1a(char *drivepath, bool silentfail)
 // TODO: implement stub function (or don't, lol)
 bool Sony_Insert2(char *s)
 {
-	return false;
+	return Sony_Insert1a(s, true);
+	//return false;
 }
 
 bool Sony_InsertIth(int i)
@@ -205,6 +206,7 @@ bool LoadInitialImages(void)
 
 		for (i = 1; Sony_InsertIth(i); ++i) {
 			/* stop on first error (including file not found) */
+			Sony_InsertIth(i);
 		}
 	}
 
