@@ -18,6 +18,8 @@
 	SYStem DEPeNdencies.
 */
 
+#pragma once
+
 #ifndef SYSDEPNS_H
 #define SYSDEPNS_H
 

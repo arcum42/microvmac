@@ -14,6 +14,8 @@
 	license for more details.
 */
 
+#pragma once
+
 #ifndef VIAEMDEV_H
 #define VIAEMDEV_H
 #include <stdint.h>

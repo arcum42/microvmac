@@ -3,6 +3,8 @@
 	(passed back to the emulated 68k code).
 */
 
+#pragma once
+
 #ifndef ERRCODES_H
 #define ERRCODES_H
 

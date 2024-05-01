@@ -20,6 +20,8 @@
 	These strings were translated by Chir.
 */
 
+#pragma once
+
 #define kStrAboutTitle "Acerca de"
 #define kStrAboutMessage "Para mostrar informaci;eon acerca de este programa, use el comando ;]A;} del ^p Modo Control. Para saber m;eas acerca del Modo Control, vea ;[Mas Comandos;ll;{ en el menu ;[Especial;{ ."
 

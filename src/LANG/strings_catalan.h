@@ -20,6 +20,8 @@
 	These strings were translated by ArduinoXino.
 */
 
+#pragma once
+
 #define kStrAboutTitle "Sobre"
 #define kStrAboutMessage "Per mostrar informaci;eo sobre aquest programa, utilitzeu el comandament ;]A;} del ^p Mode Control. Per coneixer m;ees sobre el Mode Control, vegi ;[M;ees Comandaments;ll;{ en el menu ;[Especial;{ ."
 

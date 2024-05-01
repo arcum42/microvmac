@@ -18,6 +18,8 @@
 	DISAssemble Motorola 68K instructions.
 */
 
+#pragma once
+
 #ifndef DIS1M68K_H
 #define DIS1M68K_H
 

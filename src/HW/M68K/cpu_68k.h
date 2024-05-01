@@ -14,6 +14,8 @@
 	license for more details.
 */
 
+#pragma once
+
 #ifndef MINEM68K_H
 #define MINEM68K_H
 

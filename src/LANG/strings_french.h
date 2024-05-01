@@ -21,6 +21,8 @@
 	version of them was proofread by Ga;uel Coup;ee.
 */
 
+#pragma once
+
 #define kStrAboutTitle ";`A propos"
 #define kStrAboutMessage "Pour afficher des informations sur ce programme, utilisez la commande A du mode commande de ^p. Pour en savoir plus sur le mode commande, s;eelectionnez l;}article Autres commandes;ll du menu Sp;eecial."
 

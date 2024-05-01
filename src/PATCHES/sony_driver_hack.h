@@ -1,3 +1,6 @@
+
+#pragma once
+
 #define UseSonyPatch \
 	((CurEmMd <= kEmMd_Classic) || (CurEmMd == kEmMd_II) \
 		|| (CurEmMd == kEmMd_IIx))

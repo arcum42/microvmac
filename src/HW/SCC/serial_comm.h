@@ -14,6 +14,8 @@
 	license for more details.
 */
 
+#pragma once
+
 #ifndef SCCEMDEV_H
 #define SCCEMDEV_H
 

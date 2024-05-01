@@ -14,6 +14,8 @@
 	license for more details.
 */
 
+#pragma once
+
 #ifndef ROMEMDEV_H
 #define ROMEMDEV_H
 

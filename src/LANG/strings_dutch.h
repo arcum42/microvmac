@@ -20,6 +20,8 @@
 	These strings were translated by Luc Pauwels.
 */
 
+#pragma once
+
 #define kStrAboutTitle "Over ^p"
 #define kStrAboutMessage "Gebruik het ;]A;}-commando van de ^p controlemodus om meer informatie over deze applicatie te tonen. Om meer te weten te komen over de controlemodus, zie ;[Meer Commando;}s;ll;{ in het ;[Speciaal;{ menu."
 

@@ -15,6 +15,8 @@
 	license for more details.
 */
 
+#pragma once
+
 #ifndef SCRNEMDV_H
 #define SCRNEMDV_H
 

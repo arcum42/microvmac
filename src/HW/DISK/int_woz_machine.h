@@ -14,6 +14,8 @@
 	license for more details.
 */
 
+#pragma once
+
 #ifndef IWMEVDEV_H
 #define IWMEVDEV_H
 

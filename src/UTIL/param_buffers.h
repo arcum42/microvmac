@@ -18,6 +18,7 @@
 	Parameter BUFfers implemented with STanDard C library
 */
 
+#pragma once
 
 #if IncludePbufs
 static void *PbufDat[NumPbufs];

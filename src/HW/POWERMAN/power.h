@@ -14,6 +14,8 @@
 	license for more details.
 */
 
+#pragma once
+
 #ifdef PMUEMDEV_H
 #error "header already included"
 #else

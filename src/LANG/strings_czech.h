@@ -20,6 +20,8 @@
 	These strings were translated by Anonymous.
 */
 
+#pragma once
+
 #define kStrAboutTitle "O programu"
 #define kStrAboutMessage "Pro zobrazen;ei informac;ei o programu, pou;vzijte p;vr;eikaz ;]A;} v ovl;eadac;eim m;eodu ^p. Pro informace o ovl;eadac;eim m;eodu, pod;eivejte se do ;[V;eice p;vr;eikaz;ru;ll;{ v menu ;[Dal;vs;ei mo;vznosti;{."
 

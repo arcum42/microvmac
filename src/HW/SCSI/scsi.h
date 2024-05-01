@@ -14,6 +14,8 @@
 	license for more details.
 */
 
+#pragma once
+
 #ifndef SCSIEMDV_H
 #define SCSIEMDV_H
 

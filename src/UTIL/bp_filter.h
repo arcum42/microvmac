@@ -18,6 +18,8 @@
 	Berkeley Packet Filter for localtalk emulation
 */
 
+#pragma once
+
 /* BPF and devices */
 static unsigned char device_address[6] = {
 	0

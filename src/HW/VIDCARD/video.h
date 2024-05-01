@@ -14,6 +14,8 @@
 	license for more details.
 */
 
+#pragma once
+
 #ifndef VIDEMDEV_H
 #define VIDEMDEV_H
 

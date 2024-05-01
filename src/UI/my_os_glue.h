@@ -25,6 +25,8 @@
 	port of vMac, by Philip Cummins.
 */
 
+#pragma once
+
 #ifndef MYOSGLUE_H
 #define MYOSGLUE_H
 

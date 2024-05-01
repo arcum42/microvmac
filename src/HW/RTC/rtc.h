@@ -14,6 +14,8 @@
 	license for more details.
 */
 
+#pragma once
+
 #ifndef RTCEMDEV_H
 #define RTCEMDEV_H
 

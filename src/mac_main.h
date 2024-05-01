@@ -15,6 +15,8 @@
 	license for more details.
 */
 
+#pragma once
+
 #ifndef PROGMAIN_H
 #define PROGMAIN_H
 

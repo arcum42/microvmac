@@ -30,6 +30,8 @@
 	- I have made some suggestions in the comments to avoid string repetition.
 */
 
+#pragma once
+
 #define kStrAboutTitle "O programu"
 #define kStrAboutMessage "Da bi se pokazale informacije o programu, koristite ;]A;} komandu moda kontrole ^p . Da saznate vi;vse o kontrolnom modu, vidite ;[Jo;vs komandi;ll;{ u ;[Special;{ meniju."
 

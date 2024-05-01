@@ -14,6 +14,8 @@
 	license for more details.
 */
 
+#pragma once
+
 #ifndef VIA2EMDV_H
 #define VIA2EMDV_H
 

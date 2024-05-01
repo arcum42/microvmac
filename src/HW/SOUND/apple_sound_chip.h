@@ -14,6 +14,8 @@
 	license for more details.
 */
 
+#pragma once
+
 #ifndef ASCEMDEV_H
 #define ASCEMDEV_H
 

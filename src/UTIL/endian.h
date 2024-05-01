@@ -23,6 +23,8 @@
 	Bernd Schmidt, as found in vMac by Philip Cummins.
 */
 
+#pragma once
+
 #ifdef ENDIANAC_H
 #ifndef AllFiles
 #error "header already included"

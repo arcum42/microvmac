@@ -24,6 +24,8 @@
 	Bitmaps from http://www.bigmessowires.com/mac-rom-inator/
 */
 
+#pragma once
+
 #include <string.h>
 #include "sys_dependencies.h"
 #include "UI/common_os_glue.h"

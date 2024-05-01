@@ -18,6 +18,8 @@
 	COMmon code for Operating System GLUe
 */
 
+#pragma once
+
 #ifndef COMOSGLU_H
 #define COMOSGLU_H
 

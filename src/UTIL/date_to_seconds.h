@@ -24,6 +24,9 @@
 /* dow will return 0=Sunday, 1=Monday, 2=Tuesday, etc...         */
 /*                                                               */
 /* ************************************************************* */
+
+#pragma once
+
 uint32_t jdate(int day, int month, int year);
 
 uint32_t Date2MacSeconds(

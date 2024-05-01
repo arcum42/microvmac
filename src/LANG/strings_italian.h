@@ -23,6 +23,8 @@
 	at it, and made numerous changes for version 2.8.2.
 */
 
+#pragma once
+
 #define kStrAboutTitle "Informazioni"
 #define kStrAboutMessage "Per visualizzare le informazioni su questo programma usa il comando ;]A;} dalla Modalit;`a Controllo di ^p. Per informazioni sulla Modalit;`a Controllo, vedi ;[Ulteriori Comandi;ll;{ nel men;`u ;[Speciale;{."
 

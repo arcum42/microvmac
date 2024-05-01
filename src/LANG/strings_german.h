@@ -20,6 +20,8 @@
 	Translated by Detlef Kahner
 */
 
+#pragma once
+
 #define kStrAboutTitle ";uUber ^p"
 #define kStrAboutMessage "Mehr Informationen zu ^p erhalten Sie ;uuber die Taste ;]A;} im Kontrollmodus. Informationen zum Kontrollmodus erhalten Sie ;uuber den Men;uubefehl ;[Mehr Befehle;ll;{ im Spezialmen;uu."
 

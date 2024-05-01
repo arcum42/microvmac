@@ -18,6 +18,8 @@
 	SCReeN TRaNSlater
 */
 
+#pragma once
+
 /* required arguments for this template */
 
 #ifndef ScrnTrns_DoTrans /* procedure to be created by this template */

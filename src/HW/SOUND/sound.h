@@ -14,6 +14,8 @@
 	license for more details.
 */
 
+#pragma once
+
 #ifdef SNDEMDEV_H
 #error "header already included"
 #else

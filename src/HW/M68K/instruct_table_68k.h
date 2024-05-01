@@ -14,6 +14,8 @@
 	license for more details.
 */
 
+#pragma once
+
 #ifndef M68KITAB_H
 #define M68KITAB_H
 

@@ -20,6 +20,8 @@
 	Pierre Lemieux provided some corrections and suggestions.
 */
 
+#pragma once
+
 #define kStrAboutTitle "About"
 #define kStrAboutMessage "To display information about this program, use the ;]A;} command of the ^p Control Mode. To learn about the Control Mode, see the ;[More Commands;ll;{ item in the ;[Special;{ menu."
 

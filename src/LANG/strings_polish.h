@@ -20,6 +20,8 @@
 	These strings were translated by Przemys;dlaw Buczkowski.
 */
 
+#pragma once
+
 #define kStrAboutTitle "O programie;ll"
 #define kStrAboutMessage "Aby obejrze;ec informacje o tym programie u;dzyj komendy ;]A;} w ^p Trybie Kontroli. Aby dowiedzie;ec si;de wi;decej o tym trybie kliknij przycisk ;[Wi;decej komend;ll;{ w menu ;[Specjalne;{."
 

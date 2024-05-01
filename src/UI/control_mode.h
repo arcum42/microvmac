@@ -2,6 +2,8 @@
 	CONTROL Mode
 */
 
+#pragma once
+
 #ifndef CONTROLM_H
 #define CONTROLM_H
 

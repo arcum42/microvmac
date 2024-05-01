@@ -14,6 +14,8 @@
 	license for more details.
 */
 
+#pragma once
+
 #ifndef GLOBGLUE_H
 #define GLOBGLUE_H
 
