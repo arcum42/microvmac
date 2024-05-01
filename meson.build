@@ -186,12 +186,14 @@ EMU_INC = include_directories([
 	'lib/'
 ])
 
+spdlog = dependency('spdlog')
+
 ## Final compiled program definition
 # Just gonna do an SDL2 Mac Plus for now
 executable(
 	'microvmac',
 	sources: MAC_SRC['Plus'] + UI_SRC + EMU_SRC + WIN_RSRC,
-	dependencies: [lSDL2],
+	dependencies: [lSDL2, spdlog],
 	include_directories: EMU_INC,
 	win_subsystem: 'windows'
 )

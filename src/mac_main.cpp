@@ -44,6 +44,8 @@
 #include "HW/SOUND/sound.h"
 #include "HW/MOUSE/mouse.h"
 
+#include "spdlog/spdlog.h"
+
 #include "mac_main.h"
 
 // Let's define a bunch of function structure thingies
@@ -635,6 +637,8 @@ static void MainEventLoop(void)
 
 void ProgramMain(void)
 {
+	spdlog::info("Welcome to spdlog!");
+	
 	if (InitEmulation() == false) {return;}
 	MainEventLoop();
 }
