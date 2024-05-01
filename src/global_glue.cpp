@@ -35,7 +35,7 @@
 #endif
 
 #include "global_glue.h"
-#include "HW/RAM/RAMADDR.h"
+#include "HW/RAM/ram.h"
 
 /*
 	ReportAbnormalID unused 0x111D - 0x11FF

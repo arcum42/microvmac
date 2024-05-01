@@ -31,10 +31,10 @@
 #include "UI/my_os_glue.h"
 #include "STRCONST.h"
 #include "os_glue_sdl2.h"
-#include "LANG/INTLCHAR.h"
-#include "HW/SCREEN/SCRNEMDV.h"
-#include "HW/ROM/ROMEMDEV.h"
-#include "CFGMAN.h"
+#include "LANG/intl_chars.h"
+#include "HW/SCREEN/screen.h"
+#include "HW/ROM/rom.h"
+#include "config_manage.h"
 
 /* --- some simple utilities --- */
 
@@ -48,7 +48,7 @@ GLOBALOSGLUPROC MoveBytes(anyp srcPtr, anyp destPtr, int32_t byteCount)
 #define WantColorTransValid 0
 
 #include "UI/common_os_glue.h"
-#include "UTIL/PBUFSTDC.h"
+#include "UTIL/param_buffers.h"
 #include "UI/control_mode.h"
 
 /* --- basic dialogs --- */
@@ -961,7 +961,7 @@ label_retry:
 
 /* --- platform independent code can be thought of as going here --- */
 
-#include "PROGMAIN.h"
+#include "mac_main.h"
 
 static void ZapOSGLUVars(void)
 {

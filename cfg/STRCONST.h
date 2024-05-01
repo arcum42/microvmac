@@ -1,1 +1,1 @@
-#include "LANG/STRCNENG.h"
+#include "LANG/strings_english.h"

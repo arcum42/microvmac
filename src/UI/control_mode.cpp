@@ -22,9 +22,9 @@
 #include "CNFGGLOB.h"
 #include "CNFGRAPI.h"
 #include "STRCONST.h"
-#include "ERRCODES.h"
+#include "error_codes.h"
 
-#include "LANG/INTLCHAR.h"
+#include "LANG/intl_chars.h"
 #include "UI/common_os_glue.h"
 #include "UI/my_os_glue.h"
 #include "UTIL/endian.h"

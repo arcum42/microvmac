@@ -23,7 +23,7 @@ cfg:
 
             mac_plus.h (probably should be removed.)
     STRCONST.h:
-        Is just straight #include "LANG/STRCNENG.h" ?
+        Is just straight #include "LANG/strings_english.h" ?
         Could probably be removed.
 gfx:
     Seems to be various pictures for use in the emulator.
@@ -52,45 +52,45 @@ src:
         Seems to be a bunch of string utilities and translations. Replace with actual c++ strings or SDL?
         Tempted to remove the translations, as if I do a lot of rewriting, that'll probably include the text it's translating.
 
-        INTLCHAR.cpp:
+        intl_chars.cpp:
             InterNaTionAL CHARacters. TODO: Move this to a PCF, BDF, or FON bitmap font format.
             master copy of private font data.
             #include "UI/common_os_glue.h"
             #include "UI/my_os_glue.h"
             #include "UI/control_mode.h"
-            #include "LANG/INTLCHAR.h"
+            #include "LANG/intl_chars.h"
             #include "STRCONST.h"
 
-        INTLCHAR.h:
+        intl_chars.h:
             See above.
             #include "UI/common_os_glue.h"
             #include "UI/my_os_glue.h"
 
-        STRCNCAT.h:
+        strings_catalan.h:
             STRing CoNstants for CATalan.
-        STRCNCZE.h:
+        strings_czech.h:
             STRing CoNstants for CZEch.
-        STRCNDUT.h:
+        strings_dutch.h:
             STRing CoNstants for DUTch.
-        STRCNENG.h:
+        strings_english.h:
             STRing CoNstants for ENGlish.
-        STRCNFRE.h:
+        strings_french.h:
             STRing CoNstants for FREnch.
-        STRCNGER.h:
+        strings_german.h:
             STRing CoNstants for GERman.
-        STRCNITA.h:
+        strings_italian.h:
             STRing CoNstants for ITAlian.
-        STRCNPOL.h:
+        strings_polish.h:
             STRing CoNstants for POLish.
-        STRCNPTB.h:
+        strings_portuguese_brazilian.h:
             STRing CoNstants for PorTuguese-Brazilian.
-        STRCNSPA.h:
+        strings_spanish.h:
             STRing CoNstants for SPAnish.
-        STRCNSRL.h:
+        strings_serbian_latin.h:
             STRing CoNstants for SeRbian Latin
 
     PATCHES:
-        HPMCHACK.h:
+        happy_mac_hack.h:
             HaPpy MaCintosh Hack. 	Patch the ROM for alternatives to the Happy Macintosh icon displayed on boot when a disk is inserted.
             Bitmaps from http://www.bigmessowires.com/mac-rom-inator/ (Still up!)
             #include <string.h>
@@ -99,23 +99,23 @@ src:
             Er, includes a bunch of xbm files I don't see here. Probably not used? Might just remove it.
             Followup: No, they are in rsrc/HAPPYMAC
 
-        ROMEMDEV.cpp:
+        rom.cpp:
             	Read Only Memory EMulated DEVice. Checks the header of the loaded ROM image, and then patches the ROM image.
-                ROM.cpp is probably fine.
+                rom_sdl2.cpp is probably fine.
 
                 #include "EMCONFIG.h"
                 #include "sys_dependencies.h"
                 #include "global_glue.h"
                 #include "UI/my_os_glue.h"
                 #include "UTIL/endian.h"
-                #include "PATCHES/ROMEMDEV.h"
-                #include "PATCHES/SCRNHACK.h"
-                #include "PATCHES/SONYDRV.h"
+                #include "PATCHES/rom.h"
+                #include "PATCHES/screen_hack.h"
+                #include "PATCHES/sony_driver_hack.h"
                 #ifdef CurAltHappyMac
-                #include "HPMCHACK.h"
+                #include "happy_mac_hack.h"
                 #endif
 
-        ROMEMDEV.h:
+        rom.h:
             Header for above.
 
         SCRHACK.cpp:
@@ -128,13 +128,13 @@ src:
             #include "EMCONFIG.h"
             #include "global_glue.h"
             #include "incbin/incbin.h"
-            #include "PATCHES/ROMEMDEV.h"
-            #include "HW/SCREEN/SCRNEMDV.h"
+            #include "PATCHES/rom.h"
+            #include "HW/SCREEN/screen.h"
 
         SCRHACK.h:
             Header for above.
 
-        SONYDRV.cpp:
+        sony_driver_hack.cpp:
             	Replacement for .Sony driver 68k machine code, compiled from mydriver.a. Included in the resource file for WIN32 builds.
                 #include <stdint.h>
                 #include <string.h>
@@ -147,18 +147,18 @@ src:
                 #include "global_glue.h"
                 #include "UTIL/endian.h"
                 #include "UI/my_os_glue.h"
-                #include "PATCHES/SONYDRV.h"
-                #include "PATCHES/ROMEMDEV.h"
-                //#include "PATCHES/SCRNHACK.h"
+                #include "PATCHES/sony_driver_hack.h"
+                #include "PATCHES/rom.h"
+                //#include "PATCHES/screen_hack.h"
 
                 // temporary screenhack stuff
-                #include "HW/SCREEN/SCRNEMDV.h"
+                #include "HW/SCREEN/screen.h"
 
-        SONYDRV.h:
+        sony_driver_hack.h:
             Header for above.
     UI:
         SDL2:
-            CLIPBRD.cpp:
+            clipboard_sdl2.cpp:
                 clipboard.cpp.
                 #include <stdlib.h>
                 #include <string.h>
@@ -171,7 +171,7 @@ src:
                 #include "UI/common_os_glue.h"
                 #include "STRCONST.h"
 
-            DBGLOG.cpp:
+            debug_log_sdl2.cpp:
                 sending debugging info to file.
                 #include <stdlib.h>
                 #include <string.h>
@@ -179,7 +179,7 @@ src:
                 #include "sys_dependencies.h"
                 #include "UI/my_os_glue.h"
 
-            DRIVES.cpp:
+            drives_sdl2.cpp:
                 Handles floppy drives, presumably. Or doesn't. Need to check the original versions source on a lot of the sdl2 stuff. Think it's an in progress rewrite.
                 #include <stdlib.h>
                 #include <string.h>
@@ -192,11 +192,11 @@ src:
                 #include "UI/my_os_glue.h"
                 #include "UI/common_os_glue.h"
                 #include "STRCONST.h"
-                #include "HW/ROM/ROMEMDEV.h"
+                #include "HW/ROM/rom.h"
                 #include "UI/control_mode.h"
                 #include "UI/SDL2/os_glue_sdl2.h"
 
-            INTL.cpp:
+            intl_sdl2.cpp:
                 control mode and internationalization.
                 #include <stdlib.h>
                 #include <string.h>
@@ -207,9 +207,9 @@ src:
                 #include "UTIL/endian.h"
                 #include "UI/my_os_glue.h"
                 #include "STRCONST.h"
-                #include "LANG/INTLCHAR.h"
+                #include "LANG/intl_chars.h"
 
-            KEYBOARD.cpp:
+            keyboard_sdl2.cpp:
                 Handles keyboard input. Doesn't handle the ctrl stuff, IIRC.
                 #include <stdlib.h>
                 #include <string.h>
@@ -223,7 +223,7 @@ src:
                 #include "UI/my_os_glue.h"
                 #include "STRCONST.h"
 
-            MOUSE.cpp:
+            mouse_sdl2.cpp:
                 Handles mouse. All of this could benefit from a shared header, maybe?
                 #include <stdlib.h>
                 #include <string.h>
@@ -252,10 +252,10 @@ src:
                 #include "UI/my_os_glue.h"
                 #include "STRCONST.h"
                 #include "os_glue_sdl2.h"
-                #include "LANG/INTLCHAR.h"
-                #include "HW/SCREEN/SCRNEMDV.h"
-                #include "HW/ROM/ROMEMDEV.h"
-                #include "CFGMAN.h"
+                #include "LANG/intl_chars.h"
+                #include "HW/SCREEN/screen.h"
+                #include "HW/ROM/rom.h"
+                #include "config_manage.h"
 
             os_glue_sdl2.h:
                 defines and macros and such.
@@ -264,21 +264,21 @@ src:
                 #include <SDL.h>
                 #include "UI/my_os_glue.h"
                 
-            ROM.cpp:
+            rom_sdl2.cpp:
                 Loads the ROM.
                 #include <stdlib.h>
                 #include <string.h>
                 #include <stdio.h>
                 #include "sys_dependencies.h" 
-                #include "ERRCODES.h"
+                #include "error_codes.h"
                 #include "STRCONST.h"
                 #include "UI/my_os_glue.h"
                 #include "UI/common_os_glue.h"
                 #include "UI/control_mode.h"
                 #include "UI/SDL2/os_glue_sdl2.h"
-                #include "HW/ROM/ROMEMDEV.h"
+                #include "HW/ROM/rom.h"
 
-            SOUND.cpp:
+            sound_sdl2.cpp:
                 Sound!
                 #include <stdlib.h>
                 #include <string.h>
@@ -292,7 +292,7 @@ src:
                 #include "STRCONST.h" 
                 #include "os_glue_sdl2.h"
 
-            TIMEDATE.cpp:
+            time_date_sdl2.cpp:
                 Handle time, date, & location.
 
                 #include <stdlib.h>
@@ -306,7 +306,7 @@ src:
                 #include "UI/my_os_glue.h"
                 #include "STRCONST.h"
 
-            VIDEO.cpp:
+            video_sdl2.cpp:
                 Handles video.
 
                 #include <stdlib.h>
@@ -322,7 +322,7 @@ src:
                 #include "UI/common_os_glue.h"
                 #include "STRCONST.h"
                 #include "os_glue_sdl2.h"
-                #include "HW/SCREEN/SCRNEMDV.h"
+                #include "HW/SCREEN/screen.h"
 
         common_os_glue.cpp:
             COMmon code for Operating System GLUe
@@ -333,7 +333,7 @@ src:
             #include "my_os_glue.h"
             #include "CNFGRAPI.h"
             #include "common_os_glue.h"
-            #include "HW/SCREEN/SCRNEMDV.h"
+            #include "HW/SCREEN/screen.h"
 
         common_os_glue.h:
             Header.
@@ -350,9 +350,9 @@ src:
             #include "CNFGGLOB.h"
             #include "CNFGRAPI.h"
             #include "STRCONST.h"
-            #include "ERRCODES.h"
+            #include "error_codes.h"
 
-            #include "LANG/INTLCHAR.h"
+            #include "LANG/intl_chars.h"
             #include "UI/common_os_glue.h"
             #include "UI/my_os_glue.h"
             #include "UTIL/endian.h"
@@ -365,20 +365,20 @@ src:
             Header.
 
             #include "sys_dependencies.h"
-            #include "ERRCODES.h"
+            #include "error_codes.h"
 
         my_os_glue.h:
         	MY Operating System GLUE. header file for operating system dependent code. the same header is used for all platforms.
-            #include "UTIL/DATE2SEC.h"
-            #include "HW/KBRD/KEYCODES.h"
-            #include "ERRCODES.h"
+            #include "UTIL/date_to_seconds.h"
+            #include "HW/KBRD/keycodes.h"
+            #include "error_codes.h"
 
     UTIL:
-        BPFILTER.h:
+        bp_filter.h:
             Berkeley Packet Filter for localtalk emulation.
 
-        DATE2SEC.cpp:
-        DATE2SEC.h:
+        date_to_seconds.cpp:
+        date_to_seconds.h:
             DATE 2(to) SEConds. Convert year/month/day/hour/minute/second to number of seconds since the beginning of 1904, the format for storing dates on the Macintosh.
 
             The function jdate is from the program Webalizer by Bradford L. Barrett.
@@ -392,11 +392,11 @@ src:
 
 	            This code is adapted from code in the Un*x Amiga Emulator by Bernd Schmidt, as found in vMac by Philip Cummins
 
-        PBUFSTDC.h:
+        param_buffers.h:
             Parameter BUFfers implemented with STanDard C library
 
-    CFGMAN.cpp:
-    CFGMAN.h:
+    config_manage.cpp:
+    config_manage.h:
         Configuration Management.
 
         #include "tomlc99/toml.h"
@@ -405,9 +405,9 @@ src:
         #include <stdint.h>
         #include <stdbool.h>
         #include <string.h>
-        #include "HW/SCREEN/SCRNEMDV.h"
+        #include "HW/SCREEN/screen.h"
 
-    ERRCODES.h:
+    error_codes.h:
         	error codes returned by Mini vMac extensions (passed back to the emulated 68k code).
     global_glue.cpp:
         GLOBal GLUE (or GLOB of GLUE) Holds the program together. 
@@ -418,7 +418,7 @@ src:
         #include "EMCONFIG.h"
 
         #include "global_glue.h"
-        #include "HW/RAM/RAMADDR.h"
+        #include "HW/RAM/ram.h"
 
     global_glue.h:
         	GLOBal GLUE (or GLOB of GLUE) Holds the program together. 
@@ -426,7 +426,7 @@ src:
             #include "EMCONFIG.h"
             #include "sys_dependencies.h"
 
-    PROGMAIN.cpp:
+    mac_main.cpp:
         PROGram MAIN.
 
         #include <string.h>
@@ -436,26 +436,26 @@ src:
         #include "UI/my_os_glue.h"
         #include "EMCONFIG.h"
         #include "global_glue.h"
-        #include "HW/M68K/M68KITAB.h"
-        #include "HW/M68K/MINEM68K.h"
-        #include "HW/VIA/VIAEMDEV.h"
-        #include "HW/VIA/VIA2EMDV.h"
-        #include "HW/DISK/IWMEMDEV.h"
-        #include "HW/SCC/SCCEMDEV.h"
-        #include "HW/RTC/RTCEMDEV.h"
-        #include "PATCHES/ROMEMDEV.h"
-        #include "HW/SCSI/SCSIEMDV.h"
-        #include "HW/DISK/SONYEMDV.h"
-        #include "HW/SCREEN/SCRNEMDV.h"
-        #include "HW/VIDCARD/VIDEMDEV.h"
-        #include "HW/KBRD/KBRDEMDV.h"
-        #include "HW/POWERMAN/PMUEMDEV.h"
-        #include "HW/ADB/ADBEMDEV.h"
-        #include "HW/SOUND/ASCEMDEV.h"
-        #include "HW/SOUND/SNDEMDEV.h"
-        #include "HW/MOUSE/MOUSEMDV.h"
+        #include "HW/M68K/instruct_table_68k.h"
+        #include "HW/M68K/cpu_68k.h"
+        #include "HW/VIA/via.h"
+        #include "HW/VIA/via2.h"
+        #include "HW/DISK/int_woz_machine.h"
+        #include "HW/SCC/serial_comm.h"
+        #include "HW/RTC/rtc.h"
+        #include "PATCHES/rom.h"
+        #include "HW/SCSI/scsi.h"
+        #include "HW/DISK/sony_floppy.h"
+        #include "HW/SCREEN/screen.h"
+        #include "HW/VIDCARD/video.h"
+        #include "HW/KBRD/keyboard.h"
+        #include "HW/POWERMAN/power.h"
+        #include "HW/ADB/adb.h"
+        #include "HW/SOUND/apple_sound_chip.h"
+        #include "HW/SOUND/sound.h"
+        #include "HW/MOUSE/mouse.h"
 
-    PROGMAIN.h:
+    mac_main.h:
         Header. Barely anything in it.
 
     sys_dependencies.h:
@@ -476,30 +476,30 @@ cfg:
         Used in:
         global_glue.cpp
         global_glue.h
-        PROGMAIN.cpp
-        HW/ADB/ADBEMDEV.cpp
-        HW/DISK/IWMEMDEV.cpp
-        HW/DISK/SONYEMDV.cpp
-        HW/KBRD/KBRDEMDV.cpp
-        HW/M68K/DISAM68k.cpp
-        HW/M68K/M68KITAB.cpp
-        HW/M68K/MINEM68k.cpp
-        HW/MOUSE/MOUSEMDV.cpp
-        HW/POWERMAN/PMUEMDEV.cpp
-        HW/RTC/RTCEMDEV.cpp
-        HW/SCC/SCCEMDEV.cpp
-        SCRNEMDV.cpp
-        HW/SCSI/SCSIEMDV.cpp
-        HW/SOUND/ASCEMDEV.cpp
-        HW/SOUND/SNDEMDEV.cpp
-        HW/VIA/VIA2EMDV.cpp
-        HW/VIA/VIAEMDEV.cpp
-        HW/VIDEO/VIDEMDEV.cpp
-        HW/ROM/ROMEMDEV.cpp
-        HW/PATCHES/SCRNHACK.cpp (twice?)
-        HW/PATCHES/SONYDRV.cpp
-        UI/SDL2/DRIVES.cpp
-        UI/SDL2/KEYBOARD.cpp
+        mac_main.cpp
+        HW/ADB/adb.cpp
+        HW/DISK/int_woz_machine.cpp
+        HW/DISK/sony_floppy.cpp
+        HW/KBRD/keyboard.cpp
+        HW/M68K/disassembly_68k.cpp
+        HW/M68K/instruct_table_68k.cpp
+        HW/M68K/cpu_68k.cpp
+        HW/MOUSE/mouse.cpp
+        HW/POWERMAN/power.cpp
+        HW/RTC/rtc.cpp
+        HW/SCC/serial_comm.cpp
+        screen.cpp
+        HW/SCSI/scsi.cpp
+        HW/SOUND/apple_sound_chip.cpp
+        HW/SOUND/sound.cpp
+        HW/VIA/via2.cpp
+        HW/VIA/via.cpp
+        HW/VIDEO/video.cpp
+        HW/ROM/rom.cpp
+        HW/PATCHES/screen_hack.cpp (twice?)
+        HW/PATCHES/sony_driver_hack.cpp
+        UI/SDL2/drives_sdl2.cpp
+        UI/SDL2/keyboard_sdl2.cpp
         
     MACII.h:
         EMCONFIG.h (commented out)
@@ -507,241 +507,241 @@ cfg:
     MACPLUS.h:
         EMCONFIG.h
     STRCONST.h:
-        LANG/INTLCHAR.cpp
+        LANG/intl_chars.cpp
         UI/control_mode.cpp
-        UI/SDL2/CLIPBRD.cpp
-        UI/SDL2/DRIVES.cpp 
-        UI/SDL2/INTL.cpp
-        UI/SDL2/KEYBOARD.cpp
-        UI/SDL2/MOUSE.cpp
+        UI/SDL2/clipboard_sdl2.cpp
+        UI/SDL2/drives_sdl2.cpp 
+        UI/SDL2/intl_sdl2.cpp
+        UI/SDL2/keyboard_sdl2.cpp
+        UI/SDL2/mouse_sdl2.cpp
         UI/SDL2/os_glue_sdl2.cpp
-        UI/SDL2/ROM.cpp
-        UI/SDL2/SOUND.cpp
-        UI/SDL2/TIMEDATE.cpp
-        UI/SDL2/VIDEO.cpp
+        UI/SDL2/rom_sdl2.cpp
+        UI/SDL2/sound_sdl2.cpp
+        UI/SDL2/time_date_sdl2.cpp
+        UI/SDL2/video_sdl2.cpp
 
 src:
     LANG:
-        INTLCHAR.h:
+        intl_chars.h:
             UI/control_mode.cpp
-            UI/SDL2/INTL.cpp
+            UI/SDL2/intl_sdl2.cpp
             UI/SDL2/os_glue_sdl2.cpp
-        STRCNCAT.h:
-        STRCNCZE.h:
-        STRCNDUT.h:
-        STRCNENG.h:
+        strings_catalan.h:
+        strings_czech.h:
+        strings_dutch.h:
+        strings_english.h:
             cfg/STRCONST.h (presumably whichever language is enabled gets included there)
-        STRCNFRE.h:
-        STRCNGER.h:
-        STRCNITA.h:
-        STRCNPOL.h:
-        STRCNPTB.h:
-        STRCNSPA.h:
-        STRCNSRL.h:
+        strings_french.h:
+        strings_german.h:
+        strings_italian.h:
+        strings_polish.h:
+        strings_portuguese_brazilian.h:
+        strings_spanish.h:
+        strings_serbian_latin.h:
     
     PATCHES:
-        HPMCHACK.h:
-            PATCHES/ROMEMDEV.cpp
-        ROMEMDEV.h:
-            PROGMAIN.cpp
-            HW/ROM/ROMEMDEV.cpp
-            PATCHES/ROMEMDEV.cpp
-            PATCHES/ROMEMDEV.h
-            PATCHES/SCRNHACK.cpp
-            PATCHES/SONYDRV.cpp
-            UI/SDL2/DRIVES.cpp
+        happy_mac_hack.h:
+            PATCHES/rom.cpp
+        rom.h:
+            mac_main.cpp
+            HW/ROM/rom.cpp
+            PATCHES/rom.cpp
+            PATCHES/rom.h
+            PATCHES/screen_hack.cpp
+            PATCHES/sony_driver_hack.cpp
+            UI/SDL2/drives_sdl2.cpp
             UI/SDL2/os_glue_sdl2.cpp
-            UI/SDL2/ROM.cpp
+            UI/SDL2/rom_sdl2.cpp
 
-        SCRNHACK.h:
-            PATCHES/ROMEMDEV.cpp
-            PATCHES/SCRNHACK.cpp
-            //PATCHES/SONYDRV.cpp
-        SONYDRV.h:
-            PATCHES/ROMEMDEV.cpp
-            PATCHES/SONYDRV.cpp
+        screen_hack.h:
+            PATCHES/rom.cpp
+            PATCHES/screen_hack.cpp
+            //PATCHES/sony_driver_hack.cpp
+        sony_driver_hack.h:
+            PATCHES/rom.cpp
+            PATCHES/sony_driver_hack.cpp
     UI:
         SDL2:
             os_glue_sdl2.h:
                 UI/control_mode.cpp
-                UI/SDL2/DRIVES.cpp
-                UI/SDL2/MOUSE.cpp
+                UI/SDL2/drives_sdl2.cpp
+                UI/SDL2/mouse_sdl2.cpp
                 UI/SDL2/os_glue_sdl2.cpp
-                UI/SDL2/ROM.cpp
-                UI/SDL2/SOUND.cpp
-                VIDEO.cpp
+                UI/SDL2/rom_sdl2.cpp
+                UI/SDL2/sound_sdl2.cpp
+                video_sdl2.cpp
         common_os_glue.h:
-            LANG/INTLCHAR.cpp
-            LANG/INTLCHAR.h
+            LANG/intl_chars.cpp
+            LANG/intl_chars.h
             PATCHES/HPMHACK.h
             UI/common_os_glue.cpp
             UI/control_mode.cpp
-            UI/SDL2/CLIPBRD.cpp
-            UI/SDL2/DRIVES.cpp
-            UI/SDL2/KEYBOARD.cpp
-            UI/SDL2/MOUSE.cpp
+            UI/SDL2/clipboard_sdl2.cpp
+            UI/SDL2/drives_sdl2.cpp
+            UI/SDL2/keyboard_sdl2.cpp
+            UI/SDL2/mouse_sdl2.cpp
             UI/SDL2/os_glue_sdl2.cpp
-            UI/SDL2/ROM.cpp
-            UI/SDL2/SOUND.cpp
-            UI/SDL2/VIDEO.cpp
+            UI/SDL2/rom_sdl2.cpp
+            UI/SDL2/sound_sdl2.cpp
+            UI/SDL2/video_sdl2.cpp
         control_mode.h:
-            LANG/INTLCHAR.cpp
+            LANG/intl_chars.cpp
             UI/control_mode.cpp
-            UI/SDL2/DRIVES.cpp
+            UI/SDL2/drives_sdl2.cpp
             UI/SDL2/os_glue_sdl2.cpp
-            UI/SDL2/ROM.cpp
+            UI/SDL2/rom_sdl2.cpp
         my_os_glue.h:
             global_glue.cpp
-            PROGMAIN.cpp
-            HW/ADB/ADBEMDEV.cpp
-            HW/DISK/IWMEMDEV.cpp
-            HW/DISK/SONYEMDV.cpp
+            mac_main.cpp
+            HW/ADB/adb.cpp
+            HW/DISK/int_woz_machine.cpp
+            HW/DISK/sony_floppy.cpp
             HW/KBRD/KBRDEVDV.cpp
-            HW/M68K/DISAM68K.cpp
-            HW/M68K/M68KITAB.cpp
-            HW/M68K/MINEM68K.cpp
-            HW/MOUSE/MOUSEMDV.cpp
-            HW/POWERMAN/PMUEMDEV.cpp
-            HW/RTC/RTCEMDEV.cpp
-            HW/SCC/SCCEMDEV.cpp
-            HW/SCREEN/SCRNEMDV.cpp
-            HW/SCSI/SCSIEMDV.cpp
-            HW/SOUND/ASCEMDEV.cpp
-            HW/SOUND/SNDEMDEV.cpp
-            HW/VIA/VIA2EMDV.cpp
-            HW/VIA/VIAEMDEV.cpp
-            HW/VIDCARD/VIDEMDEV.cpp
-            LANG/INTLCHAR.cpp
-            LANG/INTLCHAR.h (thank god, a header.)
+            HW/M68K/disassembly_68k.cpp
+            HW/M68K/instruct_table_68k.cpp
+            HW/M68K/cpu_68k.cpp
+            HW/MOUSE/mouse.cpp
+            HW/POWERMAN/power.cpp
+            HW/RTC/rtc.cpp
+            HW/SCC/serial_comm.cpp
+            HW/SCREEN/screen.cpp
+            HW/SCSI/scsi.cpp
+            HW/SOUND/apple_sound_chip.cpp
+            HW/SOUND/sound.cpp
+            HW/VIA/via2.cpp
+            HW/VIA/via.cpp
+            HW/VIDCARD/video.cpp
+            LANG/intl_chars.cpp
+            LANG/intl_chars.h (thank god, a header.)
             PATCHES/ROMENDEV.cpp
-            PATCHES/SCRNHACK.cpp
-            PATCHES/SONYDRV.cpp
+            PATCHES/screen_hack.cpp
+            PATCHES/sony_driver_hack.cpp
             UI/common_os_glue.cpp
             UI/common_os_glue.h (another header)
             UI/control_mode.cpp
-            UI/SDL2/CLIPBRD.cpp
-            UI/SDL2/DBGLOG.cpp
-            UI/SDL2/DRIVES.cpp 
-            UI/SDL2/INTL.cpp
-            UI/SDL2/KEYBOARD.cpp
-            UI/SDL2/MOUSE.cpp
+            UI/SDL2/clipboard_sdl2.cpp
+            UI/SDL2/debug_log_sdl2.cpp
+            UI/SDL2/drives_sdl2.cpp 
+            UI/SDL2/intl_sdl2.cpp
+            UI/SDL2/keyboard_sdl2.cpp
+            UI/SDL2/mouse_sdl2.cpp
             UI/SDL2/os_glue_sdl2.cpp
             UI/SDL2/os_glue_sdl2.h
-            UI/SDL2/ROM.cpp
-            UI/SDL2/SOUND.cpp
-            UI/SDL2/TIMEDATE.cpp
-            UI/SDL2/VIDEO.cpp
+            UI/SDL2/rom_sdl2.cpp
+            UI/SDL2/sound_sdl2.cpp
+            UI/SDL2/time_date_sdl2.cpp
+            UI/SDL2/video_sdl2.cpp
     UTIL:
-        BPFILTER.h:
+        bp_filter.h:
             Not currently included anywhere.
-        DATE2SEC.h:
-            DATE2SEC.cpp
+        date_to_seconds.h:
+            date_to_seconds.cpp
         endian.h:
             global_glue.cpp
-            HW/DISK/SONYEMDV.cpp
-            HW/M68K/DISAM68K.cpp
-            HW/M68K/MINEM68K.cpp
-            HW/MOUSE/MOUSEMDV.cpp
-            HW/ROM/ROMEMDEV.cpp
-            HW/RTC/RTCEMDEV.cpp
-            HW/SCREEN/SCRNEMDV.cpp
-            HW/SCSI/SCSIEMDV.cpp
-            HW/SOUND/ASCEMDEV.cpp
-            HW/VIDCARD/VIDEMDEV.cpp
+            HW/DISK/sony_floppy.cpp
+            HW/M68K/disassembly_68k.cpp
+            HW/M68K/cpu_68k.cpp
+            HW/MOUSE/mouse.cpp
+            HW/ROM/rom.cpp
+            HW/RTC/rtc.cpp
+            HW/SCREEN/screen.cpp
+            HW/SCSI/scsi.cpp
+            HW/SOUND/apple_sound_chip.cpp
+            HW/VIDCARD/video.cpp
             PATCHES/ROMENDEV.cpp
-            PATCHES/SCRNHACK.cpp
-            PATCHES/SONYDRV.cpp
+            PATCHES/screen_hack.cpp
+            PATCHES/sony_driver_hack.cpp
             UI/control_mode.cpp
-            UI/SDL2/CLIPBRD.cpp
-            UI/SDL2/DRIVES.cpp 
-            UI/SDL2/INTL.cpp
-            UI/SDL2/KEYBOARD.cpp
-            UI/SDL2/MOUSE.cpp
+            UI/SDL2/clipboard_sdl2.cpp
+            UI/SDL2/drives_sdl2.cpp 
+            UI/SDL2/intl_sdl2.cpp
+            UI/SDL2/keyboard_sdl2.cpp
+            UI/SDL2/mouse_sdl2.cpp
             UI/SDL2/os_glue_sdl2.cpp
-            UI/SDL2/SOUND.cpp
-            UI/SDL2/TIMEDATE.cpp
-            UI/SDL2/VIDEO.cpp
-        PBUFSTDC.h:
+            UI/SDL2/sound_sdl2.cpp
+            UI/SDL2/time_date_sdl2.cpp
+            UI/SDL2/video_sdl2.cpp
+        param_buffers.h:
             UI/SDL2/os_glue_sdl2.cpp
-    CFGMAN.h:
-        HW/SCREEN/SCRNEMDV.cpp
-    ERRCODES.h:
+    config_manage.h:
+        HW/SCREEN/screen.cpp
+    error_codes.h:
         UI/control_mode.cpp
         UI/control_mode.h
         UI/my_os_glue.h
-        UI/ROM.cpp
+        UI/rom_sdl2.cpp
     global_glue.h:
-        PROGMAIN.cpp
-        HW/ADB/ADBEMDEV.cpp
-        HW/DISK/IWMEMDEV.cpp
-        HW/DISK/SONYEMDV.cpp
+        mac_main.cpp
+        HW/ADB/adb.cpp
+        HW/DISK/int_woz_machine.cpp
+        HW/DISK/sony_floppy.cpp
         HW/KBRD/KBRDEVDV.cpp
-        HW/M68K/DISAM68K.cpp
-        HW/M68K/FPCPEMDV.cpp
-        HW/M68K/M68KITAB.cpp
-        HW/M68K/MINEM68K.cpp
-        HW/MOUSE/MOUSEMDV.cpp
-        HW/POWERMAN/PMUEMDEV.cpp
-        HW/ROM/ROMEMDEV.cpp
-        HW/RTC/RTCEMDEV.cpp
-        HW/SCC/SCCEMDEV.cpp
-        HW/SCREEN/SCRNEMDV.cpp
-        HW/SCSI/SCSIEMDV.cpp
-        HW/SOUND/ASCEMDEV.cpp
-        HW/SOUND/SNDEMDEV.cpp
-        HW/VIA/VIA2EMDV.cpp
-        HW/VIA/VIAEMDEV.cpp
-        HW/VIDCARD/VIDEMDEV.cpp
+        HW/M68K/disassembly_68k.cpp
+        HW/M68K/fpu.cpp
+        HW/M68K/instruct_table_68k.cpp
+        HW/M68K/cpu_68k.cpp
+        HW/MOUSE/mouse.cpp
+        HW/POWERMAN/power.cpp
+        HW/ROM/rom.cpp
+        HW/RTC/rtc.cpp
+        HW/SCC/serial_comm.cpp
+        HW/SCREEN/screen.cpp
+        HW/SCSI/scsi.cpp
+        HW/SOUND/apple_sound_chip.cpp
+        HW/SOUND/sound.cpp
+        HW/VIA/via2.cpp
+        HW/VIA/via.cpp
+        HW/VIDCARD/video.cpp
         PATCHES/ROMENDEV.cpp
-        PATCHES/SCRNHACK.cpp
-        PATCHES/SONYDRV.cpp
+        PATCHES/screen_hack.cpp
+        PATCHES/sony_driver_hack.cpp
         UI/common_os_glue.cpp
         UI/common_os_glue.h
-    PROGMAIN.h:
-        PROGMAIN.cpp
+    mac_main.h:
+        mac_main.cpp
         UI/SDL2/os_glue_sdl2.cpp
     sys_dependencies.h:
         global_glue.cpp
         global_glue.h
-        PROGMAIN.cpp
-        HW/ADB/ADBEMDEV.cpp
-        HW/DISK/IWMEMDEV.cpp
-        HW/DISK/SONYEMDV.cpp
+        mac_main.cpp
+        HW/ADB/adb.cpp
+        HW/DISK/int_woz_machine.cpp
+        HW/DISK/sony_floppy.cpp
         HW/KBRD/KBRDEVDV.cpp
-        HW/M68K/DISAM68K.cpp
-        HW/M68K/FPCPEMDV.cpp
-        HW/M68K/FPMATHEM.h 
-        HW/M68K/M68KITAB.cpp
-        HW/M68K/MINEM68K.cpp
-        HW/MOUSE/MOUSEMDV.cpp
-        HW/POWERMAN/PMUEMDEV.cpp
-        HW/RTC/RTCEMDEV.cpp
-        HW/SCC/SCCEMDEV.cpp
-        HW/SCREEN/SCRNEMDV.cpp
-        HW/SCSI/SCSIEMDV.cpp
-        HW/SOUND/ASCEMDEV.cpp
-        HW/SOUND/SNDEMDEV.cpp
-        HW/VIA/VIA2EMDV.cpp
-        HW/VIA/VIAEMDEV.cpp
-        HW/VIDCARD/VIDEMDEV.cpp
+        HW/M68K/disassembly_68k.cpp
+        HW/M68K/fpu.cpp
+        HW/M68K/fpu_math.h 
+        HW/M68K/instruct_table_68k.cpp
+        HW/M68K/cpu_68k.cpp
+        HW/MOUSE/mouse.cpp
+        HW/POWERMAN/power.cpp
+        HW/RTC/rtc.cpp
+        HW/SCC/serial_comm.cpp
+        HW/SCREEN/screen.cpp
+        HW/SCSI/scsi.cpp
+        HW/SOUND/apple_sound_chip.cpp
+        HW/SOUND/sound.cpp
+        HW/VIA/via2.cpp
+        HW/VIA/via.cpp
+        HW/VIDCARD/video.cpp
         PATCHES/ROMENDEV.cpp
-        PATCHES/SCRNHACK.cpp
-        PATCHES/SONYDRV.cpp
+        PATCHES/screen_hack.cpp
+        PATCHES/sony_driver_hack.cpp
         UI/common_os_glue.cpp
         UI/common_os_glue.h
         UI/control_mode.cpp
         UI/control_mode.h
-        UI/SDL2/CLIPBRD.cpp
-        UI/SDL2/DBGLOG.cpp
-        UI/SDL2/DRIVES.cpp 
-        UI/SDL2/INTL.cpp
-        UI/SDL2/KEYBOARD.cpp
-        UI/SDL2/MOUSE.cpp
+        UI/SDL2/clipboard_sdl2.cpp
+        UI/SDL2/debug_log_sdl2.cpp
+        UI/SDL2/drives_sdl2.cpp 
+        UI/SDL2/intl_sdl2.cpp
+        UI/SDL2/keyboard_sdl2.cpp
+        UI/SDL2/mouse_sdl2.cpp
         UI/SDL2/os_glue_sdl2.cpp
-        UI/SDL2/ROM.cpp
-        UI/SDL2/SOUND.cpp
-        UI/SDL2/TIMEDATE.cpp
-        UI/SDL2/VIDEO.cpp
-        UTIL/DATE2SEC.cpp
-        UTIL/DATE2SEC.h
+        UI/SDL2/rom_sdl2.cpp
+        UI/SDL2/sound_sdl2.cpp
+        UI/SDL2/time_date_sdl2.cpp
+        UI/SDL2/video_sdl2.cpp
+        UTIL/date_to_seconds.cpp
+        UTIL/date_to_seconds.h
         

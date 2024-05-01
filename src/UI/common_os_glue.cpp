@@ -24,7 +24,7 @@
 #include "my_os_glue.h"
 #include "CNFGRAPI.h"
 #include "common_os_glue.h"
-#include "HW/SCREEN/SCRNEMDV.h"
+#include "HW/SCREEN/screen.h"
 
  uint32_t vSonyWritableMask = 0;
  uint32_t vSonyInsertedMask = 0;

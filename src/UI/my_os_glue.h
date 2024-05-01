@@ -28,9 +28,9 @@
 #ifndef MYOSGLUE_H
 #define MYOSGLUE_H
 
-#include "UTIL/DATE2SEC.h"
-#include "HW/KBRD/KEYCODES.h"
-#include "ERRCODES.h"
+#include "UTIL/date_to_seconds.h"
+#include "HW/KBRD/keycodes.h"
+#include "error_codes.h"
 
 #if WantAbnormalReports
 EXPORTOSGLUPROC WarnMsgAbnormalID(uint16_t id);

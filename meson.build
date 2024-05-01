@@ -81,60 +81,60 @@ endif
 # Hardware libraries
 HW_SRC = {
 	'ADB':  [
-		'src/HW/ADB/ADBEMDEV.cpp'
+		'src/HW/ADB/adb.cpp'
 	],
 	'DISK': [
-		'src/HW/DISK/IWMEMDEV.cpp',
-		'src/HW/DISK/SONYEMDV.cpp',
-		'src/PATCHES/SONYDRV.cpp'
+		'src/HW/DISK/int_woz_machine.cpp',
+		'src/HW/DISK/sony_floppy.cpp',
+		'src/PATCHES/sony_driver_hack.cpp'
     ],
     'KBRD': [
-		'src/HW/KBRD/KBRDEMDV.cpp',
+		'src/HW/KBRD/keyboard.cpp',
 	],
 	'M68K': [
-#		'src/HW/M68K/DISAM68K.cpp',
-		'src/HW/M68K/M68KITAB.cpp',
-		'src/HW/M68K/MINEM68K.cpp',
-#		'src/HW/M68K/FPCPEMDV.cpp',
+#		'src/HW/M68K/disassembly_68k.cpp',
+		'src/HW/M68K/instruct_table_68k.cpp',
+		'src/HW/M68K/cpu_68k.cpp',
+#		'src/HW/M68K/fpu.cpp',
 	],
 	'MOUSE': [
-		'src/HW/MOUSE/MOUSEMDV.cpp',
+		'src/HW/MOUSE/mouse.cpp',
 	],
 	'POWERMAN': [
-		'src/HW/POWERMAN/PMUEMDEV.cpp',
+		'src/HW/POWERMAN/power.cpp',
 	],
 	'RTC': [
-		'src/HW/RTC/RTCEMDEV.cpp',
+		'src/HW/RTC/rtc.cpp',
 	],
 	'SCC': [
-		'src/HW/SCC/SCCEMDEV.cpp',
+		'src/HW/SCC/serial_comm.cpp',
 	],
 	'SCREEN': [
-		'src/HW/SCREEN/SCRNEMDV.cpp',
-		'src/PATCHES/SCRNHACK.cpp',
+		'src/HW/SCREEN/screen.cpp',
+		'src/PATCHES/screen_hack.cpp',
 	],
 	'SCSI': [
-		'src/HW/SCSI/SCSIEMDV.cpp',
+		'src/HW/SCSI/scsi.cpp',
 	],
 	'SOUND': [
-		'src/HW/SOUND/SNDEMDEV.cpp',
+		'src/HW/SOUND/sound.cpp',
 	],
 	'SOUND_ASC': [
-		'src/HW/SOUND/ASCEMDEV.cpp',
+		'src/HW/SOUND/apple_sound_chip.cpp',
 	],
 	'VIA1': [
-		'src/HW/VIA/VIAEMDEV.cpp',
+		'src/HW/VIA/via.cpp',
 	],
 	'VIA2': [
-		'src/HW/VIA/VIA2EMDV.cpp',
+		'src/HW/VIA/via2.cpp',
 	],
 	'VIDCARD': [
-		'src/HW/VIDCARD/VIDEMDEV.cpp',
+		'src/HW/VIDCARD/video.cpp',
 	],
 	'RAM': [
 	],
 	'ROM': [
-		'src/HW/ROM/ROMEMDEV.cpp',
+		'src/HW/ROM/rom.cpp',
 	]
 }
 
@@ -158,25 +158,25 @@ UI_SRC = [
 	'src/UI/common_os_glue.cpp',
 	'src/UI/control_mode.cpp',
 	'src/UI/SDL2/os_glue_sdl2.cpp',
-	#'src/UI/SDL2/CLIPBRD.cpp',
-	'src/UI/SDL2/DBGLOG.cpp',
-	'src/UI/SDL2/DRIVES.cpp',
-	'src/UI/SDL2/INTL.cpp',
-	'src/UI/SDL2/KEYBOARD.cpp',
-	'src/UI/SDL2/MOUSE.cpp',
-	'src/UI/SDL2/ROM.cpp',
-	'src/UI/SDL2/SOUND.cpp',
-	'src/UI/SDL2/TIMEDATE.cpp',
-	'src/UI/SDL2/VIDEO.cpp',
+	#'src/UI/SDL2/clipboard_sdl2.cpp',
+	'src/UI/SDL2/debug_log_sdl2.cpp',
+	'src/UI/SDL2/drives_sdl2.cpp',
+	'src/UI/SDL2/intl_sdl2.cpp',
+	'src/UI/SDL2/keyboard_sdl2.cpp',
+	'src/UI/SDL2/mouse_sdl2.cpp',
+	'src/UI/SDL2/rom_sdl2.cpp',
+	'src/UI/SDL2/sound_sdl2.cpp',
+	'src/UI/SDL2/time_date_sdl2.cpp',
+	'src/UI/SDL2/video_sdl2.cpp',
 ]
 
 EMU_SRC = [
-	'src/PROGMAIN.cpp',
+	'src/mac_main.cpp',
 	'src/global_glue.cpp',
-	'src/CFGMAN.cpp',
-	'src/PATCHES/ROMEMDEV.cpp',
-	'src/UTIL/DATE2SEC.cpp',
-	'src/LANG/INTLCHAR.cpp',
+	'src/config_manage.cpp',
+	'src/PATCHES/rom.cpp',
+	'src/UTIL/date_to_seconds.cpp',
+	'src/LANG/intl_chars.cpp',
 	'lib/tomlc99/toml.c',
 ]
 
