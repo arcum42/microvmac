@@ -3,7 +3,7 @@
 #include <stdbool.h>
 #include <stdint.h>
 #include <SDL.h>
-#include "UI/MYOSGLUE.h"
+#include "UI/my_os_glue.h"
 
 /* --- defines and macros and such --- */
 

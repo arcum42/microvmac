@@ -26,11 +26,11 @@
 #include <stdio.h>
 #include <SDL.h>
 #include "CNFGRAPI.h"
-#include "SYSDEPNS.h"
-#include "UTIL/ENDIANAC.h"
-#include "UI/MYOSGLUE.h"
+#include "sys_dependencies.h"
+#include "UTIL/endian.h"
+#include "UI/my_os_glue.h"
 #include "STRCONST.h"
-#include "OSGLUSD2.h"
+#include "os_glue_sdl2.h"
 #include "LANG/INTLCHAR.h"
 #include "HW/SCREEN/SCRNEMDV.h"
 #include "HW/ROM/ROMEMDEV.h"
@@ -47,9 +47,9 @@ GLOBALOSGLUPROC MoveBytes(anyp srcPtr, anyp destPtr, int32_t byteCount)
 
 #define WantColorTransValid 0
 
-#include "UI/COMOSGLU.h"
+#include "UI/common_os_glue.h"
 #include "UTIL/PBUFSTDC.h"
-#include "UI/CONTROLM.h"
+#include "UI/control_mode.h"
 
 /* --- basic dialogs --- */
 

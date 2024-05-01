@@ -22,11 +22,11 @@
 	This code adapted from "RTC.c" in vMac by Philip Cummins.
 */
 
-#include "SYSDEPNS.h"
-#include "UI/MYOSGLUE.h"
-#include "UTIL/ENDIANAC.h"
+#include "sys_dependencies.h"
+#include "UI/my_os_glue.h"
+#include "UTIL/endian.h"
 #include "EMCONFIG.h"
-#include "GLOBGLUE.h"
+#include "global_glue.h"
 
 /* define _RTC_Debug */
 #ifdef _RTC_Debug

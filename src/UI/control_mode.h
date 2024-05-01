@@ -5,7 +5,7 @@
 #ifndef CONTROLM_H
 #define CONTROLM_H
 
-#include "SYSDEPNS.h"
+#include "sys_dependencies.h"
 #include "ERRCODES.h"
 
 /* Globals */

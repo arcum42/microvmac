@@ -1,6 +1,6 @@
 #ifndef DATE2SEC_H
 #define DATE2SEC_H
-#include "SYSDEPNS.h"
+#include "sys_dependencies.h"
 
 /* ************************************************************* */
 /*                                                               */

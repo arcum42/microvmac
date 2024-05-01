@@ -36,8 +36,8 @@
 #ifndef INTLCHAR_H
 #define INTLCHAR_H
 
-#include "UI/COMOSGLU.h"
-#include "UI/MYOSGLUE.h"
+#include "UI/common_os_glue.h"
+#include "UI/my_os_glue.h"
 
 #define ClStrMaxLength 512
 

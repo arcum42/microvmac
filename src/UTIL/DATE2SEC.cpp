@@ -44,7 +44,7 @@
 	copies of this or derived software.
 */
 
-#include "SYSDEPNS.h"
+#include "sys_dependencies.h"
 #include "DATE2SEC.h"
 
 uint32_t jdate(int day, int month, int year)

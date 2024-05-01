@@ -3,10 +3,10 @@
 #include <stdio.h>
 #include <SDL.h>
 #include "CNFGRAPI.h"
-#include "SYSDEPNS.h"
-#include "UTIL/ENDIANAC.h"
-#include "UI/MYOSGLUE.h"
-#include "UI/COMOSGLU.h"
+#include "sys_dependencies.h"
+#include "UTIL/endian.h"
+#include "UI/my_os_glue.h"
+#include "UI/common_os_glue.h"
 #include "STRCONST.h"
 
 /* --- clipboard --- */

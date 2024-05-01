@@ -1,5 +1,5 @@
 /*
-	COMOSGLU.h
+	common_os_glue.h
 
 	Copyright (C) 2009 Paul C. Pratt
 
@@ -21,10 +21,10 @@
 #ifndef COMOSGLU_H
 #define COMOSGLU_H
 
-#include "SYSDEPNS.h"
+#include "sys_dependencies.h"
 #include "CNFGRAPI.h"
-#include "GLOBGLUE.h"
-#include "MYOSGLUE.h"
+#include "global_glue.h"
+#include "my_os_glue.h"
 #define EnableRecreateW 1
 
 extern uint32_t vSonyWritableMask;

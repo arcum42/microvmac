@@ -20,9 +20,9 @@
 
 #ifndef AllFiles
 #include "EMCONFIG.h"
-#include "SYSDEPNS.h"
-#include "GLOBGLUE.h"
-#include "UI/MYOSGLUE.h"
+#include "sys_dependencies.h"
+#include "global_glue.h"
+#include "UI/my_os_glue.h"
 #endif
 
 #include "HW/ADB/ADBEMDEV.h"

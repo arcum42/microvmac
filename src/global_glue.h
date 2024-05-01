@@ -1,5 +1,5 @@
 /*
-	GLOBGLUE.h
+	global_glue.h
 
 	Copyright (C) 2003 Bernd Schmidt, Philip Cummins, Paul C. Pratt
 
@@ -19,7 +19,7 @@
 
 #include "CNFGRAPI.h"
 #include "EMCONFIG.h"
-#include "SYSDEPNS.h"
+#include "sys_dependencies.h"
 
 // various globals
 extern bool SpeedStopped;

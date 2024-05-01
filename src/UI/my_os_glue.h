@@ -1,5 +1,5 @@
 /*
-	MYOSGLUE.h
+	my_os_glue.h
 
 	Copyright (C) 2006 Philip Cummins, Richard F. Bannister,
 		Paul C. Pratt

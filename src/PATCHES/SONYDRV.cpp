@@ -11,9 +11,9 @@
 #endif
 
 #include "EMCONFIG.h"
-#include "GLOBGLUE.h"
-#include "UTIL/ENDIANAC.h"
-#include "UI/MYOSGLUE.h"
+#include "global_glue.h"
+#include "UTIL/endian.h"
+#include "UI/my_os_glue.h"
 #include "PATCHES/SONYDRV.h"
 #include "PATCHES/ROMEMDEV.h"
 //#include "PATCHES/SCRNHACK.h"

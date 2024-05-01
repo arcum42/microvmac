@@ -31,12 +31,12 @@
 */
 
 #ifndef AllFiles
-#include "SYSDEPNS.h"
+#include "sys_dependencies.h"
 
-#include "UI/MYOSGLUE.h"
-#include "UTIL/ENDIANAC.h"
+#include "UI/my_os_glue.h"
+#include "UTIL/endian.h"
 #include "EMCONFIG.h"
-#include "GLOBGLUE.h"
+#include "global_glue.h"
 
 #include "HW/M68K/M68KITAB.h"
 

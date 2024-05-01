@@ -25,8 +25,8 @@
 */
 
 #include <string.h>
-#include "SYSDEPNS.h"
-#include "UI/COMOSGLU.h"
+#include "sys_dependencies.h"
+#include "UI/common_os_glue.h"
 
 // Enum of alternate icons
 typedef enum AHM_types {

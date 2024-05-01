@@ -26,10 +26,10 @@
 */
 
 #include "EMCONFIG.h"
-#include "SYSDEPNS.h"
-#include "GLOBGLUE.h"
-#include "UI/MYOSGLUE.h"
-#include "UTIL/ENDIANAC.h"
+#include "sys_dependencies.h"
+#include "global_glue.h"
+#include "UI/my_os_glue.h"
+#include "UTIL/endian.h"
 #include "PATCHES/ROMEMDEV.h"
 #include "PATCHES/SCRNHACK.h"
 #include "PATCHES/SONYDRV.h"

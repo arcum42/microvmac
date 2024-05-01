@@ -20,8 +20,8 @@
 	(included by MINEM68K.c)
 */
 
-#include "SYSDEPNS.h"
-#include "GLOBGLUE.h"
+#include "sys_dependencies.h"
+#include "global_glue.h"
 
 /*
 	ReportAbnormalID unused 0x0306 - 0x03FF

@@ -1,5 +1,5 @@
 /*
-	SYSDEPNS.h
+	sys_dependencies.h
 
 	Copyright (C) 2006 Bernd Schmidt, Philip Cummins, Paul C. Pratt
 

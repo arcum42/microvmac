@@ -155,9 +155,9 @@ MAC_SRC = {
 
 # User interface definitions
 UI_SRC = [
-	'src/UI/COMOSGLU.cpp',
-	'src/UI/CONTROLM.cpp',
-	'src/UI/SDL2/OSGLUSD2.cpp',
+	'src/UI/common_os_glue.cpp',
+	'src/UI/control_mode.cpp',
+	'src/UI/SDL2/os_glue_sdl2.cpp',
 	#'src/UI/SDL2/CLIPBRD.cpp',
 	'src/UI/SDL2/DBGLOG.cpp',
 	'src/UI/SDL2/DRIVES.cpp',
@@ -172,7 +172,7 @@ UI_SRC = [
 
 EMU_SRC = [
 	'src/PROGMAIN.cpp',
-	'src/GLOBGLUE.cpp',
+	'src/global_glue.cpp',
 	'src/CFGMAN.cpp',
 	'src/PATCHES/ROMEMDEV.cpp',
 	'src/UTIL/DATE2SEC.cpp',

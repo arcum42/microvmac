@@ -1,7 +1,7 @@
 #include <stdint.h>
-#include "GLOBGLUE.h"
+#include "global_glue.h"
 #include "HW/ROM/ROMEMDEV.h"
-#include "UTIL/ENDIANAC.h"
+#include "UTIL/endian.h"
 
 uint8_t * ROM = nullptr;
 bool ROM_loaded = false;

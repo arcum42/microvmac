@@ -1,13 +1,13 @@
 #include <stdlib.h>
 #include <string.h>
 #include <stdio.h>
-#include "SYSDEPNS.h" 
+#include "sys_dependencies.h" 
 #include "ERRCODES.h"
 #include "STRCONST.h"
-#include "UI/MYOSGLUE.h"
-#include "UI/COMOSGLU.h"
-#include "UI/CONTROLM.h"
-#include "UI/SDL2/OSGLUSD2.h"
+#include "UI/my_os_glue.h"
+#include "UI/common_os_glue.h"
+#include "UI/control_mode.h"
+#include "UI/SDL2/os_glue_sdl2.h"
 #include "HW/ROM/ROMEMDEV.h"
 
 /* --- ROM --- */

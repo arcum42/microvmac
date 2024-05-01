@@ -1,5 +1,5 @@
 /*
-	COMOSGLU.h
+	common_os_glue.h
 
 	Copyright (C) 2009 Paul C. Pratt
 
@@ -19,11 +19,11 @@
 */
 
 #include <stdlib.h>
-#include "SYSDEPNS.h"
-#include "GLOBGLUE.h"
-#include "MYOSGLUE.h"
+#include "sys_dependencies.h"
+#include "global_glue.h"
+#include "my_os_glue.h"
 #include "CNFGRAPI.h"
-#include "COMOSGLU.h"
+#include "common_os_glue.h"
 #include "HW/SCREEN/SCRNEMDV.h"
 
  uint32_t vSonyWritableMask = 0;

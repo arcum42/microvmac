@@ -3,8 +3,8 @@
 #include <stdlib.h>
 #include <string.h>
 #include <stdio.h>
-#include "SYSDEPNS.h"
-#include "UI/MYOSGLUE.h"
+#include "sys_dependencies.h"
+#include "UI/my_os_glue.h"
 
 #if dbglog_HAVE
 

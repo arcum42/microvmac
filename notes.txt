@@ -55,16 +55,16 @@ src:
         INTLCHAR.cpp:
             InterNaTionAL CHARacters. TODO: Move this to a PCF, BDF, or FON bitmap font format.
             master copy of private font data.
-            #include "UI/COMOSGLU.h"
-            #include "UI/MYOSGLUE.h"
-            #include "UI/CONTROLM.h"
+            #include "UI/common_os_glue.h"
+            #include "UI/my_os_glue.h"
+            #include "UI/control_mode.h"
             #include "LANG/INTLCHAR.h"
             #include "STRCONST.h"
 
         INTLCHAR.h:
             See above.
-            #include "UI/COMOSGLU.h"
-            #include "UI/MYOSGLUE.h"
+            #include "UI/common_os_glue.h"
+            #include "UI/my_os_glue.h"
 
         STRCNCAT.h:
             STRing CoNstants for CATalan.
@@ -94,8 +94,8 @@ src:
             HaPpy MaCintosh Hack. 	Patch the ROM for alternatives to the Happy Macintosh icon displayed on boot when a disk is inserted.
             Bitmaps from http://www.bigmessowires.com/mac-rom-inator/ (Still up!)
             #include <string.h>
-            #include "SYSDEPNS.h"
-            #include "UI/COMOSGLU.h"
+            #include "sys_dependencies.h"
+            #include "UI/common_os_glue.h"
             Er, includes a bunch of xbm files I don't see here. Probably not used? Might just remove it.
             Followup: No, they are in rsrc/HAPPYMAC
 
@@ -104,10 +104,10 @@ src:
                 ROM.cpp is probably fine.
 
                 #include "EMCONFIG.h"
-                #include "SYSDEPNS.h"
-                #include "GLOBGLUE.h"
-                #include "UI/MYOSGLUE.h"
-                #include "UTIL/ENDIANAC.h"
+                #include "sys_dependencies.h"
+                #include "global_glue.h"
+                #include "UI/my_os_glue.h"
+                #include "UTIL/endian.h"
                 #include "PATCHES/ROMEMDEV.h"
                 #include "PATCHES/SCRNHACK.h"
                 #include "PATCHES/SONYDRV.h"
@@ -122,11 +122,11 @@ src:
             SCReeN Hack. Patch ROM to support other screen sizes.
             screen_hack.cpp.
             #include "EMCONFIG.h"
-            #include "SYSDEPNS.h"
-            #include "UI/MYOSGLUE.h"
-            #include "UTIL/ENDIANAC.h"
+            #include "sys_dependencies.h"
+            #include "UI/my_os_glue.h"
+            #include "UTIL/endian.h"
             #include "EMCONFIG.h"
-            #include "GLOBGLUE.h"
+            #include "global_glue.h"
             #include "incbin/incbin.h"
             #include "PATCHES/ROMEMDEV.h"
             #include "HW/SCREEN/SCRNEMDV.h"
@@ -144,9 +144,9 @@ src:
                 #endif
 
                 #include "EMCONFIG.h"
-                #include "GLOBGLUE.h"
-                #include "UTIL/ENDIANAC.h"
-                #include "UI/MYOSGLUE.h"
+                #include "global_glue.h"
+                #include "UTIL/endian.h"
+                #include "UI/my_os_glue.h"
                 #include "PATCHES/SONYDRV.h"
                 #include "PATCHES/ROMEMDEV.h"
                 //#include "PATCHES/SCRNHACK.h"
@@ -165,10 +165,10 @@ src:
                 #include <stdio.h>
                 #include <SDL.h>
                 #include "CNFGRAPI.h"
-                #include "SYSDEPNS.h"
-                #include "UTIL/ENDIANAC.h"
-                #include "UI/MYOSGLUE.h"
-                #include "UI/COMOSGLU.h"
+                #include "sys_dependencies.h"
+                #include "UTIL/endian.h"
+                #include "UI/my_os_glue.h"
+                #include "UI/common_os_glue.h"
                 #include "STRCONST.h"
 
             DBGLOG.cpp:
@@ -176,8 +176,8 @@ src:
                 #include <stdlib.h>
                 #include <string.h>
                 #include <stdio.h>
-                #include "SYSDEPNS.h"
-                #include "UI/MYOSGLUE.h"
+                #include "sys_dependencies.h"
+                #include "UI/my_os_glue.h"
 
             DRIVES.cpp:
                 Handles floppy drives, presumably. Or doesn't. Need to check the original versions source on a lot of the sdl2 stuff. Think it's an in progress rewrite.
@@ -187,14 +187,14 @@ src:
                 #include <SDL.h>
                 #include "CNFGRAPI.h"
                 #include "EMCONFIG.h"
-                #include "SYSDEPNS.h"
-                #include "UTIL/ENDIANAC.h"
-                #include "UI/MYOSGLUE.h"
-                #include "UI/COMOSGLU.h"
+                #include "sys_dependencies.h"
+                #include "UTIL/endian.h"
+                #include "UI/my_os_glue.h"
+                #include "UI/common_os_glue.h"
                 #include "STRCONST.h"
                 #include "HW/ROM/ROMEMDEV.h"
-                #include "UI/CONTROLM.h"
-                #include "UI/SDL2/OSGLUSD2.h"
+                #include "UI/control_mode.h"
+                #include "UI/SDL2/os_glue_sdl2.h"
 
             INTL.cpp:
                 control mode and internationalization.
@@ -203,9 +203,9 @@ src:
                 #include <stdio.h>
                 #include <SDL.h>
                 #include "CNFGRAPI.h"
-                #include "SYSDEPNS.h"
-                #include "UTIL/ENDIANAC.h"
-                #include "UI/MYOSGLUE.h"
+                #include "sys_dependencies.h"
+                #include "UTIL/endian.h"
+                #include "UI/my_os_glue.h"
                 #include "STRCONST.h"
                 #include "LANG/INTLCHAR.h"
 
@@ -217,10 +217,10 @@ src:
                 #include <SDL.h>
                 #include "CNFGRAPI.h"
                 #include "EMCONFIG.h"
-                #include "SYSDEPNS.h"
-                #include "UI/COMOSGLU.h"
-                #include "UTIL/ENDIANAC.h"
-                #include "UI/MYOSGLUE.h"
+                #include "sys_dependencies.h"
+                #include "UI/common_os_glue.h"
+                #include "UTIL/endian.h"
+                #include "UI/my_os_glue.h"
                 #include "STRCONST.h"
 
             MOUSE.cpp:
@@ -230,14 +230,14 @@ src:
                 #include <stdio.h>
                 #include <SDL.h>
                 #include "CNFGRAPI.h"
-                #include "SYSDEPNS.h"
-                #include "UTIL/ENDIANAC.h"
-                #include "UI/MYOSGLUE.h"
-                #include "UI/COMOSGLU.h"
+                #include "sys_dependencies.h"
+                #include "UTIL/endian.h"
+                #include "UI/my_os_glue.h"
+                #include "UI/common_os_glue.h"
                 #include "STRCONST.h"
-                #include "OSGLUSD2.h"
+                #include "os_glue_sdl2.h"
 
-            OSGLUSD2.cpp:
+            os_glue_sdl2.cpp:
             	Operating System GLUe for SDl 2.0 library.
 
 	            "All operating system dependent code for the SDL Library should go here." Likely story.
@@ -247,35 +247,35 @@ src:
                 #include <stdio.h>
                 #include <SDL.h>
                 #include "CNFGRAPI.h"
-                #include "SYSDEPNS.h"
-                #include "UTIL/ENDIANAC.h"
-                #include "UI/MYOSGLUE.h"
+                #include "sys_dependencies.h"
+                #include "UTIL/endian.h"
+                #include "UI/my_os_glue.h"
                 #include "STRCONST.h"
-                #include "OSGLUSD2.h"
+                #include "os_glue_sdl2.h"
                 #include "LANG/INTLCHAR.h"
                 #include "HW/SCREEN/SCRNEMDV.h"
                 #include "HW/ROM/ROMEMDEV.h"
                 #include "CFGMAN.h"
 
-            OSGLUSD2.h:
+            os_glue_sdl2.h:
                 defines and macros and such.
                 #include <stdbool.h>
                 #include <stdint.h>
                 #include <SDL.h>
-                #include "UI/MYOSGLUE.h"
+                #include "UI/my_os_glue.h"
                 
             ROM.cpp:
                 Loads the ROM.
                 #include <stdlib.h>
                 #include <string.h>
                 #include <stdio.h>
-                #include "SYSDEPNS.h" 
+                #include "sys_dependencies.h" 
                 #include "ERRCODES.h"
                 #include "STRCONST.h"
-                #include "UI/MYOSGLUE.h"
-                #include "UI/COMOSGLU.h"
-                #include "UI/CONTROLM.h"
-                #include "UI/SDL2/OSGLUSD2.h"
+                #include "UI/my_os_glue.h"
+                #include "UI/common_os_glue.h"
+                #include "UI/control_mode.h"
+                #include "UI/SDL2/os_glue_sdl2.h"
                 #include "HW/ROM/ROMEMDEV.h"
 
             SOUND.cpp:
@@ -285,12 +285,12 @@ src:
                 #include <stdio.h>
                 #include <SDL.h>
                 #include "CNFGRAPI.h"
-                #include "SYSDEPNS.h"
-                #include "UTIL/ENDIANAC.h"
-                #include "UI/MYOSGLUE.h"
-                #include "UI/COMOSGLU.h"
+                #include "sys_dependencies.h"
+                #include "UTIL/endian.h"
+                #include "UI/my_os_glue.h"
+                #include "UI/common_os_glue.h"
                 #include "STRCONST.h" 
-                #include "OSGLUSD2.h"
+                #include "os_glue_sdl2.h"
 
             TIMEDATE.cpp:
                 Handle time, date, & location.
@@ -301,9 +301,9 @@ src:
                 #include <stdint.h>
                 #include <SDL.h>
                 #include "CNFGRAPI.h"
-                #include "SYSDEPNS.h"
-                #include "UTIL/ENDIANAC.h"
-                #include "UI/MYOSGLUE.h"
+                #include "sys_dependencies.h"
+                #include "UTIL/endian.h"
+                #include "UI/my_os_glue.h"
                 #include "STRCONST.h"
 
             VIDEO.cpp:
@@ -316,58 +316,58 @@ src:
                 #include <SDL.h>
                 #include <SDL_pixels.h>
                 #include "CNFGRAPI.h"
-                #include "SYSDEPNS.h"
-                #include "UTIL/ENDIANAC.h"
-                #include "UI/MYOSGLUE.h"
-                #include "UI/COMOSGLU.h"
+                #include "sys_dependencies.h"
+                #include "UTIL/endian.h"
+                #include "UI/my_os_glue.h"
+                #include "UI/common_os_glue.h"
                 #include "STRCONST.h"
-                #include "OSGLUSD2.h"
+                #include "os_glue_sdl2.h"
                 #include "HW/SCREEN/SCRNEMDV.h"
 
-        COMOSGLU.cpp:
+        common_os_glue.cpp:
             COMmon code for Operating System GLUe
 
             #include <stdlib.h>
-            #include "SYSDEPNS.h"
-            #include "GLOBGLUE.h"
-            #include "MYOSGLUE.h"
+            #include "sys_dependencies.h"
+            #include "global_glue.h"
+            #include "my_os_glue.h"
             #include "CNFGRAPI.h"
-            #include "COMOSGLU.h"
+            #include "common_os_glue.h"
             #include "HW/SCREEN/SCRNEMDV.h"
 
-        COMOSGLU.h:
+        common_os_glue.h:
             Header.
 
-            #include "SYSDEPNS.h"
+            #include "sys_dependencies.h"
             #include "CNFGRAPI.h"
-            #include "GLOBGLUE.h"
-            #include "MYOSGLUE.h"
+            #include "global_glue.h"
+            #include "my_os_glue.h"
 
-        CONTROLM.cpp:
+        control_mode.cpp:
             CONTROL Mode.
 
-            #include "SYSDEPNS.h"
+            #include "sys_dependencies.h"
             #include "CNFGGLOB.h"
             #include "CNFGRAPI.h"
             #include "STRCONST.h"
             #include "ERRCODES.h"
 
             #include "LANG/INTLCHAR.h"
-            #include "UI/COMOSGLU.h"
-            #include "UI/MYOSGLUE.h"
-            #include "UTIL/ENDIANAC.h"
+            #include "UI/common_os_glue.h"
+            #include "UI/my_os_glue.h"
+            #include "UTIL/endian.h"
 
-            #include "UI/CONTROLM.h"
+            #include "UI/control_mode.h"
             #include <SDL.h>
-            #include "UI/SDL2/OSGLUSD2.h"
+            #include "UI/SDL2/os_glue_sdl2.h"
 
-        CONTROLM.h:
+        control_mode.h:
             Header.
 
-            #include "SYSDEPNS.h"
+            #include "sys_dependencies.h"
             #include "ERRCODES.h"
 
-        MYOSGLUE.h:
+        my_os_glue.h:
         	MY Operating System GLUE. header file for operating system dependent code. the same header is used for all platforms.
             #include "UTIL/DATE2SEC.h"
             #include "HW/KBRD/KEYCODES.h"
@@ -385,7 +385,7 @@ src:
 
             	The function jdate was found at the end of the file webalizer.c in the program webalizer at "www.mrunix.net/webalizer/".
 
-        ENDIANAC.h:
+        endian.h:
             ENDIAN ACcess.
 
             	Deals with endian issues in memory access.
@@ -409,33 +409,33 @@ src:
 
     ERRCODES.h:
         	error codes returned by Mini vMac extensions (passed back to the emulated 68k code).
-    GLOBGLUE.cpp:
+    global_glue.cpp:
         GLOBal GLUE (or GLOB of GLUE) Holds the program together. 
-        #include "SYSDEPNS.h"
+        #include "sys_dependencies.h"
 
-        #include "UI/MYOSGLUE.h"
-        #include "UTIL/ENDIANAC.h"
+        #include "UI/my_os_glue.h"
+        #include "UTIL/endian.h"
         #include "EMCONFIG.h"
 
-        #include "GLOBGLUE.h"
+        #include "global_glue.h"
         #include "HW/RAM/RAMADDR.h"
 
-    GLOBGLUE.h:
+    global_glue.h:
         	GLOBal GLUE (or GLOB of GLUE) Holds the program together. 
             #include "CNFGRAPI.h"
             #include "EMCONFIG.h"
-            #include "SYSDEPNS.h"
+            #include "sys_dependencies.h"
 
     PROGMAIN.cpp:
         PROGram MAIN.
 
         #include <string.h>
         #include <assert.h>
-        #include "SYSDEPNS.h"
+        #include "sys_dependencies.h"
 
-        #include "UI/MYOSGLUE.h"
+        #include "UI/my_os_glue.h"
         #include "EMCONFIG.h"
-        #include "GLOBGLUE.h"
+        #include "global_glue.h"
         #include "HW/M68K/M68KITAB.h"
         #include "HW/M68K/MINEM68K.h"
         #include "HW/VIA/VIAEMDEV.h"
@@ -458,7 +458,7 @@ src:
     PROGMAIN.h:
         Header. Barely anything in it.
 
-    SYSDEPNS.h:
+    sys_dependencies.h:
         SYStem DEPeNdencies.
 
         #include <stdint.h>
@@ -469,13 +469,13 @@ Where program headers are used:
 cfg:
     CNFGGLOB.h: 
         Used in:
-        SYSDEPNS.h:
-        CONTROLM.cpp:
+        sys_dependencies.h:
+        control_mode.cpp:
 
     EMCONFIG.h:
         Used in:
-        GLOBGLUE.cpp
-        GLOBGLUE.h
+        global_glue.cpp
+        global_glue.h
         PROGMAIN.cpp
         HW/ADB/ADBEMDEV.cpp
         HW/DISK/IWMEMDEV.cpp
@@ -508,13 +508,13 @@ cfg:
         EMCONFIG.h
     STRCONST.h:
         LANG/INTLCHAR.cpp
-        UI/CONTROLM.cpp
+        UI/control_mode.cpp
         UI/SDL2/CLIPBRD.cpp
         UI/SDL2/DRIVES.cpp 
         UI/SDL2/INTL.cpp
         UI/SDL2/KEYBOARD.cpp
         UI/SDL2/MOUSE.cpp
-        UI/SDL2/OSGLUSD2.cpp
+        UI/SDL2/os_glue_sdl2.cpp
         UI/SDL2/ROM.cpp
         UI/SDL2/SOUND.cpp
         UI/SDL2/TIMEDATE.cpp
@@ -523,9 +523,9 @@ cfg:
 src:
     LANG:
         INTLCHAR.h:
-            UI/CONTROLM.cpp
+            UI/control_mode.cpp
             UI/SDL2/INTL.cpp
-            UI/SDL2/OSGLUSD2.cpp
+            UI/SDL2/os_glue_sdl2.cpp
         STRCNCAT.h:
         STRCNCZE.h:
         STRCNDUT.h:
@@ -550,7 +550,7 @@ src:
             PATCHES/SCRNHACK.cpp
             PATCHES/SONYDRV.cpp
             UI/SDL2/DRIVES.cpp
-            UI/SDL2/OSGLUSD2.cpp
+            UI/SDL2/os_glue_sdl2.cpp
             UI/SDL2/ROM.cpp
 
         SCRNHACK.h:
@@ -562,36 +562,36 @@ src:
             PATCHES/SONYDRV.cpp
     UI:
         SDL2:
-            OSGLUSD2.h:
-                UI/CONTROLM.cpp
+            os_glue_sdl2.h:
+                UI/control_mode.cpp
                 UI/SDL2/DRIVES.cpp
                 UI/SDL2/MOUSE.cpp
-                UI/SDL2/OSGLUSD2.cpp
+                UI/SDL2/os_glue_sdl2.cpp
                 UI/SDL2/ROM.cpp
                 UI/SDL2/SOUND.cpp
                 VIDEO.cpp
-        COMOSGLU.h:
+        common_os_glue.h:
             LANG/INTLCHAR.cpp
             LANG/INTLCHAR.h
             PATCHES/HPMHACK.h
-            UI/COMOSGLU.cpp
-            UI/CONTROLM.cpp
+            UI/common_os_glue.cpp
+            UI/control_mode.cpp
             UI/SDL2/CLIPBRD.cpp
             UI/SDL2/DRIVES.cpp
             UI/SDL2/KEYBOARD.cpp
             UI/SDL2/MOUSE.cpp
-            UI/SDL2/OSGLUSD2.cpp
+            UI/SDL2/os_glue_sdl2.cpp
             UI/SDL2/ROM.cpp
             UI/SDL2/SOUND.cpp
             UI/SDL2/VIDEO.cpp
-        CONTROLM.h:
+        control_mode.h:
             LANG/INTLCHAR.cpp
-            UI/CONTROLM.cpp
+            UI/control_mode.cpp
             UI/SDL2/DRIVES.cpp
-            UI/SDL2/OSGLUSD2.cpp
+            UI/SDL2/os_glue_sdl2.cpp
             UI/SDL2/ROM.cpp
-        MYOSGLUE.h:
-            GLOBGLUE.cpp
+        my_os_glue.h:
+            global_glue.cpp
             PROGMAIN.cpp
             HW/ADB/ADBEMDEV.cpp
             HW/DISK/IWMEMDEV.cpp
@@ -616,17 +616,17 @@ src:
             PATCHES/ROMENDEV.cpp
             PATCHES/SCRNHACK.cpp
             PATCHES/SONYDRV.cpp
-            UI/COMOSGLU.cpp
-            UI/COMOSGLU.h (another header)
-            UI/CONTROLM.cpp
+            UI/common_os_glue.cpp
+            UI/common_os_glue.h (another header)
+            UI/control_mode.cpp
             UI/SDL2/CLIPBRD.cpp
             UI/SDL2/DBGLOG.cpp
             UI/SDL2/DRIVES.cpp 
             UI/SDL2/INTL.cpp
             UI/SDL2/KEYBOARD.cpp
             UI/SDL2/MOUSE.cpp
-            UI/SDL2/OSGLUSD2.cpp
-            UI/SDL2/OSGLUSD2.h
+            UI/SDL2/os_glue_sdl2.cpp
+            UI/SDL2/os_glue_sdl2.h
             UI/SDL2/ROM.cpp
             UI/SDL2/SOUND.cpp
             UI/SDL2/TIMEDATE.cpp
@@ -636,8 +636,8 @@ src:
             Not currently included anywhere.
         DATE2SEC.h:
             DATE2SEC.cpp
-        ENDIANAC.h:
-            GLOBGLUE.cpp
+        endian.h:
+            global_glue.cpp
             HW/DISK/SONYEMDV.cpp
             HW/M68K/DISAM68K.cpp
             HW/M68K/MINEM68K.cpp
@@ -651,26 +651,26 @@ src:
             PATCHES/ROMENDEV.cpp
             PATCHES/SCRNHACK.cpp
             PATCHES/SONYDRV.cpp
-            UI/CONTROLM.cpp
+            UI/control_mode.cpp
             UI/SDL2/CLIPBRD.cpp
             UI/SDL2/DRIVES.cpp 
             UI/SDL2/INTL.cpp
             UI/SDL2/KEYBOARD.cpp
             UI/SDL2/MOUSE.cpp
-            UI/SDL2/OSGLUSD2.cpp
+            UI/SDL2/os_glue_sdl2.cpp
             UI/SDL2/SOUND.cpp
             UI/SDL2/TIMEDATE.cpp
             UI/SDL2/VIDEO.cpp
         PBUFSTDC.h:
-            UI/SDL2/OSGLUSD2.cpp
+            UI/SDL2/os_glue_sdl2.cpp
     CFGMAN.h:
         HW/SCREEN/SCRNEMDV.cpp
     ERRCODES.h:
-        UI/CONTROLM.cpp
-        UI/CONTROLM.h
-        UI/MYOSGLUE.h
+        UI/control_mode.cpp
+        UI/control_mode.h
+        UI/my_os_glue.h
         UI/ROM.cpp
-    GLOBGLUE.h:
+    global_glue.h:
         PROGMAIN.cpp
         HW/ADB/ADBEMDEV.cpp
         HW/DISK/IWMEMDEV.cpp
@@ -695,14 +695,14 @@ src:
         PATCHES/ROMENDEV.cpp
         PATCHES/SCRNHACK.cpp
         PATCHES/SONYDRV.cpp
-        UI/COMOSGLU.cpp
-        UI/COMOSGLU.h
+        UI/common_os_glue.cpp
+        UI/common_os_glue.h
     PROGMAIN.h:
         PROGMAIN.cpp
-        UI/SDL2/OSGLUSD2.cpp
-    SYSDEPNS.h:
-        GLOBGLUE.cpp
-        GLOBGLUE.h
+        UI/SDL2/os_glue_sdl2.cpp
+    sys_dependencies.h:
+        global_glue.cpp
+        global_glue.h
         PROGMAIN.cpp
         HW/ADB/ADBEMDEV.cpp
         HW/DISK/IWMEMDEV.cpp
@@ -727,17 +727,17 @@ src:
         PATCHES/ROMENDEV.cpp
         PATCHES/SCRNHACK.cpp
         PATCHES/SONYDRV.cpp
-        UI/COMOSGLU.cpp
-        UI/COMOSGLU.h
-        UI/CONTROLM.cpp
-        UI/CONTROLM.h
+        UI/common_os_glue.cpp
+        UI/common_os_glue.h
+        UI/control_mode.cpp
+        UI/control_mode.h
         UI/SDL2/CLIPBRD.cpp
         UI/SDL2/DBGLOG.cpp
         UI/SDL2/DRIVES.cpp 
         UI/SDL2/INTL.cpp
         UI/SDL2/KEYBOARD.cpp
         UI/SDL2/MOUSE.cpp
-        UI/SDL2/OSGLUSD2.cpp
+        UI/SDL2/os_glue_sdl2.cpp
         UI/SDL2/ROM.cpp
         UI/SDL2/SOUND.cpp
         UI/SDL2/TIMEDATE.cpp

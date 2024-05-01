@@ -1,5 +1,5 @@
 /*
-	UTIL/ENDIANAC.h
+	UTIL/endian.h
 
 	Copyright (C) 2006 Bernd Schmidt, Paul C. Pratt
 
