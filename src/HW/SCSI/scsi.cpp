@@ -24,7 +24,6 @@
 
 /* NCR5380 chip emulation by Yoav Shadmi, 1998 */
 
-#ifndef AllFiles
 #include "sys_dependencies.h"
 
 #include "UTIL/endian.h"
@@ -32,7 +31,6 @@
 #include "EMCONFIG.h"
 #include "global_glue.h"
 #include "HW/M68K/cpu_68k.h"
-#endif
 
 #include "HW/SCSI/scsi.h"
 

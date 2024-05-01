@@ -26,13 +26,11 @@
 	TODO: Try to yank as much out of this as we possibly can.
 */
 
-#ifndef AllFiles
 #include "sys_dependencies.h"
 
 #include "UI/my_os_glue.h"
 #include "UTIL/endian.h"
 #include "EMCONFIG.h"
-#endif
 
 #include "global_glue.h"
 #include "HW/RAM/ram.h"

@@ -22,13 +22,11 @@
 	This code adapted from vMac by Philip Cummins.
 */
 
-#ifndef AllFiles
 #include "sys_dependencies.h"
 
 #include "UI/my_os_glue.h"
 #include "EMCONFIG.h"
 #include "global_glue.h"
-#endif
 
 #include "via2.h"
 

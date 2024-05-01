@@ -18,9 +18,7 @@
 	Motorola 68K Instructions TABle
 */
 
-#ifndef AllFiles
 #include "sys_dependencies.h"
-#endif
 
 #include "UI/my_os_glue.h"
 #include "EMCONFIG.h"

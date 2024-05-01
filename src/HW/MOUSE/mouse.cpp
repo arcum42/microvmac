@@ -23,7 +23,6 @@
 	Macintosh port of vMac, by Philip Cummins.
 */
 
-#ifndef AllFiles
 #include "sys_dependencies.h"
 #include "UI/my_os_glue.h"
 #include "UTIL/endian.h"
@@ -31,7 +30,6 @@
 #include "global_glue.h"
 #include "HW/SCC/serial_comm.h"
 #include "HW/M68K/cpu_68k.h"
-#endif
 
 #include "HW/MOUSE/mouse.h"
 

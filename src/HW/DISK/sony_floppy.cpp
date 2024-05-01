@@ -28,14 +28,12 @@
 	by Jesus A. Alvarez.
 */
 
-#ifndef AllFiles
 #include "sys_dependencies.h"
 #include "UI/my_os_glue.h"
 #include "UTIL/endian.h"
 #include "EMCONFIG.h"
 #include "global_glue.h"
 #include "HW/M68K/cpu_68k.h"
-#endif
 
 #include "HW/DISK/sony_floppy.h"
 

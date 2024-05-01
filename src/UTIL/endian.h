@@ -26,9 +26,6 @@
 #pragma once
 
 #ifdef ENDIANAC_H
-#ifndef AllFiles
-#error "header already included"
-#endif
 #else
 #define ENDIANAC_H
 #endif

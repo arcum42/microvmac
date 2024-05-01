@@ -38,13 +38,11 @@
 	"Zilog SCC/ESCC User's Manual".
 */
 
-#ifndef AllFiles
 #include "sys_dependencies.h"
 
 #include "UI/my_os_glue.h"
 #include "EMCONFIG.h"
 #include "global_glue.h"
-#endif
 
 #include "HW/SCC/serial_comm.h"
 

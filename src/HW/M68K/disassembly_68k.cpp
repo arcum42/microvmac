@@ -18,7 +18,6 @@
 	DISAssemble Motorola 68K instructions.
 */
 
-#ifndef AllFiles
 #include "sys_dependencies.h"
 
 #include "UTIL/endian.h"
@@ -27,7 +26,6 @@
 #include "global_glue.h"
 
 #include "HW/M68K/instruct_table_68k.h"
-#endif
 
 #include "HW/M68K/disassembly_68k.h"
 

@@ -30,7 +30,6 @@
 		(this code now located in "fpu.h")
 */
 
-#ifndef AllFiles
 #include "sys_dependencies.h"
 
 #include "UI/my_os_glue.h"
@@ -42,7 +41,6 @@
 
 #if WantDisasm
 #include "HW/M68K/disassembly_68k.h"
-#endif
 #endif
 
 #include "HW/M68K/cpu_68k.h"

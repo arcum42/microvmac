@@ -22,14 +22,12 @@
 	This code adapted from "Sound.c" in vMac by Philip Cummins.
 */
 
-#ifndef AllFiles
 #include "sys_dependencies.h"
 
 #include "UI/my_os_glue.h"
 #include "EMCONFIG.h"
 #include "global_glue.h"
 #include "HW/M68K/cpu_68k.h"
-#endif
 
 #include "HW/SOUND/sound.h"
 
