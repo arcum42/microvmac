@@ -421,7 +421,7 @@ bool Sound_Init(void)
 	desired.userdata = (void *)&cur_audio;
 
 	/* Open the audio device */
-	if (SDL_OpenAudio(&desired, NULL) < 0) {
+	if (SDL_OpenAudio(&desired, nullptr) < 0) {
 		fprintf(stderr, "Couldn't open audio: %s\n", SDL_GetError());
 	} else {
 		HaveSoundOut = true;

@@ -15,7 +15,7 @@
 
 /* --- drives --- */
 
-#define NotAfileRef NULL
+#define NotAfileRef nullptr
 
 FilePtr Drives[NumDrives]; /* open disk image files */
 
@@ -148,11 +148,11 @@ bool Sony_Insert1(char *drivepath, bool silentfail)
 	bool locked = false;
 	printf("Sony_Insert1 %s\n", drivepath);
 	FilePtr refnum = FileOpen(drivepath, "rb+");
-	if (NULL == refnum) {
+	if (nullptr == refnum) {
 		locked = true;
 		refnum = FileOpen(drivepath, "rb");
 	}
-	if (NULL == refnum) {
+	if (nullptr == refnum) {
 		if (! silentfail) {
 			MacMsg(kStrOpenFailTitle, kStrOpenFailMessage, false);
 		}

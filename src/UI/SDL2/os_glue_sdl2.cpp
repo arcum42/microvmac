@@ -386,7 +386,7 @@ static bool CreateMainWindow(void)
 	SDL_SetHint(SDL_HINT_RENDER_SCALE_QUALITY, "linear");
 #endif
 
-	if (NULL == (main_wind = SDL_CreateWindow(
+	if (nullptr == (main_wind = SDL_CreateWindow(
 		kStrAppName,
 		NewWindowX, NewWindowY,
 		NewWindowWidth, NewWindowHeight,
@@ -394,7 +394,7 @@ static bool CreateMainWindow(void)
 	{
 		fprintf(stderr, "SDL_CreateWindow fails: %s\n", SDL_GetError());
 	} else
-	if (NULL == (renderer = SDL_CreateRenderer(
+	if (nullptr == (renderer = SDL_CreateRenderer(
 		main_wind, -1,
 		0 /* SDL_RENDERER_ACCELERATED|SDL_RENDERER_PRESENTVSYNC */
 			/*
@@ -407,7 +407,7 @@ static bool CreateMainWindow(void)
 	{
 		fprintf(stderr, "SDL_CreateRenderer fails: %s\n", SDL_GetError());
 	} else
-	if (NULL == (texture = SDL_CreateTexture(
+	if (nullptr == (texture = SDL_CreateTexture(
 		renderer,
 		SDL_PIXELFORMAT_RGBX8888,
 		SDL_TEXTUREACCESS_STREAMING,
@@ -416,7 +416,7 @@ static bool CreateMainWindow(void)
 	{
 		fprintf(stderr, "SDL_CreateTexture fails: %s\n", SDL_GetError());
 	} else
-	if (NULL == (format = SDL_AllocFormat(SDL_PIXELFORMAT_ARGB8888)))
+	if (nullptr == (format = SDL_AllocFormat(SDL_PIXELFORMAT_ARGB8888)))
 	{
 		fprintf(stderr, "SDL_AllocFormat fails: %s\n", SDL_GetError());
 	} else
@@ -488,34 +488,34 @@ static bool CreateMainWindow(void)
 
 static void CloseMainWindow(void)
 {
-	if (NULL != format) {
+	if (nullptr != format) {
 		SDL_FreeFormat(format);
-		format = NULL;
+		format = nullptr;
 	}
 
-	if (NULL != texture) {
+	if (nullptr != texture) {
 		SDL_DestroyTexture(texture);
-		texture = NULL;
+		texture = nullptr;
 	}
 
-	if (NULL != renderer) {
+	if (nullptr != renderer) {
 		SDL_DestroyRenderer(renderer);
-		renderer = NULL;
+		renderer = nullptr;
 	}
 
-	if (NULL != main_wind) {
+	if (nullptr != main_wind) {
 		SDL_DestroyWindow(main_wind);
-		main_wind = NULL;
+		main_wind = nullptr;
 	}
 }
 
 #if EnableRecreateW
 static void ZapWState(void)
 {
-	main_wind = NULL;
-	renderer = NULL;
-	texture = NULL;
-	format = NULL;
+	main_wind = nullptr;
+	renderer = nullptr;
+	texture = nullptr;
+	format = nullptr;
 }
 #endif
 
@@ -1002,7 +1002,7 @@ static bool AllocMemory(void)
 	ReserveAllocAll();
 	n = ReserveAllocOffset;
 	ReserveAllocBigBlock = (uint8_t *)calloc(1, n);
-	if (NULL == ReserveAllocBigBlock) {
+	if (nullptr == ReserveAllocBigBlock) {
 		MacMsg(kStrOutOfMemTitle, kStrOutOfMemMessage, true);
 	} else {
 		ReserveAllocOffset = 0;

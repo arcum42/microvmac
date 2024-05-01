@@ -16,12 +16,12 @@
 #define CanGetAppPath 1
 #endif
 
-static char *d_arg = NULL;
-static char *n_arg = NULL;
+static char *d_arg = nullptr;
+static char *n_arg = nullptr;
 
 #if CanGetAppPath
-static char *app_parent = NULL;
-static char *pref_dir = NULL;
+static char *app_parent = nullptr;
+static char *pref_dir = nullptr;
 #endif
 
 #ifdef _WIN32
@@ -42,7 +42,7 @@ MacErr_t ChildPath(char *x, char *y, char **r)
 		{
 			int nr = nx + 1 + ny;
 			char *p = (char*)malloc(nr + 1);
-			if (p != NULL) {
+			if (p != nullptr) {
 				char *p2 = p;
 				(void) memcpy(p2, x, nx);
 				p2 += nx;
@@ -61,7 +61,7 @@ MacErr_t ChildPath(char *x, char *y, char **r)
 
 void MayFree(char *p)
 {
-	if (NULL != p) {
+	if (nullptr != p) {
 		free(p);
 	}
 }

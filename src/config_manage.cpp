@@ -24,13 +24,13 @@ static bool Config_TryLoad()
 
 	/* Open the file. */
 	fp = fopen("uvmac-cfg.toml", "r");
-	if (fp == NULL) {
+	if (fp == nullptr) {
 		return false;
 	}
 
 	/* Run the file through the parser. */
 	CONFIG = toml_parse_file(fp, errbuf, sizeof(errbuf));
-	if (CONFIG == NULL) {
+	if (CONFIG == nullptr) {
 		fclose(fp);
 		return false;
 	}
@@ -45,7 +45,7 @@ static bool Config_TryCreate()
 	/* TODO: implement this. or really, TOML creation in general. */
 	char errbuf[200];
 	CONFIG = toml_parse("", errbuf, sizeof(errbuf));
-	return (CONFIG != NULL);
+	return (CONFIG != nullptr);
 }
 
 /* Load or create config and prepare for use */
@@ -70,11 +70,11 @@ static bool Config_GetRawValue(const char table[], const char key[], toml_raw_t 
 	
 	/* Locate the table. */
 	table_raw = toml_table_in(CONFIG, table);
-	if (table_raw == NULL) { return false; }
+	if (table_raw == nullptr) { return false; }
 	
 	/* Locate the key */
 	*value = toml_raw_in(table_raw, key);
-	if (*value == NULL) { return false; }
+	if (*value == nullptr) { return false; }
 	return true;
 }
 

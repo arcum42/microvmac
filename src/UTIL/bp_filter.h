@@ -37,7 +37,7 @@ static struct bpf_insn insns[] =
 	BPF_STMT(BPF_RET + BPF_K, 0),
 };
 
- uint8_t * LT_TxBuffer = NULL;
+ uint8_t * LT_TxBuffer = nullptr;
 
 /* Transmit state */
  uint16_t LT_TxBuffSz = 0;
@@ -61,7 +61,7 @@ static unsigned char tx_buffer[20 + LT_TxBfMxSz] =
 	"\xFF\xFF\xFF\xFF\xFF\xFFssssss\x80\x9BppppSS";
 
 /* Receive state */
- uint8_t * LT_RxBuffer = NULL;
+ uint8_t * LT_RxBuffer = nullptr;
 	/* When data pending, this is used */
  uint32_t LT_RxBuffSz = 0;
 	/* When data pending, this is used */
@@ -87,7 +87,7 @@ static void get_sockaddrs(int addrs, struct sockaddr* sa,
 				: sizeof(uint32_t);
 			sa = (struct sockaddr*)((unsigned long int)sa + incr);
 		} else {
-			rti_info[loop] = NULL;
+			rti_info[loop] = nullptr;
 		}
 	}
 }
@@ -195,7 +195,7 @@ static int get_ethernet(void)
 		&((struct sockaddr_dl*)sa_list[RTAX_IFP])->sdl_data[namelen],
 		6);
 
-	result = sysctlbyname("debug.bpf_maxdevices", &kp, &len, NULL, 0);
+	result = sysctlbyname("debug.bpf_maxdevices", &kp, &len, nullptr, 0);
 	if (result == -1) {
 		return false;
 	}
@@ -262,7 +262,7 @@ static int get_ethernet(void)
 	return true;
 }
 
-static unsigned char *RxBuffer = NULL;
+static unsigned char *RxBuffer = nullptr;
 
 /*
 	External function needed at startup to initialize the LocalTalk
@@ -283,7 +283,7 @@ static int InitLocalTalk(void)
 	LT_TxBuffer = (uint8_t *)&tx_buffer[20];
 
 	RxBuffer = malloc(device_buffer_size);
-	if (NULL == RxBuffer) {
+	if (nullptr == RxBuffer) {
 		return false;
 	}
 
@@ -309,8 +309,8 @@ void LT_TransmitPacket(void)
 	(void)count; /* unused */
 }
 
-static unsigned char* NextPacket = NULL;
-static unsigned char* EndPackets = NULL;
+static unsigned char* NextPacket = nullptr;
+static unsigned char* EndPackets = nullptr;
 
 static void LocalTalkTick0(void)
 {
@@ -330,16 +330,16 @@ static void LocalTalkTick0(void)
 void LT_ReceivePacket(void)
 {
 label_retry:
-	if (NextPacket == NULL) {
+	if (NextPacket == nullptr) {
 		LocalTalkTick0();
-		if (NextPacket != NULL) {
+		if (NextPacket != nullptr) {
 			goto label_retry;
 		}
 	} else if (NextPacket >= EndPackets) {
 #if 0
 		dbglog_WriteNote("SCC finished set of packets from BPF");
 #endif
-		NextPacket = NULL;
+		NextPacket = nullptr;
 		goto label_retry;
 	} else {
 		unsigned char* packet = NextPacket;

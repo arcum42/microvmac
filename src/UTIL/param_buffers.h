@@ -22,9 +22,7 @@
 
 #if IncludePbufs
 static void *PbufDat[NumPbufs];
-#endif
 
-#if IncludePbufs
 static MacErr_t PbufNewFromPtr(void *p, uint32_t count, tPbuf *r)
 {
 	tPbuf i;
@@ -42,9 +40,6 @@ static MacErr_t PbufNewFromPtr(void *p, uint32_t count, tPbuf *r)
 
 	return err;
 }
-#endif
-
-#if IncludePbufs
 static void PbufKillToPtr(void **p, uint32_t *count, tPbuf r)
 {
 	*p = PbufDat[r];
@@ -52,23 +47,17 @@ static void PbufKillToPtr(void **p, uint32_t *count, tPbuf r)
 
 	PbufDisposeNotify(r);
 }
-#endif
-
-#if IncludePbufs
 MacErr_t PbufNew(uint32_t count, tPbuf *r)
 {
 	MacErr_t err = mnvm_miscErr;
 
 	void *p = calloc(1, count);
-	if (NULL != p) {
+	if (nullptr != p) {
 		err = PbufNewFromPtr(p, count, r);
 	}
 
 	return err;
 }
-#endif
-
-#if IncludePbufs
 void PbufDispose(tPbuf i)
 {
 	void *p;
@@ -78,9 +67,6 @@ void PbufDispose(tPbuf i)
 
 	free(p);
 }
-#endif
-
-#if IncludePbufs
 static void UnInitPbufs(void)
 {
 	tPbuf i;
@@ -91,24 +77,15 @@ static void UnInitPbufs(void)
 		}
 	}
 }
-#endif
-
-#if IncludePbufs
 #define PbufHaveLock 1
-#endif
 
-#if IncludePbufs
 static uint8_t * PbufLock(tPbuf i)
 {
 	return (uint8_t *)PbufDat[i];
 }
-#endif
 
-#if IncludePbufs
 #define PbufUnlock(i)
-#endif
 
-#if IncludePbufs
 void PbufTransfer(uint8_t * Buffer,
 	tPbuf i, uint32_t offset, uint32_t count, bool IsWrite)
 {

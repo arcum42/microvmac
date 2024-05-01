@@ -16,7 +16,7 @@
 #endif
 
 #if ! dbglog_ToStdErr
-static FILE *dbglog_File = NULL;
+static FILE *dbglog_File = nullptr;
 #endif
 
 static bool dbglog_open0(void)
@@ -24,7 +24,7 @@ static bool dbglog_open0(void)
 #if dbglog_ToStdErr || dbglog_ToSDL_Log
 	return true;
 #else
-	if (NULL == app_parent) {
+	if (nullptr == app_parent) {
 		dbglog_File = fopen("dbglog.txt", "w");
 	} else {
 		char *t;
@@ -35,7 +35,7 @@ static bool dbglog_open0(void)
 		}
 	}
 
-	return (NULL != dbglog_File);
+	return (nullptr != dbglog_File);
 #endif
 }
 
@@ -54,7 +54,7 @@ static void dbglog_write0(char *s, uimr L)
 
 	SDL_Log("%s", t);
 #else
-	if (dbglog_File != NULL) {
+	if (dbglog_File != nullptr) {
 		(void) fwrite(s, 1, L, dbglog_File);
 	}
 #endif
@@ -63,9 +63,9 @@ static void dbglog_write0(char *s, uimr L)
 static void dbglog_close0(void)
 {
 #if ! dbglog_ToStdErr
-	if (dbglog_File != NULL) {
+	if (dbglog_File != nullptr) {
 		fclose(dbglog_File);
-		dbglog_File = NULL;
+		dbglog_File = nullptr;
 	}
 #endif
 }

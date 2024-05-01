@@ -399,7 +399,7 @@ void EvtQOutDone(void)
 
 static EvtQEl * EvtQElPreviousIn(void)
 {
-	EvtQEl *p = NULL;
+	EvtQEl *p = nullptr;
 	if (EvtQIn - EvtQOut != 0) {
 		p = &EvtQA[(EvtQIn - 1) & EvtQIMask];
 	}
@@ -409,7 +409,7 @@ static EvtQEl * EvtQElPreviousIn(void)
 
 static EvtQEl * EvtQElAlloc(void)
 {
-	EvtQEl *p = NULL;
+	EvtQEl *p = nullptr;
 	if (EvtQIn - EvtQOut >= EvtQSz) {
 		EvtQNeedRecover = true;
 	} else {
@@ -432,7 +432,7 @@ void Keyboard_UpdateKeyMap(uint8_t key, bool down)
 	bool CurDown = ((*kpi & bit) != 0);
 	if (CurDown != down) {
 		EvtQEl *p = EvtQElAlloc();
-		if (NULL != p) {
+		if (nullptr != p) {
 			p->kind = EvtQElKindKey;
 			p->u.press.key = k;
 			p->u.press.down = down;
@@ -454,7 +454,7 @@ void MouseButtonSet(bool down)
 {
 	if (MouseButtonState != down) {
 		EvtQEl *p = EvtQElAlloc();
-		if (NULL != p) {
+		if (nullptr != p) {
 			p->kind = EvtQElKindMouseButton;
 			p->u.press.down = down;
 
@@ -472,10 +472,10 @@ void MousePositionSet(uint16_t h, uint16_t v)
 {
 	if ((h != MousePosCurH) || (v != MousePosCurV)) {
 		EvtQEl *p = EvtQElPreviousIn();
-		if ((NULL == p) || (EvtQElKindMousePos != p->kind)) {
+		if ((nullptr == p) || (EvtQElKindMousePos != p->kind)) {
 			p = EvtQElAlloc();
 		}
-		if (NULL != p) {
+		if (nullptr != p) {
 			p->kind = EvtQElKindMousePos;
 			p->u.pos.h = h;
 			p->u.pos.v = v;

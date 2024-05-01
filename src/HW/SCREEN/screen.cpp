@@ -52,8 +52,8 @@ uint32_t vMacScreenByteWidth;
 uint32_t vMacScreenMonoNumBytes;
 uint32_t vMacScreenMonoByteWidth;
 bool UseLargeScreenHack;
-char *ScreenColorBlack = NULL;
-char *ScreenColorWhite = NULL;
+char *ScreenColorBlack = nullptr;
+char *ScreenColorWhite = nullptr;
 
 bool Screen_Init(void)
 {

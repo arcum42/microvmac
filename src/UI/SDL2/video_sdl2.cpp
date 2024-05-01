@@ -25,10 +25,10 @@ bool UseMagnify = (WantInitMagnify != 0);
 bool gBackgroundFlag = false;
 bool gTrueBackgroundFlag = false;
 bool CurSpeedStopped = false;
-SDL_Window *main_wind = NULL;
-SDL_Renderer *renderer = NULL;
-SDL_Texture *texture = NULL;
-SDL_PixelFormat *format = NULL;
+SDL_Window *main_wind = nullptr;
+SDL_Renderer *renderer = nullptr;
+SDL_Texture *texture = nullptr;
+SDL_PixelFormat *format = nullptr;
 
 uint8_t * ScalingBuff = nullptr;
 uint8_t * CLUT_final;
@@ -44,7 +44,7 @@ static int SetPalette(SDL_Palette *palette, const SDL_Color *macColors, int ncol
 
 static SDL_Color HexToColor(const char *hexIn, SDL_Color fallback) {
 	unsigned char r, g, b;
-	assert(hexIn != NULL);
+	assert(hexIn != nullptr);
 	int numRead = sscanf(hexIn, "#%02hhx%02hhx%02hhx", &r, &g, &b);
 	if (numRead != 3) { return fallback; }
 	SDL_Color result = {.r = r, .g = g, .b = b, .a = 255};
@@ -106,7 +106,7 @@ void Screen_OutputFrame(uint8_t * src_ptr)
 	SetPalette(src->format->palette, bwpalette, 2);
 	
 	// Setup dst surface
-	SDL_LockTexture(texture, NULL, &pixels, &pitch);
+	SDL_LockTexture(texture, nullptr, &pixels, &pitch);
 	SDL_Surface *dst = SDL_CreateRGBSurfaceWithFormatFrom(
 		pixels, 
 		vMacScreenWidth,
@@ -116,7 +116,7 @@ void Screen_OutputFrame(uint8_t * src_ptr)
 	);
 	
 	// Blit src to dst
-	SDL_BlitSurface(src, NULL, dst, NULL);
+	SDL_BlitSurface(src, nullptr, dst, nullptr);
 	// For teh lulz, try a crappy blur
 	//blur(dst, 1);
 	
@@ -125,7 +125,7 @@ void Screen_OutputFrame(uint8_t * src_ptr)
 	SDL_FreeSurface(dst);
 	
 	// Render the texture
-	SDL_RenderCopy(renderer, texture, NULL, NULL);
+	SDL_RenderCopy(renderer, texture, nullptr, nullptr);
 	SDL_UnlockTexture(texture);
 	SDL_RenderPresent(renderer);
 }

@@ -12,16 +12,16 @@
 
 /* --- ROM --- */
 
-static char *rom_path = NULL;
+static char *rom_path = nullptr;
 
 #if CanGetAppPath
 static MacErr_t LoadMacRomFromPrefDir(void)
 {
 	MacErr_t err;
-	char *t = NULL;
-	char *t2 = NULL;
+	char *t = nullptr;
+	char *t2 = nullptr;
 
-	if (NULL == pref_dir) {
+	if (nullptr == pref_dir) {
 		err = mnvm_fnfErr;
 	} else
 	if (mnvm_noErr != (err =
@@ -49,10 +49,10 @@ static MacErr_t LoadMacRomFromPrefDir(void)
 static MacErr_t LoadMacRomFromAppPar(void)
 {
 	MacErr_t err;
-	char *d = (NULL == d_arg) ? app_parent : d_arg;
-	char *t = NULL;
+	char *d = (nullptr == d_arg) ? app_parent : d_arg;
+	char *t = nullptr;
 
-	if (NULL == d) {
+	if (nullptr == d) {
 		err = mnvm_fnfErr;
 	} else
 	if (mnvm_noErr != (err =
@@ -74,7 +74,7 @@ bool LoadMacRom(void)
 {
 	MacErr_t err;
 
-	if ((NULL == rom_path)
+	if ((nullptr == rom_path)
 		|| (mnvm_fnfErr == (err = LoadMacRomFrom(rom_path))))
 #if CanGetAppPath
 	if (mnvm_fnfErr == (err = LoadMacRomFromAppPar()))
@@ -95,7 +95,7 @@ MacErr_t LoadMacRomFrom(const char *path)
 	int File_Size;
 
 	ROM_File = FileOpen(path, "rb");
-	if (NULL == ROM_File) {
+	if (nullptr == ROM_File) {
 		err = mnvm_fnfErr;
 	} else {
 		File_Size = FileRead(ROM, 1, kROM_Size, ROM_File);

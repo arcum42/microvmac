@@ -44,9 +44,10 @@ extern bool ControlKeyPressed;
 #define kEmMd_II          9
 #define kEmMd_IIx        10
 
-#define RAMSafetyMarginFudge 4
+static constexpr uint32_t RAMSafetyMarginFudge = 4;
 
-#define kRAM_Size (kRAMa_Size + kRAMb_Size)
+static constexpr uint32_t kRAM_Size = (kRAMa_Size + kRAMb_Size);
+
 extern uint8_t * RAM;
 	/*
 		allocated by MYOSGLUE to be at least

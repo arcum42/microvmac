@@ -577,7 +577,7 @@ MacErr_t HTCEexport(tPbuf i)
 	uimr L = PbufSize[i];
 	uimr sz = MacRoman2UniCodeSize(s, L);
 
-	if (NULL == (p = malloc(sz + 1))) {
+	if (nullptr == (p = malloc(sz + 1))) {
 		err = mnvm_miscErr;
 	} else {
 		MacRoman2UniCodeData(s, L, p);
@@ -1024,10 +1024,10 @@ MacErr_t HTCEimport(tPbuf *r)
 {
 	MacErr_t err;
 	uimr L;
-	char *s = NULL;
+	char *s = nullptr;
 	tPbuf t = NotAPbuf;
 
-	if (NULL == (s = SDL_GetClipboardText())) {
+	if (nullptr == (s = SDL_GetClipboardText())) {
 		err = mnvm_miscErr;
 	} else
 	if (mnvm_noErr != (err =
@@ -1051,7 +1051,7 @@ MacErr_t HTCEimport(tPbuf *r)
 	if (NotAPbuf != t) {
 		PbufDispose(t);
 	}
-	if (NULL != s) {
+	if (nullptr != s) {
 		SDL_free(s);
 	}
 
