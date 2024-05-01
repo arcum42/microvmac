@@ -17,6 +17,8 @@
 #pragma once
 
 
+#include "spdlog/spdlog.h"
+
 #if WantDisasm
 extern void dbglog_StartLine(void);
 #else

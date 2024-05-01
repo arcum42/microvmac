@@ -26,7 +26,6 @@
 #include "global_glue.h"
 
 #include "HW/M68K/instruct_table_68k.h"
-
 #include "HW/M68K/disassembly_68k.h"
 
 static uint32_t Disasm_pc;
