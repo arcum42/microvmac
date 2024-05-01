@@ -477,31 +477,30 @@ cfg:
         GLOBGLUE.cpp
         GLOBGLUE.h
         PROGMAIN.cpp
-        ADBEMDEV.cpp
-        IWMEMDEV.cpp
-        SONYEMDV.cpp
-        KBRDEMDV.cpp
-        DISAM68k.cpp
-        M68KITAB.cpp
-        MINEM68k.cpp
-        MOUSEMDV.cpp
-        PMUEMDEV.cpp
-        RTCEMDEV.cpp
-        SCCEMDEV.cpp
+        HW/ADB/ADBEMDEV.cpp
+        HW/DISK/IWMEMDEV.cpp
+        HW/DISK/SONYEMDV.cpp
+        HW/KBRD/KBRDEMDV.cpp
+        HW/M68K/DISAM68k.cpp
+        HW/M68K/M68KITAB.cpp
+        HW/M68K/MINEM68k.cpp
+        HW/MOUSE/MOUSEMDV.cpp
+        HW/POWERMAN/PMUEMDEV.cpp
+        HW/RTC/RTCEMDEV.cpp
+        HW/SCC/SCCEMDEV.cpp
         SCRNEMDV.cpp
-        SCSIEMDV.cpp
-        ASCEMDEV.cpp
-        SNDEMDEV.cpp
-        VIA2EMDV.cpp
-        VIAEMDEV.cpp
-        VIDEMDEV.cpp
-        ROMEMDEV.cpp
-        SCRNHACK.cpp (twice?)
-        SONYDRV.cpp
-        DRIVES.cpp
-        KEYBOARD.cpp
-
-        Lord.
+        HW/SCSI/SCSIEMDV.cpp
+        HW/SOUND/ASCEMDEV.cpp
+        HW/SOUND/SNDEMDEV.cpp
+        HW/VIA/VIA2EMDV.cpp
+        HW/VIA/VIAEMDEV.cpp
+        HW/VIDEO/VIDEMDEV.cpp
+        HW/ROM/ROMEMDEV.cpp
+        HW/PATCHES/SCRNHACK.cpp (twice?)
+        HW/PATCHES/SONYDRV.cpp
+        UI/SDL2/DRIVES.cpp
+        UI/SDL2/KEYBOARD.cpp
+        
     MACII.h:
         EMCONFIG.h (commented out)
 
