@@ -140,113 +140,9 @@ void customreset(void)
 
  uint8_t Wires[kNumWires];
 
-
-#if WantDisasm
-extern void m68k_WantDisasmContext(void);
-#endif
-
-#if WantDisasm
-void dbglog_StartLine(void)
-{
-	m68k_WantDisasmContext();
-	dbglog_writeCStr(" ");
-}
-#endif
-
-#if dbglog_HAVE
-void dbglog_WriteMemArrow(bool WriteMem)
-{
-	if (WriteMem) {
-		dbglog_writeCStr(" <- ");
-	} else {
-		dbglog_writeCStr(" -> ");
-	}
-}
-#endif
-
-#if dbglog_HAVE
-void dbglog_AddrAccess(char *s, uint32_t Data,
-	bool WriteMem, uint32_t addr)
-{
-	dbglog_StartLine();
-	dbglog_writeCStr(s);
-	dbglog_writeCStr("[");
-	dbglog_writeHex(addr);
-	dbglog_writeCStr("]");
-	dbglog_WriteMemArrow(WriteMem);
-	dbglog_writeHex(Data);
-	dbglog_writeReturn();
-}
-#endif
-
-#if dbglog_HAVE
-void dbglog_Access(char *s, uint32_t Data, bool WriteMem)
-{
-	dbglog_StartLine();
-	dbglog_writeCStr(s);
-	dbglog_WriteMemArrow(WriteMem);
-	dbglog_writeHex(Data);
-	dbglog_writeReturn();
-}
-#endif
-
-#if dbglog_HAVE
-void dbglog_WriteNote(char *s)
-{
-	dbglog_StartLine();
-	dbglog_writeCStr(s);
-	dbglog_writeReturn();
-}
-#endif
-
-#if dbglog_HAVE
-void dbglog_WriteSetBool(char *s, bool v)
-{
-	dbglog_StartLine();
-	dbglog_writeCStr(s);
-	dbglog_writeCStr(" <- ");
-	if (v) {
-		dbglog_writeCStr("1");
-	} else {
-		dbglog_writeCStr("0");
-	}
-	dbglog_writeReturn();
-}
-#endif
-
-#if WantAbnormalReports
-static bool GotOneAbnormal = false;
-#endif
-
 #ifndef ReportAbnormalInterrupt
 #define ReportAbnormalInterrupt 0
 #endif
-
-#if WantAbnormalReports
-void DoReportAbnormalID(uint16_t id
-#if dbglog_HAVE
-	, char *s
-#endif
-	)
-{
-#if dbglog_HAVE
-	dbglog_StartLine();
-	dbglog_writeCStr("*** abnormal : ");
-	dbglog_writeCStr(s);
-	dbglog_writeReturn();
-#endif
-
-	if (! GotOneAbnormal) {
-		WarnMsgAbnormalID(id);
-#if ReportAbnormalInterrupt
-		SetInterruptButton(true);
-#endif
-		GotOneAbnormal = true;
-	}
-}
-#endif
-
-
 
 #if IncludeExtnPbufs
 static MacErr_t PbufTransferVM(CPTR Buffera,
@@ -284,9 +180,7 @@ label_1:
 #define kCmndPbufDispose 3
 #define kCmndPbufGetSize 4
 #define kCmndPbufTransfer 5
-#endif
 
-#if IncludeExtnPbufs
 static void ExtnParamBuffers_Access(CPTR p)
 {
 	MacErr_t result = mnvm_controlErr;

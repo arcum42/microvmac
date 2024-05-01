@@ -22,6 +22,7 @@
 #include "CNFGRAPI.h"
 #include "EMCONFIG.h"
 #include "sys_dependencies.h"
+#include "UTIL/dbglog.h"
 
 // various globals
 extern bool SpeedStopped;
@@ -90,6 +91,7 @@ extern uint8_t * get_real_address0(uint32_t L, bool WritableMem, CPTR addr,
 
 #ifndef ln2mtb
 
+
 #define get_ram_byte(addr) do_get_mem_byte((addr) + RAM)
 #define get_ram_word(addr) do_get_mem_word((addr) + RAM)
 #define get_ram_long(addr) do_get_mem_long((addr) + RAM)
@@ -127,38 +129,6 @@ extern bool AddrSpac_Init(void);
 #define uint32_t_FromUByte(x) ((uint32_t)(uint8_t)(x))
 #define uint32_t_FromUWord(x) ((uint32_t)(uint16_t)(x))
 #define uint32_t_FromULong(x) ((uint32_t)(uint32_t)(x))
-
-
-#if WantDisasm
-extern void dbglog_StartLine(void);
-#else
-#define dbglog_StartLine()
-#endif
-
-#if dbglog_HAVE
-extern void dbglog_WriteMemArrow(bool WriteMem);
-
-extern void dbglog_WriteNote(char *s);
-extern void dbglog_WriteSetBool(char *s, bool v);
-extern void dbglog_AddrAccess(char *s,
-	uint32_t Data, bool WriteMem, uint32_t addr);
-extern void dbglog_Access(char *s, uint32_t Data, bool WriteMem);
-#endif
-
-#if ! WantAbnormalReports
-#define ReportAbnormalID(id, s)
-#else
-#if dbglog_HAVE
-#define ReportAbnormalID DoReportAbnormalID
-#else
-#define ReportAbnormalID(id, s) DoReportAbnormalID(id)
-#endif
-extern void DoReportAbnormalID(uint16_t id
-#if dbglog_HAVE
-	, char *s
-#endif
-	);
-#endif /* WantAbnormalReports */
 
 extern void VIAorSCCinterruptChngNtfy(void);
 
