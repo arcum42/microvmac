@@ -40,7 +40,7 @@ void Sound_Start0(void)
 #endif
 }
 
-GLOBALOSGLUFUNC tpSoundSamp Sound_BeginWrite(uint16_t n, uint16_t *actL)
+tpSoundSamp Sound_BeginWrite(uint16_t n, uint16_t *actL)
 {
 	uint16_t ToFillLen = kAllBuffLen - (TheWriteOffset - ThePlayOffset);
 	uint16_t WriteBuffContig =
@@ -437,7 +437,7 @@ bool Sound_Init(void)
 	return true; /* keep going, even if no sound */
 }
 
-GLOBALOSGLUPROC Sound_EndWrite(uint16_t actL)
+void Sound_EndWrite(uint16_t actL)
 {
 	if (Sound_EndWrite0(actL)) {
 	}

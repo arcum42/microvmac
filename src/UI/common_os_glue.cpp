@@ -99,7 +99,7 @@ void PbufDisposeNotify(tPbuf Pbuf_No)
 	PbufAllocatedMask &= ~ ((uint32_t)1 << Pbuf_No);
 }
 
-GLOBALOSGLUFUNC MacErr_t CheckPbuf(tPbuf Pbuf_No)
+MacErr_t CheckPbuf(tPbuf Pbuf_No)
 {
 	MacErr_t result;
 
@@ -114,7 +114,7 @@ GLOBALOSGLUFUNC MacErr_t CheckPbuf(tPbuf Pbuf_No)
 	return result;
 }
 
-GLOBALOSGLUFUNC MacErr_t PbufGetSize(tPbuf Pbuf_No, uint32_t *Count)
+MacErr_t PbufGetSize(tPbuf Pbuf_No, uint32_t *Count)
 {
 	MacErr_t result = CheckPbuf(Pbuf_No);
 
@@ -141,12 +141,12 @@ GLOBALOSGLUFUNC MacErr_t PbufGetSize(tPbuf Pbuf_No, uint32_t *Count)
 	return false;
 }
 
-GLOBALOSGLUFUNC bool AnyDiskInserted(void)
+bool AnyDiskInserted(void)
 {
 	return 0 != vSonyInsertedMask;
 }
 
-GLOBALOSGLUPROC DiskRevokeWritable(tDrive Drive_No)
+void DiskRevokeWritable(tDrive Drive_No)
 {
 	vSonyWritableMask &= ~ ((uint32_t)1 << Drive_No);
 }
@@ -217,7 +217,7 @@ static void SetLongs(uint32_t *p, long n)
  uimr ReserveAllocOffset;
  uint8_t * ReserveAllocBigBlock = nullptr;
 
-GLOBALOSGLUPROC ReserveAllocOneBlock(uint8_t * *p, uimr n,
+void ReserveAllocOneBlock(uint8_t * *p, uimr n,
 	uint8_t align, bool FillOnes)
 {
 	ReserveAllocOffset = CeilPow2Mult(ReserveAllocOffset, align);
@@ -288,19 +288,19 @@ static uimr CStrLength(char *s)
 	return p - s - 1;
 }
 
-GLOBALOSGLUPROC dbglog_writeCStr(char *s)
+void dbglog_writeCStr(char *s)
 {
 	/* fprintf(DumpFile, "%s", s); */
 	dbglog_write(s, CStrLength(s));
 }
 
-GLOBALOSGLUPROC dbglog_writeReturn(void)
+void dbglog_writeReturn(void)
 {
 	dbglog_writeCStr("\n");
 	/* fprintf(DumpFile, "\n"); */
 }
 
-GLOBALOSGLUPROC dbglog_writeHex(uimr x)
+void dbglog_writeHex(uimr x)
 {
 	uint8_t v;
 	char s[16];
@@ -322,7 +322,7 @@ GLOBALOSGLUPROC dbglog_writeHex(uimr x)
 	/* fprintf(DumpFile, "%d", (int)x); */
 }
 
-GLOBALOSGLUPROC dbglog_writeNum(uimr x)
+void dbglog_writeNum(uimr x)
 {
 	uimr newx;
 	char s[16];
@@ -340,7 +340,7 @@ GLOBALOSGLUPROC dbglog_writeNum(uimr x)
 	/* fprintf(DumpFile, "%d", (int)x); */
 }
 
-GLOBALOSGLUPROC dbglog_writeMacChar(uint8_t x)
+void dbglog_writeMacChar(uint8_t x)
 {
 	char s;
 
@@ -358,13 +358,13 @@ static void dbglog_writeSpace(void)
 	dbglog_writeCStr(" ");
 }
 
-GLOBALOSGLUPROC dbglog_writeln(char *s)
+void dbglog_writeln(char *s)
 {
 	dbglog_writeCStr(s);
 	dbglog_writeReturn();
 }
 
-GLOBALOSGLUPROC dbglog_writelnNum(char *s, simr v)
+void dbglog_writelnNum(char *s, simr v)
 {
 	dbglog_writeCStr(s);
 	dbglog_writeSpace();
@@ -380,7 +380,7 @@ static EvtQEl EvtQA[EvtQSz];
 static uint16_t EvtQIn = 0;
 static uint16_t EvtQOut = 0;
 
-GLOBALOSGLUFUNC EvtQEl * EvtQOutP(void)
+EvtQEl * EvtQOutP(void)
 {
 	EvtQEl *p = nullptr;
 	if (EvtQIn != EvtQOut) {
@@ -389,7 +389,7 @@ GLOBALOSGLUFUNC EvtQEl * EvtQOutP(void)
 	return p;
 }
 
-GLOBALOSGLUPROC EvtQOutDone(void)
+void EvtQOutDone(void)
 {
 	++EvtQOut;
 }
@@ -565,7 +565,7 @@ void MacMsg(char *briefMsg, char *longMsg, bool fatal)
 }
 
 #if WantAbnormalReports
-GLOBALOSGLUPROC WarnMsgAbnormalID(uint16_t id)
+void WarnMsgAbnormalID(uint16_t id)
 {
 	MacMsg(kStrReportAbnormalTitle,
 		kStrReportAbnormalMessage, false);

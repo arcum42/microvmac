@@ -38,7 +38,7 @@
 
 /* --- some simple utilities --- */
 
-GLOBALOSGLUPROC MoveBytes(anyp srcPtr, anyp destPtr, int32_t byteCount)
+void MoveBytes(anyp srcPtr, anyp destPtr, int32_t byteCount)
 {
 	(void) memcpy((char *)destPtr, (char *)srcPtr, byteCount);
 }
@@ -891,7 +891,7 @@ static bool ScanCommandLine(void)
 
 /* --- main program flow --- */
 
-GLOBALOSGLUFUNC bool ExtraTimeNotOver(void)
+bool ExtraTimeNotOver(void)
 {
 	UpdateTrueEmulatedTime();
 	return TrueEmulatedTime == OnTrueTime;
@@ -916,7 +916,7 @@ static void CheckForSystemEvents(void)
 	}
 }
 
-GLOBALOSGLUPROC WaitForNextTick(void)
+void WaitForNextTick(void)
 {
 label_retry:
 	CheckForSystemEvents();

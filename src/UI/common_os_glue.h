@@ -89,13 +89,13 @@ extern uint32_t QuietSubTicks;
  bool FirstFreePbuf(tPbuf *r);
 void PbufNewNotify(tPbuf Pbuf_No, uint32_t count);
 void PbufDisposeNotify(tPbuf Pbuf_No);
-GLOBALOSGLUFUNC MacErr_t CheckPbuf(tPbuf Pbuf_No);
-GLOBALOSGLUFUNC MacErr_t PbufGetSize(tPbuf Pbuf_No, uint32_t *Count);
+MacErr_t CheckPbuf(tPbuf Pbuf_No);
+MacErr_t PbufGetSize(tPbuf Pbuf_No, uint32_t *Count);
 #endif
 
  bool FirstFreeDisk(tDrive *Drive_No);
-GLOBALOSGLUFUNC bool AnyDiskInserted(void);
-GLOBALOSGLUPROC DiskRevokeWritable(tDrive Drive_No);
+bool AnyDiskInserted(void);
+void DiskRevokeWritable(tDrive Drive_No);
 void DiskInsertNotify(tDrive Drive_No, bool locked);
 void DiskEjectedNotify(tDrive Drive_No);
 
@@ -150,7 +150,7 @@ extern int16_t ScreenChangedLeft;
 extern int16_t ScreenChangedBottom;
 extern int16_t ScreenChangedRight;
 
-GLOBALOSGLUPROC Screen_OutputFrame(uint8_t * screencurrentbuff);
+void Screen_OutputFrame(uint8_t * screencurrentbuff);
 
 #if MayFullScreen
 extern uint16_t ViewHSize;
@@ -173,7 +173,7 @@ extern uint16_t ViewVStart;
 
 extern uimr ReserveAllocOffset;
 extern uint8_t * ReserveAllocBigBlock;
-GLOBALOSGLUPROC ReserveAllocOneBlock(uint8_t * *p, uimr n,
+void ReserveAllocOneBlock(uint8_t * *p, uimr n,
 	uint8_t align, bool FillOnes);
 
 /* --- sending debugging info to file --- */
@@ -182,13 +182,13 @@ GLOBALOSGLUPROC ReserveAllocOneBlock(uint8_t * *p, uimr n,
 #define dbglog_bufsz PowOf2(dbglog_buflnsz)
 #define dbglog_open dbglog_open0
 
-GLOBALOSGLUPROC dbglog_writeCStr(char *s);
-GLOBALOSGLUPROC dbglog_writeReturn(void);
-GLOBALOSGLUPROC dbglog_writeHex(uimr x);
-GLOBALOSGLUPROC dbglog_writeNum(uimr x);
-GLOBALOSGLUPROC dbglog_writeMacChar(uint8_t x);
-GLOBALOSGLUPROC dbglog_writeln(char *s);
-GLOBALOSGLUPROC dbglog_writelnNum(char *s, simr v);
+void dbglog_writeCStr(char *s);
+void dbglog_writeReturn(void);
+void dbglog_writeHex(uimr x);
+void dbglog_writeNum(uimr x);
+void dbglog_writeMacChar(uint8_t x);
+void dbglog_writeln(char *s);
+void dbglog_writelnNum(char *s, simr v);
 #endif
 
 /* my event queue */
@@ -197,8 +197,8 @@ GLOBALOSGLUPROC dbglog_writelnNum(char *s, simr v);
 #define EvtQSz (1 << EvtQLg2Sz)
 #define EvtQIMask (EvtQSz - 1)
 
-GLOBALOSGLUFUNC EvtQEl * EvtQOutP(void);
-GLOBALOSGLUPROC EvtQOutDone(void);
+EvtQEl * EvtQOutP(void);
+void EvtQOutDone(void);
 extern bool EvtQNeedRecover;
 
 #define kKeepMaskControl  (1 << 0)
@@ -228,7 +228,7 @@ extern bool SavedFatalMsg;
 void MacMsg(char *briefMsg, char *longMsg, bool fatal);
 
 #if WantAbnormalReports
-GLOBALOSGLUPROC WarnMsgAbnormalID(uint16_t id);
+void WarnMsgAbnormalID(uint16_t id);
 #endif
 
 #endif

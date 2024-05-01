@@ -85,7 +85,7 @@ uint32_t GetPixFormatFromDepth(int depth)
 
 // We aren't being smart about *what* to update, since if we use SDL2 properly
 // the update operating is stunningly cheap.
-GLOBALOSGLUPROC Screen_OutputFrame(uint8_t * src_ptr)
+void Screen_OutputFrame(uint8_t * src_ptr)
 {
 	if (EmVideoDisable) { return; }
 	
@@ -130,7 +130,7 @@ GLOBALOSGLUPROC Screen_OutputFrame(uint8_t * src_ptr)
 	SDL_RenderPresent(renderer);
 }
 
-GLOBALOSGLUPROC DoneWithDrawingForTick(void)
+void DoneWithDrawingForTick(void)
 {
 	return;
 }

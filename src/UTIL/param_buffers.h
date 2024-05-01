@@ -55,7 +55,7 @@ static void PbufKillToPtr(void **p, uint32_t *count, tPbuf r)
 #endif
 
 #if IncludePbufs
-GLOBALOSGLUFUNC MacErr_t PbufNew(uint32_t count, tPbuf *r)
+MacErr_t PbufNew(uint32_t count, tPbuf *r)
 {
 	MacErr_t err = mnvm_miscErr;
 
@@ -69,7 +69,7 @@ GLOBALOSGLUFUNC MacErr_t PbufNew(uint32_t count, tPbuf *r)
 #endif
 
 #if IncludePbufs
-GLOBALOSGLUPROC PbufDispose(tPbuf i)
+void PbufDispose(tPbuf i)
 {
 	void *p;
 	uint32_t count;
@@ -109,7 +109,7 @@ static uint8_t * PbufLock(tPbuf i)
 #endif
 
 #if IncludePbufs
-GLOBALOSGLUPROC PbufTransfer(uint8_t * Buffer,
+void PbufTransfer(uint8_t * Buffer,
 	tPbuf i, uint32_t offset, uint32_t count, bool IsWrite)
 {
 	void *p = ((uint8_t *)PbufDat[i]) + offset;

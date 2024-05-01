@@ -569,7 +569,7 @@ static void MacRoman2UniCodeData(uint8_t *s, uimr L, char *t)
 #endif
 
 #if IncludeHostTextClipExchange
-GLOBALOSGLUFUNC MacErr_t HTCEexport(tPbuf i)
+MacErr_t HTCEexport(tPbuf i)
 {
 	MacErr_t err;
 	char *p;
@@ -1020,7 +1020,7 @@ label_retry:
 #endif
 
 #if IncludeHostTextClipExchange
-GLOBALOSGLUFUNC MacErr_t HTCEimport(tPbuf *r)
+MacErr_t HTCEimport(tPbuf *r)
 {
 	MacErr_t err;
 	uimr L;

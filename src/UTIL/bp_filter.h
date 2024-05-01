@@ -291,7 +291,7 @@ static int InitLocalTalk(void)
 	return true;
 }
 
-GLOBALOSGLUPROC LT_TransmitPacket(void)
+void LT_TransmitPacket(void)
 {
 	int count;
 
@@ -327,7 +327,7 @@ static void LocalTalkTick0(void)
 	}
 }
 
-GLOBALOSGLUPROC LT_ReceivePacket(void)
+void LT_ReceivePacket(void)
 {
 label_retry:
 	if (NextPacket == NULL) {
