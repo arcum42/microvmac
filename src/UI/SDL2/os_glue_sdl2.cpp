@@ -315,9 +315,7 @@ static void MouseConstrain(void)
 
 enum {
 	kMagStateNormal,
-#if 1
 	kMagStateMagnifgy,
-#endif
 	kNumMagStates
 };
 
@@ -339,9 +337,7 @@ static bool CreateMainWindow(void)
 	Uint32 flags = 0 /* SDL_WINDOW_HIDDEN */;
 	bool v = false;
 
-#if 1
 	if (UseFullScreen)
-#endif
 #if MayFullScreen
 	{
 		/*
@@ -354,18 +350,13 @@ static bool CreateMainWindow(void)
 		NewWindowY = SDL_WINDOWPOS_UNDEFINED;
 	}
 #endif
-#if 1
-	else
-#endif
 #if MayNotFullScreen
 	{
 		int WinIndx;
 
-#if 1
 		if (UseMagnify) {
 			WinIndx = kMagStateMagnifgy;
 		} else
-#endif
 		{
 			WinIndx = kMagStateNormal;
 		}
@@ -380,10 +371,6 @@ static bool CreateMainWindow(void)
 
 		CurWinIndx = WinIndx;
 	}
-#endif
-
-#if 0
-	SDL_SetHint(SDL_HINT_RENDER_SCALE_QUALITY, "linear");
 #endif
 
 	if (nullptr == (main_wind = SDL_CreateWindow(
@@ -432,9 +419,7 @@ static bool CreateMainWindow(void)
 			return false;
 		}
 
-#if 1
 		if (UseFullScreen)
-#endif
 #if MayFullScreen
 		{
 			int wr;
@@ -444,12 +429,10 @@ static bool CreateMainWindow(void)
 
 			ViewHSize = wr;
 			ViewVSize = hr;
-#if 1
 			if (UseMagnify) {
 				ViewHSize /= WindowScale;
 				ViewVSize /= WindowScale;
 			}
-#endif
 			if (ViewHSize >= vMacScreenWidth) {
 				ViewHStart = 0;
 				ViewHSize = vMacScreenWidth;
@@ -529,10 +512,7 @@ struct WState {
 	int f_hOffset;
 	int f_vOffset;
 #endif
-#if 1
 	bool f_UseFullScreen;
-#endif
-#if 1
 	bool f_UseMagnify;
 #endif
 #if MayNotFullScreen
@@ -544,7 +524,6 @@ struct WState {
 	SDL_PixelFormat *f_format;
 };
 typedef struct WState WState;
-#endif
 
 #if EnableRecreateW
 static void GetWState(WState *r)
@@ -557,12 +536,8 @@ static void GetWState(WState *r)
 	r->f_hOffset = hOffset;
 	r->f_vOffset = vOffset;
 #endif
-#if 1
 	r->f_UseFullScreen = UseFullScreen;
-#endif
-#if 1
 	r->f_UseMagnify = UseMagnify;
-#endif
 #if MayNotFullScreen
 	r->f_CurWinIndx = CurWinIndx;
 #endif
@@ -584,12 +559,8 @@ static void SetWState(WState *r)
 	hOffset = r->f_hOffset;
 	vOffset = r->f_vOffset;
 #endif
-#if 1
 	UseFullScreen = r->f_UseFullScreen;
-#endif
-#if 1
 	UseMagnify = r->f_UseMagnify;
-#endif
 #if MayNotFullScreen
 	CurWinIndx = r->f_CurWinIndx;
 #endif
@@ -600,19 +571,13 @@ static void SetWState(WState *r)
 }
 #endif
 
-#if 1 && 1
 enum {
 	kWinStateWindowed,
-#if 1
 	kWinStateFullScreen,
-#endif
 	kNumWinStates
 };
-#endif
 
-#if 1 && 1
 static int WinMagStates[kNumWinStates];
-#endif
 
 #if EnableRecreateW
 static bool ReCreateMainWindow(void)
@@ -622,7 +587,6 @@ static bool ReCreateMainWindow(void)
 #if HaveWorkingWarp
 	bool HadCursorHidden = HaveCursorHidden;
 #endif
-#if 1 && 1
 	int OldWinState =
 		UseFullScreen ? kWinStateFullScreen : kWinStateWindowed;
 	int OldMagState =
@@ -630,11 +594,8 @@ static bool ReCreateMainWindow(void)
 
 	WinMagStates[OldWinState] =
 		OldMagState;
-#endif
 
-#if 1
 	if (! UseFullScreen)
-#endif
 #if MayNotFullScreen
 	{
 		SDL_GetWindowPosition(main_wind,
@@ -657,24 +618,16 @@ static bool ReCreateMainWindow(void)
 
 	ZapWState();
 
-#if 1
 	UseMagnify = WantMagnify;
-#endif
-#if 1
 	UseFullScreen = WantFullScreen;
-#endif
 
 	if (! CreateMainWindow()) {
 		CloseMainWindow();
 		SetWState(&old_state);
 
 		/* avoid retry */
-#if 1
 		WantFullScreen = UseFullScreen;
-#endif
-#if 1
 		WantMagnify = UseMagnify;
-#endif
 
 	} else {
 		GetWState(&new_state);
@@ -704,7 +657,6 @@ static void ZapWinStateVars(void)
 		}
 	}
 #endif
-#if 1 && 1
 	{
 		int i;
 
@@ -712,15 +664,12 @@ static void ZapWinStateVars(void)
 			WinMagStates[i] = kMagStateAuto;
 		}
 	}
-#endif
 }
 
-#if 1
 void ToggleWantFullScreen(void)
 {
 	WantFullScreen = ! WantFullScreen;
 
-#if 1
 	{
 		int OldWinState =
 			UseFullScreen ? kWinStateFullScreen : kWinStateWindowed;
@@ -749,9 +698,7 @@ void ToggleWantFullScreen(void)
 			}
 		}
 	}
-#endif
 }
-#endif
 
 /* --- SavedTasks --- */
 
@@ -832,12 +779,8 @@ static void CheckForSavedTasks(void)
 
 #if EnableRecreateW
 	if (0
-#if 1
 		|| (UseMagnify != WantMagnify)
-#endif
-#if 1
 		|| (UseFullScreen != WantFullScreen)
-#endif
 		)
 	{
 		(void) ReCreateMainWindow();
@@ -846,9 +789,7 @@ static void CheckForSavedTasks(void)
 
 #if MayFullScreen
 	if (GrabMachine != (
-#if 1
 		UseFullScreen &&
-#endif
 		! (gTrueBackgroundFlag || CurSpeedStopped)))
 	{
 		GrabMachine = ! GrabMachine;
@@ -955,7 +896,7 @@ label_retry:
 	OnTrueTime = TrueEmulatedTime;
 
 #if dbglog_TimeStuff
-	dbglog_writelnNum("WaitForNextTick, OnTrueTime", OnTrueTime);
+	spdlog::debug("WaitForNextTick, OnTrueTime = {}", OnTrueTime);
 #endif
 }
 
@@ -1058,10 +999,10 @@ static bool InitOSGLU(void)
 	if (LoadMacRom())
 	if (LoadInitialImages())
 	if (InitLocationDat())
+	if (SDL_InitDisplay()) // Switched before initting sound because SDL is initialized in SDL_InitDisplay. Probably should be initialised earlier.
 #if SoundEnabled
 	if (Sound_Init())
 #endif
-	if (SDL_InitDisplay())
 	if (CreateMainWindow())
 	if (WaitForRom())
 	{

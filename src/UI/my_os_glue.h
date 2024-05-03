@@ -44,8 +44,6 @@ extern void dbglog_writeReturn(void);
 extern void dbglog_writeHex(uint32_t x);
 extern void dbglog_writeNum(uint32_t x);
 extern void dbglog_writeMacChar(uint8_t x);
-extern void dbglog_writeln(char *s);
-extern void dbglog_writelnNum(char *s, simr v);
 #endif
 
 extern void ReserveAllocOneBlock(

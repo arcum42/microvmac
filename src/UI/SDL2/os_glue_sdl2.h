@@ -12,7 +12,7 @@
 #define UseSDLscaling 0
 #endif
 
-#if 1 && ! UseSDLscaling
+#if ! UseSDLscaling
 #define MaxScale WindowScale
 #else
 #define MaxScale 1

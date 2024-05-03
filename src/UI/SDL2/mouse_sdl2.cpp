@@ -34,9 +34,7 @@ void ForceShowCursor(void)
 #if EnableMoveMouse && HaveWorkingWarp
 bool MoveMouse(int16_t h, int16_t v)
 {
-#if 1
 	if (UseFullScreen)
-#endif
 #if MayFullScreen
 	{
 		h -= ViewHStart;
@@ -44,16 +42,12 @@ bool MoveMouse(int16_t h, int16_t v)
 	}
 #endif
 
-#if 1
 	if (UseMagnify) {
 		h *= WindowScale;
 		v *= WindowScale;
 	}
-#endif
 
-#if 1
 	if (UseFullScreen)
-#endif
 #if MayFullScreen
 	{
 		h += hOffset;
@@ -73,9 +67,7 @@ void MousePositionNotify(int NewMousePosh, int NewMousePosv)
 {
 	bool ShouldHaveCursorHidden = true;
 
-#if 1
 	if (UseFullScreen)
-#endif
 #if MayFullScreen
 	{
 		NewMousePosh -= hOffset;
@@ -83,16 +75,12 @@ void MousePositionNotify(int NewMousePosh, int NewMousePosv)
 	}
 #endif
 
-#if 1
 	if (UseMagnify) {
 		NewMousePosh /= WindowScale;
 		NewMousePosv /= WindowScale;
 	}
-#endif
 
-#if 1
 	if (UseFullScreen)
-#endif
 #if MayFullScreen
 	{
 		NewMousePosh += ViewHStart;
@@ -124,9 +112,7 @@ void MousePositionNotify(int NewMousePosh, int NewMousePosv)
 			ShouldHaveCursorHidden = false;
 		}
 
-#if 1
 		if (UseFullScreen)
-#endif
 #if MayFullScreen
 		{
 			ShouldHaveCursorHidden = true;
@@ -149,7 +135,6 @@ void MousePositionNotifyRelative(int deltah, int deltav)
 {
 	bool ShouldHaveCursorHidden = true;
 
-#if 1
 	if (UseMagnify) {
 		/*
 			This is not really right. If only move one pixel
@@ -158,7 +143,6 @@ void MousePositionNotifyRelative(int deltah, int deltav)
 		deltah /= WindowScale;
 		deltav /= WindowScale;
 	}
-#endif
 
 	MousePositionSetDelta(deltah,
 		deltav);

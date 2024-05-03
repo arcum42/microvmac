@@ -64,13 +64,6 @@ void dbglog_Access(char *s, uint32_t Data, bool WriteMem)
 	dbglog_writeReturn();
 }
 
-void dbglog_WriteNote(char *s)
-{
-	dbglog_StartLine();
-	dbglog_writeCStr(s);
-	dbglog_writeReturn();
-}
-
 void dbglog_WriteSetBool(char *s, bool v)
 {
 	dbglog_StartLine();

@@ -3908,7 +3908,7 @@ static void NeedDefaultLazyAllFlags(void)
 		ReportAbnormalID(0x0104,
 			"not kLazyFlagsDefault in NeedDefaultLazyAllFlags");
 #if dbglog_HAVE
-		dbglog_writelnNum("LazyFlagKind", V_regs.LazyFlagKind);
+		spdlog::debug("LazyFlagKind {:04x}", V_regs.LazyFlagKind);
 #endif
 	}
 }
@@ -6168,7 +6168,7 @@ LOCALIPROC DoCodeDivU(void)
 #endif
 		Exception(5);
 #if m68k_logExceptions
-		dbglog_WriteNote("*** zero devide exception");
+		spdlog::debug("*** zero devide exception");
 #endif
 	} else {
 		uint32_t newv = (uint32_t)dstvalue / (uint32_t)(uint16_t)srcvalue;
@@ -6211,7 +6211,7 @@ LOCALIPROC DoCodeDivS(void)
 #endif
 		Exception(5);
 #if m68k_logExceptions
-		dbglog_WriteNote("*** zero devide exception");
+		spdlog::debug("*** zero devide exception");
 #endif
 	} else {
 		int32_t newv = (int32_t)dstvalue / (int32_t)(int16_t)srcvalue;
@@ -6276,7 +6276,7 @@ static void DoPrivilegeViolation(void)
 	BackupPC();
 	Exception(8);
 #if m68k_logExceptions
-	dbglog_WriteNote("*** Privilege Violation exception");
+	spdlog::debug("*** Privilege Violation exception");
 #endif
 }
 
@@ -6756,7 +6756,7 @@ static void op_illg(void)
 	BackupPC();
 	Exception(4);
 #if m68k_logExceptions
-	dbglog_WriteNote("*** illegal instruction exception");
+	spdlog::debug("*** illegal instruction exception");
 #endif
 }
 
@@ -6901,7 +6901,7 @@ static void m68k_setstopped(void)
 	/* not implemented. doesn't seemed to be used on Mac Plus */
 	Exception(4); /* fake an illegal instruction */
 #if m68k_logExceptions
-	dbglog_WriteNote("*** set stopped");
+	spdlog::debug("*** set stopped");
 #endif
 }
 
@@ -7459,7 +7459,7 @@ LOCALIPROC DoCodeDivL(void)
 	if (src == 0) {
 		Exception(5);
 #if m68k_logExceptions
-		dbglog_WriteNote("*** zero devide exception");
+		spdlog::debug("*** zero devide exception");
 #endif
 		return;
 	}

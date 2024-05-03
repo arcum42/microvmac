@@ -951,7 +951,7 @@ static MacErr_t Sony_Mount(CPTR p)
 
 	if (0 == dvl) {
 #if Sony_dolog
-		dbglog_WriteNote("Sony : Mount : no dvl");
+		spdlog::debug("Sony : Mount : no dvl");
 #endif
 
 		result = mnvm_nsDrvErr;
@@ -959,12 +959,7 @@ static MacErr_t Sony_Mount(CPTR p)
 		uint32_t L = ImageDataSize[i] >> 9; /* block count */
 
 #if Sony_dolog
-		dbglog_StartLine();
-		dbglog_writeCStr("Sony : Mount : Drive=");
-		dbglog_writeHex(i);
-		dbglog_writeCStr(", L=");
-		dbglog_writeHex(L);
-		dbglog_writeReturn();
+		spdlog::debug("Sony : Mount : Drive={:04x} L={:04x}", i, L);
 #endif
 
 #if CurEmMd <= kEmMd_Twiggy
@@ -1025,7 +1020,7 @@ static MacErr_t Sony_Mount(CPTR p)
 	} else {
 		/* disk already in place, a mistake has been made */
 #if Sony_dolog
-		dbglog_WriteNote("Sony : Mount : already in place");
+		spdlog::debug("Sony : Mount : already in place");
 #endif
 	}
 
@@ -1096,7 +1091,7 @@ static MacErr_t Sony_Prime(CPTR p)
 
 	if (0 == dvl) {
 #if Sony_dolog
-		dbglog_WriteNote("Sony : Prime : no dvl");
+		spdlog::debug("Sony : Prime : no dvl");
 #endif
 
 		result = mnvm_nsDrvErr;
@@ -1104,8 +1099,7 @@ static MacErr_t Sony_Prime(CPTR p)
 #if CurEmMd >= kEmMd_Twiggy
 	if (0xA002 != (IOTrap & 0xF0FE)) {
 #if Sony_dolog
-		dbglog_WriteNote("Sony : Prime : "
-			"not read (0xA002) or write (0xA003)");
+		spdlog::debug("Sony : Prime : not read (0xA002) or write (0xA003)");
 #endif
 
 		result = mnvm_controlErr;
@@ -1190,16 +1184,7 @@ static MacErr_t Sony_Prime(CPTR p)
 		Sony_Count = get_vm_long(ParamBlk + kioReqCount);
 
 #if Sony_dolog
-		dbglog_StartLine();
-		dbglog_writeCStr("Sony : Prime : Drive=");
-		dbglog_writeHex(Drive_No);
-		dbglog_writeCStr(", IsWrite=");
-		dbglog_writeHex(IsWrite);
-		dbglog_writeCStr(", Start=");
-		dbglog_writeHex(Sony_Start);
-		dbglog_writeCStr(", Count=");
-		dbglog_writeHex(Sony_Count);
-		dbglog_writeReturn();
+		spdlog::debug("Sony : Prime : Drive = {:04x}, IsWrite = {:04x}, Start = {:04x}, Count = {:04x}", Drive_No, IsWrite, Sony_Start, Sony_Count);
 #endif
 
 		if ((0 != (Sony_Start & 0x1FF))
@@ -1247,13 +1232,13 @@ static MacErr_t Sony_Control(CPTR p)
 
 	if (kKillIO == OpCode) {
 #if Sony_dolog
-		dbglog_WriteNote("Sony : Control : kKillIO");
+		spdlog::debug("Sony : Control : kKillIO");
 #endif
 
 		result = mnvm_miscErr;
 	} else if (kSetTagBuffer == OpCode) {
 #if Sony_dolog
-		dbglog_WriteNote("Sony : Control : kSetTagBuffer");
+		spdlog::debug("Sony : Control : kSetTagBuffer");
 #endif
 
 #if Sony_SupportTags
@@ -1264,7 +1249,7 @@ static MacErr_t Sony_Control(CPTR p)
 #endif
 	} else if (kTrackCacheControl == OpCode) {
 #if Sony_dolog
-		dbglog_WriteNote("Sony : Control : kTrackCacheControl");
+		spdlog::debug("Sony : Control : kTrackCacheControl");
 #endif
 
 #if CurEmMd <= kEmMd_128K
@@ -1293,13 +1278,13 @@ static MacErr_t Sony_Control(CPTR p)
 
 		if (0 == dvl) {
 #if Sony_dolog
-			dbglog_WriteNote("Sony : Control : no dvl");
+			spdlog::debug("Sony : Control : no dvl");
 #endif
 
 			result = mnvm_nsDrvErr;
 		} else if (get_vm_byte(dvl + kDiskInPlace) == 0) {
 #if Sony_dolog
-			dbglog_WriteNote("Sony : Control : not DiskInPlace");
+			spdlog::debug("Sony : Control : not DiskInPlace");
 #endif
 
 			result = mnvm_offLinErr;
@@ -1307,17 +1292,14 @@ static MacErr_t Sony_Control(CPTR p)
 			switch (OpCode) {
 				case kVerifyDisk :
 #if Sony_dolog
-					dbglog_WriteNote("Sony : Control : kVerifyDisk");
+					spdlog::debug("Sony : Control : kVerifyDisk");
 #endif
 
 					result = mnvm_noErr;
 					break;
 				case kEjectDisk :
 #if Sony_dolog
-					dbglog_StartLine();
-					dbglog_writeCStr("Sony : Control : kEjectDisk : ");
-					dbglog_writeHex(Drive_No);
-					dbglog_writeReturn();
+					spdlog::debug("Sony : Control : kEjectDisk : {:04x}", Drive_No);
 #endif
 
 					put_vm_byte(dvl + kWriteProt, 0x00);
@@ -1335,20 +1317,14 @@ static MacErr_t Sony_Control(CPTR p)
 					break;
 				case kFormatDisk :
 #if Sony_dolog
-					dbglog_StartLine();
-					dbglog_writeCStr("Sony : Control : kFormatDisk : ");
-					dbglog_writeHex(Drive_No);
-					dbglog_writeReturn();
+					spdlog::debug("Sony : Control : kFormatDisk : {:04x}", Drive_No);
 #endif
 
 					result = mnvm_noErr;
 					break;
 				case kDriveIcon :
 #if Sony_dolog
-					dbglog_StartLine();
-					dbglog_writeCStr("Sony : Control : kDriveIcon : ");
-					dbglog_writeHex(Drive_No);
-					dbglog_writeReturn();
+					spdlog::debug("Sony : Control : kDriveIcon : {:04x}", Drive_No);
 #endif
 
 					if (get_vm_word(dvl + kQType) != 0) {
@@ -1369,11 +1345,7 @@ static MacErr_t Sony_Control(CPTR p)
 						uint32_t v;
 
 #if Sony_dolog
-						dbglog_StartLine();
-						dbglog_writeCStr(
-							"Sony : Control : kDriveInfo : ");
-						dbglog_writeHex(kDriveIcon);
-						dbglog_writeReturn();
+					spdlog::debug("Sony : Control : kDriveInfo : {:04x}", kDriveIcon);
 #endif
 
 						if (get_vm_word(dvl + kQType) != 0) {
@@ -1396,10 +1368,7 @@ static MacErr_t Sony_Control(CPTR p)
 #endif
 				default :
 #if Sony_dolog
-					dbglog_StartLine();
-					dbglog_writeCStr("Sony : Control : OpCode : ");
-					dbglog_writeHex(OpCode);
-					dbglog_writeReturn();
+					spdlog::debug("Sony : Control : OpCode : {:04x}", OpCode);
 #endif
 #if ExtraAbnormalReports
 					if ((kGetIconID != OpCode)
@@ -1435,10 +1404,7 @@ static MacErr_t Sony_Status(CPTR p)
 	uint16_t OpCode = get_vm_word(ParamBlk + kcsCode);
 
 #if Sony_dolog
-	dbglog_StartLine();
-	dbglog_writeCStr("Sony : Sony_Status OpCode = ");
-	dbglog_writeHex(OpCode);
-	dbglog_writeReturn();
+	spdlog::debug("Sony : Sony_Status OpCode = {:04x}", OpCode);
 #endif
 
 	if (kDriveStatus == OpCode) {
@@ -1484,7 +1450,7 @@ static MacErr_t Sony_Close(CPTR p)
 static MacErr_t Sony_OpenA(CPTR p)
 {
 #if Sony_dolog
-	dbglog_WriteNote("Sony : OpenA");
+	spdlog::debug("Sony : OpenA");
 #endif
 
 	if (MountCallBack != 0) {
@@ -1508,7 +1474,7 @@ static MacErr_t Sony_OpenB(CPTR p)
 	CPTR dvl;
 
 #if Sony_dolog
-	dbglog_WriteNote("Sony : OpenB");
+	spdlog::debug("Sony : OpenB");
 #endif
 
 	CPTR SonyVars = get_vm_long(p + ExtnDat_params + 4);
@@ -1580,7 +1546,7 @@ static MacErr_t Sony_OpenB(CPTR p)
 static MacErr_t Sony_OpenC(CPTR p)
 {
 #if Sony_dolog
-	dbglog_WriteNote("Sony : OpenC");
+	spdlog::debug("Sony : OpenC");
 #endif
 
 	MountCallBack = get_vm_long(p + ExtnDat_params + 0)

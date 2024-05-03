@@ -61,7 +61,7 @@ bool UpdateTrueEmulatedTime(void)
 				InitNextTime();
 
 #if dbglog_TimeStuff
-				dbglog_writelnNum("emulation interrupted",
+				spdlog::debug("emulation interrupted at {}",
 					TrueEmulatedTime);
 #endif
 			} else {
@@ -75,7 +75,7 @@ bool UpdateTrueEmulatedTime(void)
 		} else {
 			if (TimeDiff < -256) {
 #if dbglog_TimeStuff
-				dbglog_writeln("clock set back");
+				spdlog::debug("clock set back");
 #endif
 				/* clock goofed if ever get here, reset */
 				InitNextTime();

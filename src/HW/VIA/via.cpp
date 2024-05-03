@@ -704,14 +704,14 @@ void VIA1_DoTimer1Check(void)
 #endif
 					VIA1_SetInterruptFlag(kIntT1);
 #if VIA1_dolog && 1
-					dbglog_WriteNote("VIA1 Timer 1 Interrupt");
+					spdlog::debug("VIA1 Timer 1 Interrupt");
 #endif
 				} else {
 					if (VIA1_T1_Active == 1) {
 						VIA1_T1_Active = 0;
 						VIA1_SetInterruptFlag(kIntT1);
 #if VIA1_dolog && 1
-						dbglog_WriteNote("VIA1 Timer 1 Interrupt");
+						spdlog::debug("VIA1 Timer 1 Interrupt");
 #endif
 					}
 				}
@@ -797,7 +797,7 @@ void VIA1_DoTimer2Check(void)
 				VIA1_T2_Active = 0;
 				VIA1_SetInterruptFlag(kIntT2);
 #if VIA1_dolog && 1
-				dbglog_WriteNote("VIA1 Timer 2 Interrupt");
+				spdlog::debug("VIA1 Timer 2 Interrupt");
 #endif
 			} else {
 				uint32_t NewTimer;
@@ -1011,7 +1011,6 @@ void VIA1_DoTimer2Check(void)
 			break;
 		case kACR:
 			if (WriteMem) {
-#if 1
 				if ((VIA1_D.ACR & 0x10) != ((uint8_t)Data & 0x10)) {
 					/* shift direction has changed */
 					if ((Data & 0x10) == 0) {
@@ -1027,7 +1026,6 @@ void VIA1_DoTimer2Check(void)
 						}
 					}
 				}
-#endif
 				VIA1_D.ACR = Data;
 				if ((VIA1_D.ACR & 0x20) != 0) {
 					/* Not pulse counting? */

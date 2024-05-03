@@ -240,7 +240,7 @@ LOCALIPROC DoCodeFPU_dflt(void)
 		uint16_t opcode = ((uint16_t)(V_regs.CurDecOpY.v[0].AMd) << 8)
 			| V_regs.CurDecOpY.v[0].ArgDat;
 
-		dbglog_writelnNum("opcode", opcode);
+		spdlog::debug("opcode {:04x}", opcode);
 	}
 #endif
 	DoCodeFdefault();
@@ -260,7 +260,7 @@ LOCALIPROC DoCodeFPU_Save(void)
 		if (! DecodeAddrModeRegister(28)) {
 			DoCodeFPU_dflt();
 #if dbglog_HAVE
-			dbglog_writeln(
+			spdlog::debug(
 				"DecodeAddrModeRegister fails in DoCodeFPU_Save");
 #endif
 		} else {
@@ -276,7 +276,7 @@ LOCALIPROC DoCodeFPU_Save(void)
 	} else {
 		DoCodeFPU_dflt();
 #if dbglog_HAVE
-		dbglog_writeln("unimplemented FPU Save");
+		spdlog::debug("unimplemented FPU Save");
 #endif
 	}
 }
@@ -293,7 +293,7 @@ LOCALIPROC DoCodeFPU_Restore(void)
 		if (! DecodeAddrModeRegister(4)) {
 			DoCodeFPU_dflt();
 #if dbglog_HAVE
-			dbglog_writeln(
+			spdlog::debug(
 				"DecodeAddrModeRegister fails in DoCodeFPU_Restore");
 #endif
 		} else {
@@ -306,7 +306,7 @@ LOCALIPROC DoCodeFPU_Restore(void)
 				} else {
 					DoCodeFPU_dflt();
 #if dbglog_HAVE
-					dbglog_writeln("unknown restore");
+					spdlog::debug("unknown restore");
 						/* not a null state we saved */
 #endif
 				}
@@ -315,7 +315,7 @@ LOCALIPROC DoCodeFPU_Restore(void)
 	} else {
 		DoCodeFPU_dflt();
 #if dbglog_HAVE
-		dbglog_writeln("unimplemented FPU Restore");
+		spdlog::debug("unimplemented FPU Restore");
 #endif
 	}
 }
@@ -406,7 +406,7 @@ LOCALIPROC DoCodeFPU_Scc(void)
 	if (! DecodeModeRegister(1)) {
 		DoCodeFPU_dflt();
 #if dbglog_HAVE
-		dbglog_writeln("bad mode/reg in DoCodeFPU_Scc");
+		spdlog::debug("bad mode/reg in DoCodeFPU_Scc");
 #endif
 	} else {
 		if (CheckFPCondition(word2 & 0x3F)) {
@@ -451,7 +451,7 @@ static void DoCodeFPU_Move_EA_CSIA(uint16_t word2)
 	if (regselect == 0) {
 		DoCodeF_InvalidPlusWord();
 #if dbglog_HAVE
-		dbglog_writeln("Invalid FMOVE instruction");
+		spdlog::debug("Invalid FMOVE instruction");
 #endif
 		return;
 	}
@@ -461,7 +461,7 @@ static void DoCodeFPU_Move_EA_CSIA(uint16_t word2)
 	if (! DecodeModeRegister(4 * num)) {
 		DoCodeF_InvalidPlusWord();
 #if dbglog_HAVE
-		dbglog_writeln("bad mode/reg in DoCodeFPU_Move_EA_CSIA");
+		spdlog::debug("bad mode/reg in DoCodeFPU_Move_EA_CSIA");
 #endif
 	} else {
 		ea_value[0] = GetArgValueL();
@@ -498,13 +498,13 @@ static void DoCodeFPU_MoveM_CSIA_EA(uint16_t word2)
 	if (0 == regselect) {
 		DoCodeF_InvalidPlusWord();
 #if dbglog_HAVE
-		dbglog_writeln("Invalid FMOVE instruction");
+		spdlog::debug("Invalid FMOVE instruction");
 #endif
 	} else
 	if (! DecodeModeRegister(4 * num)) {
 		DoCodeF_InvalidPlusWord();
 #if dbglog_HAVE
-		dbglog_writeln("bad mode/reg in DoCodeFPU_MoveM_CSIA_EA");
+		spdlog::debug("bad mode/reg in DoCodeFPU_MoveM_CSIA_EA");
 #endif
 	} else
 	{
@@ -543,7 +543,7 @@ static void DoCodeFPU_MoveM_EA_list(uint16_t word2)
 	if ((fmove_mode == 0) || (fmove_mode == 1)) {
 		DoCodeF_InvalidPlusWord();
 #if dbglog_HAVE
-		dbglog_writeln("Invalid FMOVEM.X instruction");
+		spdlog::debug("Invalid FMOVEM.X instruction");
 #endif
 		return;
 	}
@@ -564,7 +564,7 @@ static void DoCodeFPU_MoveM_EA_list(uint16_t word2)
 	if (! DecodeModeRegister(12 * count)) {
 		DoCodeF_InvalidPlusWord();
 #if dbglog_HAVE
-		dbglog_writeln(
+		spdlog::debug(
 			"DecodeModeRegister fails DoCodeFPU_MoveM_EA_list");
 #endif
 	} else {
@@ -611,7 +611,7 @@ static void DoCodeFPU_MoveM_list_EA(uint16_t word2)
 	if (! DecodeModeRegister(12 * count)) {
 		DoCodeF_InvalidPlusWord();
 #if dbglog_HAVE
-		dbglog_writeln(
+		spdlog::debug(
 			"DecodeModeRegister fails DoCodeFPU_MoveM_list_EA");
 #endif
 	} else {
@@ -652,7 +652,7 @@ static void DoCodeFPU_MoveCR(uint16_t word2)
 	if (opcode != 0xF200) {
 		DoCodeF_InvalidPlusWord();
 #if dbglog_HAVE
-		dbglog_writeln("bad opcode in FMOVECR");
+		spdlog::debug("bad opcode in FMOVECR");
 #endif
 	} else {
 		uint16_t RomOffset = word2 & 0x7F;
@@ -661,7 +661,7 @@ static void DoCodeFPU_MoveCR(uint16_t word2)
 		if (! myfp_getCR(&fpu_dat.fp[DestReg], RomOffset)) {
 			DoCodeF_InvalidPlusWord();
 #if dbglog_HAVE
-			dbglog_writeln("Invalid constant number in FMOVECR");
+			spdlog::debug("Invalid constant number in FMOVECR");
 #endif
 		}
 	}
@@ -982,7 +982,7 @@ static void DoCodeFPU_GenOp(uint16_t word2, myfpr *source)
 		default:
 			DoCodeF_InvalidPlusWord();
 #if dbglog_HAVE
-			dbglog_writeln("Invalid DoCodeFPU_GenOp");
+			spdlog::debug("Invalid DoCodeFPU_GenOp");
 #endif
 			break;
 	}
@@ -1004,7 +1004,7 @@ static void DoCodeFPU_GenOpEA(uint16_t word2)
 			if (! DecodeModeRegister(4)) {
 				DoCodeF_InvalidPlusWord();
 #if dbglog_HAVE
-				dbglog_writeln(
+				spdlog::debug(
 					"DecodeModeRegister fails GetFPSource L");
 #endif
 			} else {
@@ -1016,7 +1016,7 @@ static void DoCodeFPU_GenOpEA(uint16_t word2)
 			if (! DecodeModeRegister(4)) {
 				DoCodeF_InvalidPlusWord();
 #if dbglog_HAVE
-				dbglog_writeln(
+				spdlog::debug(
 					"DecodeModeRegister fails GetFPSource S");
 #endif
 			} else {
@@ -1028,7 +1028,7 @@ static void DoCodeFPU_GenOpEA(uint16_t word2)
 			if (! DecodeAddrModeRegister(12)) {
 				DoCodeF_InvalidPlusWord();
 #if dbglog_HAVE
-				dbglog_writeln(
+				spdlog::debug(
 					"DecodeAddrModeRegister fails GetFPSource X");
 #endif
 			} else {
@@ -1040,7 +1040,7 @@ static void DoCodeFPU_GenOpEA(uint16_t word2)
 			if (! DecodeAddrModeRegister(16)) {
 				DoCodeF_InvalidPlusWord();
 #if dbglog_HAVE
-				dbglog_writeln(
+				spdlog::debug(
 					"DecodeAddrModeRegister fails GetFPSource P");
 #endif
 			} else {
@@ -1055,7 +1055,7 @@ static void DoCodeFPU_GenOpEA(uint16_t word2)
 			if (! DecodeModeRegister(2)) {
 				DoCodeF_InvalidPlusWord();
 #if dbglog_HAVE
-				dbglog_writeln(
+				spdlog::debug(
 					"DecodeModeRegister fails GetFPSource W");
 #endif
 			} else {
@@ -1067,7 +1067,7 @@ static void DoCodeFPU_GenOpEA(uint16_t word2)
 			if (! DecodeAddrModeRegister(8)) {
 				DoCodeF_InvalidPlusWord();
 #if dbglog_HAVE
-				dbglog_writeln(
+				spdlog::debug(
 					"DecodeAddrModeRegister fails GetFPSource D");
 #endif
 			} else {
@@ -1079,7 +1079,7 @@ static void DoCodeFPU_GenOpEA(uint16_t word2)
 			if (! DecodeModeRegister(1)) {
 				DoCodeF_InvalidPlusWord();
 #if dbglog_HAVE
-				dbglog_writeln(
+				spdlog::debug(
 					"DecodeModeRegister fails GetFPSource B");
 #endif
 			} else {
@@ -1108,7 +1108,7 @@ static void DoCodeFPU_Move_FP_EA(uint16_t word2)
 			if (! DecodeModeRegister(4)) {
 				DoCodeF_InvalidPlusWord();
 #if dbglog_HAVE
-				dbglog_writeln("DecodeModeRegister fails FMOVE L");
+				spdlog::debug("DecodeModeRegister fails FMOVE L");
 #endif
 			} else {
 				SetArgValueL(myfp_ToLong(source));
@@ -1118,7 +1118,7 @@ static void DoCodeFPU_Move_FP_EA(uint16_t word2)
 			if (! DecodeModeRegister(4)) {
 				DoCodeF_InvalidPlusWord();
 #if dbglog_HAVE
-				dbglog_writeln("DecodeModeRegister fails FMOVE S");
+				spdlog::debug("DecodeModeRegister fails FMOVE S");
 #endif
 			} else {
 				SetArgValueL(myfp_ToSingleFormat(source));
@@ -1128,7 +1128,7 @@ static void DoCodeFPU_Move_FP_EA(uint16_t word2)
 			if (! DecodeAddrModeRegister(12)) {
 				DoCodeF_InvalidPlusWord();
 #if dbglog_HAVE
-				dbglog_writeln("DecodeAddrModeRegister fails FMOVE X");
+				spdlog::debug("DecodeAddrModeRegister fails FMOVE X");
 #endif
 			} else {
 				write_long_double(V_regs.ArgAddr.mem, source);
@@ -1138,7 +1138,7 @@ static void DoCodeFPU_Move_FP_EA(uint16_t word2)
 			if (! DecodeAddrModeRegister(16)) {
 				DoCodeF_InvalidPlusWord();
 #if dbglog_HAVE
-				dbglog_writeln("DecodeAddrModeRegister fails FMOVE P");
+				spdlog::debug("DecodeAddrModeRegister fails FMOVE P");
 #endif
 			} else {
 				ReportAbnormalID(0x0305, "Packed Decimal in FMOVE");
@@ -1149,7 +1149,7 @@ static void DoCodeFPU_Move_FP_EA(uint16_t word2)
 			if (! DecodeModeRegister(2)) {
 				DoCodeF_InvalidPlusWord();
 #if dbglog_HAVE
-				dbglog_writeln("DecodeModeRegister fails FMOVE W");
+				spdlog::debug("DecodeModeRegister fails FMOVE W");
 #endif
 			} else {
 				SetArgValueW(myfp_ToLong(source));
@@ -1159,7 +1159,7 @@ static void DoCodeFPU_Move_FP_EA(uint16_t word2)
 			if (! DecodeAddrModeRegister(8)) {
 				DoCodeF_InvalidPlusWord();
 #if dbglog_HAVE
-				dbglog_writeln("DecodeAddrModeRegister fails FMOVE D");
+				spdlog::debug("DecodeAddrModeRegister fails FMOVE D");
 #endif
 			} else {
 				write_double(V_regs.ArgAddr.mem, source);
@@ -1169,7 +1169,7 @@ static void DoCodeFPU_Move_FP_EA(uint16_t word2)
 			if (! DecodeModeRegister(1)) {
 				DoCodeF_InvalidPlusWord();
 #if dbglog_HAVE
-				dbglog_writeln("DecodeModeRegister fails FMOVE B");
+				spdlog::debug("DecodeModeRegister fails FMOVE B");
 #endif
 			} else {
 				SetArgValueB(myfp_ToLong(source));
@@ -1178,7 +1178,7 @@ static void DoCodeFPU_Move_FP_EA(uint16_t word2)
 		default:
 			DoCodeF_InvalidPlusWord();
 #if dbglog_HAVE
-			dbglog_writelnNum("Bad Source Specifier in FMOVE",
+			spdlog::debug("Bad Source Specifier in FMOVE {:04x}",
 				(word2 >> 10) & 0x7);
 #endif
 			break;
@@ -1214,7 +1214,7 @@ LOCALIPROC DoCodeFPU_md60(void)
 		default:
 			DoCodeF_InvalidPlusWord();
 #if dbglog_HAVE
-			dbglog_writelnNum("Invalid DoCodeFPU_md60",
+			spdlog::debug("Invalid DoCodeFPU_md60 {:04x}",
 				(word2 >> 13) & 0x7);
 #endif
 			break;

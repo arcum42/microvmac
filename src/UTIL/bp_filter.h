@@ -320,7 +320,7 @@ static void LocalTalkTick0(void)
 	if (bytes > 0) {
 		/* Maybe multiple packets in this buffer */
 #if 0
-		dbglog_WriteNote("SCC founds packets from BPF");
+		spdlog::debug("SCC founds packets from BPF");
 #endif
 		NextPacket = device_buffer;
 		EndPackets = device_buffer + bytes;
@@ -337,7 +337,7 @@ label_retry:
 		}
 	} else if (NextPacket >= EndPackets) {
 #if 0
-		dbglog_WriteNote("SCC finished set of packets from BPF");
+		spdlog::debug("SCC finished set of packets from BPF");
 #endif
 		NextPacket = nullptr;
 		goto label_retry;

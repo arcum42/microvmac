@@ -133,7 +133,7 @@ void DumpRTC(void)
 {
 	int Counter;
 
-	dbglog_writeln("RTC Parameter RAM");
+	spdlog::debug("RTC Parameter RAM");
 	for (Counter = 0; Counter < PARAMRAMSize; Counter++) {
 		dbglog_writeNum(Counter);
 		dbglog_writeCStr(", ");

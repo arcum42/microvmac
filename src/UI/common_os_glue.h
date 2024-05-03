@@ -187,8 +187,6 @@ void dbglog_writeReturn(void);
 void dbglog_writeHex(uimr x);
 void dbglog_writeNum(uimr x);
 void dbglog_writeMacChar(uint8_t x);
-void dbglog_writeln(char *s);
-void dbglog_writelnNum(char *s, simr v);
 #endif
 
 /* my event queue */

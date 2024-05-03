@@ -14,7 +14,7 @@
 
 #if SoundEnabled
 
-
+SDL_AudioDeviceID audio_device = 0;
 tpSoundSamp TheSoundBuffer = nullptr;
 volatile static uint16_t ThePlayOffset;
 volatile static uint16_t TheFillOffset;
@@ -52,7 +52,7 @@ tpSoundSamp Sound_BeginWrite(uint16_t n, uint16_t *actL)
 	if (ToFillLen < n) {
 		/* overwrite previous buffer */
 #if dbglog_SoundStuff
-		dbglog_writeln("sound buffer over flow");
+		spdlog::debug("Sound buffer overflow.");
 #endif
 		TheWriteOffset -= kOneBuffLen;
 	}
@@ -82,7 +82,7 @@ void Sound_WroteABlock(void)
 #endif
 
 #if dbglog_SoundStuff
-	dbglog_writeln("enter Sound_WroteABlock");
+	spdlog::debug("Enter Sound_WroteABlock");
 #endif
 
 	ConvertSoundBlockToNative(p);
@@ -126,19 +126,19 @@ void Sound_SecondNotify0(void)
 	if (MinFilledSoundBuffs <= kSoundBuffers) {
 		if (MinFilledSoundBuffs > DesiredMinFilledSoundBuffs) {
 #if dbglog_SoundStuff
-			dbglog_writeln("MinFilledSoundBuffs too high");
+			spdlog::debug("MinFilledSoundBuffs too high.");
 #endif
 			IncrNextTime();
 		} else if (MinFilledSoundBuffs < DesiredMinFilledSoundBuffs) {
 #if dbglog_SoundStuff
-			dbglog_writeln("MinFilledSoundBuffs too low");
+			spdlog::debug("MinFilledSoundBuffs too low");
 #endif
 			++TrueEmulatedTime;
 		}
 #if dbglog_SoundBuffStats
-		dbglog_writelnNum("MinFilledSoundBuffs",
+		spdlog::debug("MinFilledSoundBuffs = {}",
 			MinFilledSoundBuffs);
-		dbglog_writelnNum("MaxFilledSoundBuffs",
+		spdlog::debug("MaxFilledSoundBuffs = {}",
 			MaxFilledSoundBuffs);
 		MaxFilledSoundBuffs = 0;
 #endif
@@ -148,9 +148,8 @@ void Sound_SecondNotify0(void)
 
 typedef uint16_t trSoundTemp;
 
-#define kCenterTempSound 0x8000
-
-#define AudioStepVal 0x0040
+const trSoundTemp kCenterTempSound = 0x8000;
+const trSoundTemp AudioStepVal = 0x0040;
 
 #if 3 == kLn2SoundSampSz
 #define ConvertTempSoundSampleFromNative(v) ((v) << 8)
@@ -232,8 +231,7 @@ static void audio_callback(void *udata, Uint8 *stream, int len)
 #endif
 
 #if dbglog_SoundStuff
-	dbglog_writeln("Enter audio_callback");
-	dbglog_writelnNum("len", len);
+	spdlog::debug("Enter audio_callback: len = {}", len);
 #endif
 
 label_retry:
@@ -242,7 +240,7 @@ label_retry:
 
 	if (! datp->wantplaying) {
 #if dbglog_SoundStuff
-		dbglog_writeln("playing end transistion");
+		spdlog::debug("playing end transistion");
 #endif
 
 		SoundRampTo(&v1, kCenterTempSound, &dst, &len);
@@ -250,7 +248,7 @@ label_retry:
 		ToPlayLen = 0;
 	} else if (! datp->HaveStartedPlaying) {
 #if dbglog_SoundStuff
-		dbglog_writeln("playing start block");
+		spdlog::debug("playing start block");
 #endif
 
 		if ((ToPlayLen >> kLnOneBuffLen) < 8) {
@@ -261,14 +259,14 @@ label_retry:
 			trSoundTemp v2 = ConvertTempSoundSampleFromNative(*p);
 
 #if dbglog_SoundStuff
-			dbglog_writeln("have enough samples to start");
+			spdlog::debug("have enough samples to start");
 #endif
 
 			SoundRampTo(&v1, v2, &dst, &len);
 
 			if (v1 == v2) {
 #if dbglog_SoundStuff
-				dbglog_writeln("finished start transition");
+				spdlog::debug("finished start transition");
 #endif
 
 				datp->HaveStartedPlaying = true;
@@ -285,7 +283,7 @@ label_retry:
 	} else if (0 == ToPlayLen) {
 
 #if dbglog_SoundStuff
-		dbglog_writeln("under run");
+		spdlog::debug("under run");
 #endif
 
 		for (i = 0; i < len; ++i) {
@@ -328,7 +326,7 @@ static bool HaveSoundOut = false;
 void Sound_Stop(void)
 {
 #if dbglog_SoundStuff
-	dbglog_writeln("enter Sound_Stop");
+	spdlog::debug("enter Sound_Stop");
 #endif
 
 	if (cur_audio.wantplaying && HaveSoundOut) {
@@ -339,13 +337,13 @@ void Sound_Stop(void)
 label_retry:
 		if (kCenterTempSound == cur_audio.lastv) {
 #if dbglog_SoundStuff
-			dbglog_writeln("reached kCenterTempSound");
+			spdlog::debug("reached kCenterTempSound");
 #endif
 
 			/* done */
 		} else if (0 == --retry_limit) {
 #if dbglog_SoundStuff
-			dbglog_writeln("retry limit reached");
+			spdlog::debug("retry limit reached");
 #endif
 			/* done */
 		} else
@@ -356,7 +354,7 @@ label_retry:
 			*/
 
 #if dbglog_SoundStuff
-			dbglog_writeln("busy, so sleep");
+			spdlog::debug("busy, so sleep");
 #endif
 
 			(void) SDL_Delay(10);
@@ -364,11 +362,11 @@ label_retry:
 			goto label_retry;
 		}
 
-		SDL_PauseAudio(1);
+		SDL_PauseAudioDevice(audio_device, 1);
 	}
 
 #if dbglog_SoundStuff
-	dbglog_writeln("leave Sound_Stop");
+	spdlog::debug("leave Sound_Stop");
 #endif
 }
 
@@ -380,14 +378,14 @@ void Sound_Start(void)
 		cur_audio.HaveStartedPlaying = false;
 		cur_audio.wantplaying = true;
 
-		SDL_PauseAudio(0);
+		SDL_PauseAudioDevice(audio_device, 0);
 	}
 }
 
 void Sound_UnInit(void)
 {
 	if (HaveSoundOut) {
-		SDL_CloseAudio();
+		SDL_CloseAudioDevice(audio_device);
 	}
 }
 
@@ -421,7 +419,9 @@ bool Sound_Init(void)
 	desired.userdata = (void *)&cur_audio;
 
 	/* Open the audio device */
-	if (SDL_OpenAudio(&desired, nullptr) < 0) {
+	audio_device = SDL_OpenAudioDevice(nullptr, 0, &desired, nullptr, SDL_AUDIO_ALLOW_ANY_CHANGE);
+	
+	if (audio_device == 0) {
 		fprintf(stderr, "Couldn't open audio: %s\n", SDL_GetError());
 	} else {
 		HaveSoundOut = true;

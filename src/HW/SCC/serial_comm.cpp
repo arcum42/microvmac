@@ -381,13 +381,8 @@ static void CheckSCCInterruptFlag(void)
 	NewSCCInterruptRequest = (SCC.SCC_Interrupt_Type != 0) ? 1 : 0;
 	if (NewSCCInterruptRequest != SCCInterruptRequest) {
 #if SCC_dolog
-		dbglog_WriteSetBool("SCCInterruptRequest change",
-			NewSCCInterruptRequest);
-
-		dbglog_StartLine();
-		dbglog_writeCStr("SCC.SCC_Interrupt_Type <- ");
-		dbglog_writeHex(SCC.SCC_Interrupt_Type);
-		dbglog_writeReturn();
+		spdlog::debug("SCCInterruptRequest change: -> {}", NewSCCInterruptRequest);
+		spdlog::debug("SCC.SCC_Interrupt_Type <- {}", SCC.SCC_Interrupt_Type);
 #endif
 		SCCInterruptRequest = NewSCCInterruptRequest;
 #ifdef SCCinterruptChngNtfy
@@ -613,7 +608,7 @@ static void process_transmit(void)
 		*/
 		if ((LT_TxBuffer[0] != 0xFF) && (LT_TxBuffer[2] == 0x84)) {
 #if SCC_dolog
-			dbglog_WriteNote("SCC LLAP packet in process_transmit");
+			spdlog::debug("SCC LLAP packet in process_transmit");
 #endif
 			if (CTSpacketPending) {
 				ReportAbnormalID(0x0701,
@@ -646,7 +641,7 @@ static void GetCTSpacket(void)
 	uint8_t * device_buffer = CTSBuffer;
 
 #if SCC_dolog
-	dbglog_WriteNote("SCC receiving CTS packet");
+	spdlog::debug("SCC receiving CTS packet");
 #endif
 	/* Create the fake response from the other node */
 	device_buffer[0] = CTSpacketRxDA;
@@ -731,7 +726,7 @@ label_retry:
 
 	if (nullptr != LT_RxBuffer) {
 #if SCC_dolog
-		dbglog_WriteNote("SCC receiving packet from BPF");
+		spdlog::debug("SCC receiving packet from BPF");
 #endif
 
 		/* Is this packet destined for me? */
@@ -739,7 +734,7 @@ label_retry:
 		src = LT_RxBuffer[1];
 		if (src == node_address) {
 #if SCC_dolog
-			dbglog_WriteNote("SCC ignore packet from myself");
+			spdlog::debug("SCC ignore packet from myself");
 #endif
 			LT_RxBuffer = nullptr;
 			goto label_retry;
@@ -750,7 +745,7 @@ label_retry:
 			/* ok */
 		} else {
 #if SCC_dolog
-			dbglog_WriteNote("SCC ignore packet not for me");
+			spdlog::debug("SCC ignore packet not for me");
 #endif
 			LT_RxBuffer = nullptr;
 			goto label_retry;
@@ -769,7 +764,7 @@ void LocalTalkTick(void)
 	{
 		if (nullptr != LT_RxBuffer) {
 #if SCC_dolog
-			dbglog_WriteNote("SCC recover abandoned packet");
+			spdlog::debug("SCC recover abandoned packet");
 #endif
 		} else {
 			if (CTSpacketPending)  {
@@ -1703,7 +1698,7 @@ static void SCC_PutWR3(uint8_t Data, int chan)
 			if (! NewRxEnable) {
 #if SCC_dolog
 				if ((0 != chan) && (nullptr != LT_RxBuffer)) {
-					dbglog_WriteNote("SCC abandon packet");
+					spdlog::debug("SCC abandon packet");
 				}
 #endif
 
@@ -2154,7 +2149,7 @@ static void SCC_PutWR9(uint8_t Data, int chan)
 			break;
 		case 3:
 #if SCC_dolog
-			dbglog_WriteNote("SCC Force Hardware Reset");
+			spdlog::debug("SCC Force Hardware Reset");
 #endif
 #if (CurEmMd >= kEmMd_SE) && (CurEmMd <= kEmMd_IIx)
 			/* don't report */

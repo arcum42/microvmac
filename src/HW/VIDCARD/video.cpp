@@ -523,14 +523,14 @@ void ExtnVideo_Access(CPTR p)
 	switch (get_vm_word(p + ExtnDat_commnd)) {
 		case kCmndVersion:
 #if VID_dolog
-			dbglog_WriteNote("Video_Access kCmndVersion");
+			spdlog::debug("Video_Access kCmndVersion");
 #endif
 			put_vm_word(p + ExtnDat_version, 1);
 			result = mnvm_noErr;
 			break;
 		case kCmndVideoGetIntEnbl:
 #if VID_dolog
-			dbglog_WriteNote("Video_Access kCmndVideoGetIntEnbl");
+			spdlog::debug("Video_Access kCmndVideoGetIntEnbl");
 #endif
 			put_vm_word(p + 8,
 				Vid_VBLintunenbl ? 0 : 1);
@@ -538,7 +538,7 @@ void ExtnVideo_Access(CPTR p)
 			break;
 		case kCmndVideoSetIntEnbl:
 #if VID_dolog
-			dbglog_WriteNote("Video_Access kCmndVideoSetIntEnbl");
+			spdlog::debug("Video_Access kCmndVideoSetIntEnbl");
 #endif
 			Vid_VBLintunenbl =
 				(0 == get_vm_word(p + 8))
@@ -547,7 +547,7 @@ void ExtnVideo_Access(CPTR p)
 			break;
 		case kCmndVideoClearInt:
 #if VID_dolog && 0 /* frequent */
-			dbglog_WriteNote("Video_Access kCmndVideoClearInt");
+			spdlog::debug("Video_Access kCmndVideoClearInt");
 #endif
 			Vid_VBLinterrupt = 1;
 			result = mnvm_noErr;
@@ -563,7 +563,7 @@ void ExtnVideo_Access(CPTR p)
 				switch (csCode) {
 					case 0: /* VidReset */
 #if VID_dolog
-						dbglog_WriteNote(
+						spdlog::debug(
 							"Video_Access kCmndVideoControl, VidReset");
 #endif
 						put_vm_word(csParam + VDPageInfo_csMode,
@@ -577,14 +577,14 @@ void ExtnVideo_Access(CPTR p)
 						break;
 					case 1: /* KillIO */
 #if VID_dolog
-						dbglog_WriteNote(
+						spdlog::debug(
 							"Video_Access kCmndVideoControl, KillIO");
 #endif
 						result = mnvm_noErr;
 						break;
 					case 2: /* SetVidMode */
 #if VID_dolog
-						dbglog_WriteNote(
+						spdlog::debug(
 							"Video_Access kCmndVideoControl, "
 							"SetVidMode");
 #endif
@@ -603,7 +603,7 @@ void ExtnVideo_Access(CPTR p)
 						break;
 					case 3: /* SetEntries */
 #if VID_dolog
-						dbglog_WriteNote(
+						spdlog::debug(
 							"Video_Access kCmndVideoControl, "
 							"SetEntries");
 #endif
@@ -687,7 +687,7 @@ void ExtnVideo_Access(CPTR p)
 						break;
 					case 4: /* SetGamma */
 #if VID_dolog
-						dbglog_WriteNote(
+						spdlog::debug(
 							"Video_Access kCmndVideoControl, SetGamma");
 #endif
 						{
@@ -706,7 +706,7 @@ void ExtnVideo_Access(CPTR p)
 						break;
 					case 5: /* GrayScreen */
 #if VID_dolog
-						dbglog_WriteNote(
+						spdlog::debug(
 							"Video_Access kCmndVideoControl, "
 							"GrayScreen");
 #endif
@@ -722,7 +722,7 @@ void ExtnVideo_Access(CPTR p)
 						break;
 					case 6: /* SetGray */
 #if VID_dolog
-						dbglog_WriteNote(
+						spdlog::debug(
 							"Video_Access kCmndVideoControl, SetGray");
 #endif
 						{
@@ -740,7 +740,7 @@ void ExtnVideo_Access(CPTR p)
 						break;
 					case 9: /* SetDefaultMode */
 #if VID_dolog
-						dbglog_WriteNote(
+						spdlog::debug(
 							"Video_Access kCmndVideoControl, "
 							"SetDefaultMode");
 #endif
@@ -752,7 +752,7 @@ void ExtnVideo_Access(CPTR p)
 						break;
 					case 16: /* SavePreferredConfiguration */
 #if VID_dolog
-						dbglog_WriteNote(
+						spdlog::debug(
 							"Video_Access kCmndVideoControl, "
 							"SavePreferredConfiguration");
 #endif
@@ -766,7 +766,7 @@ void ExtnVideo_Access(CPTR p)
 						ReportAbnormalID(0x0A04,
 							"kCmndVideoControl, unknown csCode");
 #if dbglog_HAVE
-						dbglog_writelnNum("csCode", csCode);
+						spdlog::debug("csCode = {}", csCode);
 #endif
 						break;
 				}
@@ -784,7 +784,7 @@ void ExtnVideo_Access(CPTR p)
 				switch (csCode) {
 					case 2: /* GetMode */
 #if VID_dolog
-						dbglog_WriteNote(
+						spdlog::debug(
 							"Video_Access kCmndVideoStatus, GetMode");
 #endif
 						put_vm_word(csParam + VDPageInfo_csMode,
@@ -797,7 +797,7 @@ void ExtnVideo_Access(CPTR p)
 						break;
 					case 3: /* GetEntries */
 #if VID_dolog
-						dbglog_WriteNote(
+						spdlog::debug(
 							"Video_Access kCmndVideoStatus, "
 							"GetEntries");
 #endif
@@ -818,7 +818,7 @@ void ExtnVideo_Access(CPTR p)
 						break;
 					case 4: /* GetPages */
 #if VID_dolog
-						dbglog_WriteNote(
+						spdlog::debug(
 							"Video_Access kCmndVideoStatus, GetPages");
 #endif
 						put_vm_word(csParam + VDPageInfo_csPage, 1);
@@ -827,7 +827,7 @@ void ExtnVideo_Access(CPTR p)
 						break;
 					case 5: /* GetPageAddr */
 #if VID_dolog
-						dbglog_WriteNote(
+						spdlog::debug(
 							"Video_Access kCmndVideoStatus,"
 							" GetPageAddr");
 #endif
@@ -849,7 +849,7 @@ void ExtnVideo_Access(CPTR p)
 						break;
 					case 6: /* GetGray */
 #if VID_dolog
-						dbglog_WriteNote(
+						spdlog::debug(
 							"Video_Access kCmndVideoStatus, GetGray");
 #endif
 						put_vm_word(csParam + VDPageInfo_csMode,
@@ -863,7 +863,7 @@ void ExtnVideo_Access(CPTR p)
 						break;
 					case 8: /* GetGamma */
 #if VID_dolog
-						dbglog_WriteNote(
+						spdlog::debug(
 							"Video_Access kCmndVideoStatus, "
 							"GetGamma");
 #endif
@@ -875,7 +875,7 @@ void ExtnVideo_Access(CPTR p)
 						break;
 					case 9: /* GetDefaultMode */
 #if VID_dolog
-						dbglog_WriteNote(
+						spdlog::debug(
 							"Video_Access kCmndVideoStatus, "
 							"GetDefaultMode");
 #endif
@@ -884,7 +884,7 @@ void ExtnVideo_Access(CPTR p)
 						break;
 					case 10: /* GetCurrentMode */
 #if VID_dolog
-						dbglog_WriteNote(
+						spdlog::debug(
 							"Video_Access kCmndVideoStatus, "
 							"GetCurrentMode");
 #endif
@@ -903,7 +903,7 @@ void ExtnVideo_Access(CPTR p)
 						break;
 					case 12: /* GetConnection */
 #if VID_dolog
-						dbglog_WriteNote(
+						spdlog::debug(
 							"Video_Access kCmndVideoStatus, "
 							"GetConnection");
 #endif
@@ -912,7 +912,7 @@ void ExtnVideo_Access(CPTR p)
 						break;
 					case 13: /* GetCurrentMode */
 #if VID_dolog
-						dbglog_WriteNote(
+						spdlog::debug(
 							"Video_Access kCmndVideoStatus, "
 							"GetCurrentMode");
 #endif
@@ -921,7 +921,7 @@ void ExtnVideo_Access(CPTR p)
 						break;
 					case 14: /* GetModeBaseAddress */
 #if VID_dolog
-						dbglog_WriteNote(
+						spdlog::debug(
 							"Video_Access kCmndVideoStatus, "
 							"GetModeBaseAddress");
 #endif
@@ -932,7 +932,7 @@ void ExtnVideo_Access(CPTR p)
 						break;
 					case 16: /* GetPreferredConfiguration */
 #if VID_dolog
-						dbglog_WriteNote(
+						spdlog::debug(
 							"Video_Access kCmndVideoStatus, "
 							"GetPreferredConfiguration");
 #endif
@@ -941,7 +941,7 @@ void ExtnVideo_Access(CPTR p)
 						break;
 					case 17: /* GetNextResolution */
 #if VID_dolog
-						dbglog_WriteNote(
+						spdlog::debug(
 							"Video_Access kCmndVideoStatus, "
 							"GetNextResolution");
 #endif
@@ -953,7 +953,7 @@ void ExtnVideo_Access(CPTR p)
 						break;
 					case 18: /* GetVideoParameters */
 #if VID_dolog
-						dbglog_WriteNote(
+						spdlog::debug(
 							"Video_Access kCmndVideoStatus, "
 							"GetVideoParameters");
 #endif
@@ -965,7 +965,7 @@ void ExtnVideo_Access(CPTR p)
 							"Video_Access kCmndVideoStatus, "
 								"unknown csCode");
 #if dbglog_HAVE
-						dbglog_writelnNum("csCode", csCode);
+						spdlog::debug("csCode = {}", csCode);
 #endif
 						break;
 				}

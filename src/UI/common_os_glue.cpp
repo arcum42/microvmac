@@ -358,20 +358,6 @@ static void dbglog_writeSpace(void)
 	dbglog_writeCStr(" ");
 }
 
-void dbglog_writeln(char *s)
-{
-	dbglog_writeCStr(s);
-	dbglog_writeReturn();
-}
-
-void dbglog_writelnNum(char *s, simr v)
-{
-	dbglog_writeCStr(s);
-	dbglog_writeSpace();
-	dbglog_writeNum(v);
-	dbglog_writeReturn();
-}
-
 #endif
 
 /* my event queue */

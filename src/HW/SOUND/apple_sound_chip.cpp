@@ -130,7 +130,7 @@ static void ASC_ClearFIFO(void)
 					{
 						SoundReg804 |= 0x02;
 #if ASC_dolog
-						dbglog_WriteNote("ASC : setting full flag A");
+						spdlog::debug("ASC : setting full flag A");
 #endif
 					} else {
 						if (0 != (SoundReg804 & 0x02)) {
@@ -171,7 +171,7 @@ static void ASC_ClearFIFO(void)
 					{
 						SoundReg804 |= 0x08;
 #if ASC_dolog
-						dbglog_WriteNote("ASC : setting full flag B");
+						spdlog::debug("ASC : setting full flag B");
 #endif
 					} else {
 						if (0 != (SoundReg804 & 0x08)) {
@@ -245,7 +245,6 @@ static void ASC_ClearFIFO(void)
 				break;
 			case 0x802: /* CONTROL */
 				if (WriteMem) {
-#if 1
 					if (0 != SoundReg801) {
 						if (SoundReg802 == Data) {
 							/*
@@ -267,7 +266,6 @@ static void ASC_ClearFIFO(void)
 #endif
 						}
 					}
-#endif
 					if (0 != (Data & ~ 2)) {
 						ReportAbnormalID(0x0F09,
 							"ASC - unexpected CONTROL value");
@@ -569,7 +567,7 @@ label_retry:
 						SoundReg804 &= ~ 0x04;
 						ASC_Playing = true;
 #if ASC_dolog
-						dbglog_WriteNote("ASC : start stereo playing");
+						spdlog::debug("ASC : start stereo playing");
 #endif
 					} else {
 						if (((uint16_t)(ASC_FIFO_InB - ASC_FIFO_Out)) == 0)
@@ -577,7 +575,7 @@ label_retry:
 							>= 370)
 						{
 #if ASC_dolog
-							dbglog_WriteNote("ASC : switch to mono");
+							spdlog::debug("ASC : switch to mono");
 #endif
 							SoundReg802 &= ~ 2;
 							/*
@@ -641,7 +639,7 @@ label_retry:
 					SoundReg804 &= ~ 0x01;
 					ASC_Playing = true;
 #if ASC_dolog
-					dbglog_WriteNote("ASC : start mono playing");
+					spdlog::debug("ASC : start mono playing");
 #endif
 				}
 			}
@@ -798,7 +796,6 @@ label_retry:
 #endif
 	}
 
-#if 1
 	if ((1 == SoundReg801) && ASC_Playing) {
 		if (((uint16_t)(ASC_FIFO_InA - ASC_FIFO_Out)) >= 0x200) {
 			if (0 != (SoundReg804 & 0x01)) {
@@ -811,7 +808,7 @@ label_retry:
 				/* happens in lode runner */
 			} else {
 #if ASC_dolog
-				dbglog_WriteNote("setting half flag A");
+				spdlog::debug("setting half flag A");
 #endif
 				ASC_interrupt_PulseNtfy();
 				SoundReg804 |= 0x01;
@@ -840,7 +837,7 @@ label_retry:
 					/* happens in Lunar Phantom */
 				} else {
 #if ASC_dolog
-					dbglog_WriteNote("setting half flag B");
+					spdlog::debug("setting half flag B");
 #endif
 					ASC_interrupt_PulseNtfy();
 					SoundReg804 |= 0x04;
@@ -862,5 +859,4 @@ label_retry:
 			}
 		}
 	}
-#endif
 }

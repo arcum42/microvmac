@@ -151,7 +151,7 @@ static bool CheckForADBkeyEvt(uint8_t *NextADBkeyevt)
 	} else {
 #if dbglog_HAVE && 0
 		if (KeyDown) {
-			dbglog_WriteNote("Got a KeyDown");
+			spdlog::debug("Got a KeyDown");
 		}
 #endif
 		switch (i) {

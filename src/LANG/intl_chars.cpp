@@ -1430,7 +1430,6 @@ const char * GetSubstitutionStr(const char x)
 				return kStrOff;
 			}
 			break;
-#if 1
 		case 'f':
 			if (WantFullScreen) {
 				return kStrOn;
@@ -1438,7 +1437,6 @@ const char * GetSubstitutionStr(const char x)
 				return kStrOff;
 			}
 			break;
-#endif
 		case 'b':
 			if (RunInBackground) {
 				return kStrOn;
