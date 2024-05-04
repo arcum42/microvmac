@@ -33,18 +33,6 @@ extern bool RequestInsertDisk;
 extern uint8_t RequestIthDisk;
 extern bool ControlKeyPressed;
 
-#define kEmMd_Twig43      0
-#define kEmMd_Twiggy      1
-#define kEmMd_128K        2
-#define kEmMd_512Ke       3
-#define kEmMd_Plus        4
-#define kEmMd_SE          5
-#define kEmMd_SEFDHD      6
-#define kEmMd_Classic     7
-#define kEmMd_PB100       8
-#define kEmMd_II          9
-#define kEmMd_IIx        10
-
 static constexpr uint32_t RAMSafetyMarginFudge = 4;
 
 static constexpr uint32_t kRAM_Size = (kRAMa_Size + kRAMb_Size);

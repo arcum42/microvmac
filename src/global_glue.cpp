@@ -552,7 +552,7 @@ static void FinishATTList(void)
 		}
 #endif
 
-		SetHeadATTel(h);
+		SetHeadATTel(h); // Mac II crashes here.
 	}
 }
 

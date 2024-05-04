@@ -25,6 +25,7 @@
 #include "sys_dependencies.h"
 #include "UI/my_os_glue.h"
 #include "EMCONFIG.h"
+#include "hw_config.h"
 #include "global_glue.h"
 
 #include "HW/KBRD/keyboard.h"
@@ -32,6 +33,8 @@
 #ifdef _VIA_Debug
 #include <stdio.h>
 #endif
+
+#if EmClassicKbrd
 
 /*
 	ReportAbnormalID unused 0x0B03 - 0x0BFF
@@ -210,3 +213,4 @@ void KeyBoard_Update(void)
 		}
 	}
 }
+#endif

@@ -35,6 +35,7 @@
 #include "HW/M68K/cpu_68k.h"
 #include "HW/DISK/sony_floppy.h"
 #include "video.h"
+#include "HW/SCREEN/screen.h"
 
 /*
 	ReportAbnormalID unused 0x0A08 - 0x0AFF

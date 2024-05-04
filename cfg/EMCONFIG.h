@@ -7,6 +7,8 @@
 	you know what you're doing.
 */
 
+#pragma once
+
 #ifndef EMCONFIG_H
 #define EMCONFIG_H
 
@@ -55,13 +57,29 @@
 #define AutoKeyThresh 0x06
 #define AutoKeyRate 0x03
 
+/* Define the emulated machine here.*/
+#define kEmMd_Twig43      0
+#define kEmMd_Twiggy      1
+#define kEmMd_128K        2
+#define kEmMd_512Ke       3
+#define kEmMd_Plus        4
+#define kEmMd_SE          5
+#define kEmMd_SEFDHD      6
+#define kEmMd_Classic     7
+#define kEmMd_PB100       8
+#define kEmMd_II          9
+#define kEmMd_IIx        10
+
 #define CurEmMd kEmMd_Plus
+//#define CurEmMd kEmMd_II
+#include "hw_config.h"
+#include "global_glue.h"
 
 //#if (CurEmMd == kEmMd_Plus)
-#include "MACPLUS.h"
+//#include "MACPLUS.h"
 //#elif (CurEmMd == kEmMd_II)
 //#include "MACII.h"
-//#endif
+//y#endif
 
 #define WantDisasm 0
 #define ExtraAbnormalReports 0
