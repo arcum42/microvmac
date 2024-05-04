@@ -28,6 +28,8 @@
 #include "EMCONFIG.h"
 #include "global_glue.h"
 
+#if EmVIA2
+
 #include "via2.h"
 
 /*
@@ -1217,4 +1219,6 @@ void VIA2_iCB2_PulseNtfy(void)
 {
 	VIA2_SetInterruptFlag(kIntCB2);
 }
+#endif
+
 #endif

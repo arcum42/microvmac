@@ -37,6 +37,8 @@
 #include "video.h"
 #include "HW/SCREEN/screen.h"
 
+#if EmVidCard
+
 /*
 	ReportAbnormalID unused 0x0A08 - 0x0AFF
 */
@@ -980,3 +982,5 @@ void ExtnVideo_Access(CPTR p)
 
 	put_vm_word(p + ExtnDat_result, result);
 }
+
+#endif

@@ -23,6 +23,8 @@
 #include "global_glue.h"
 #include "UI/my_os_glue.h"
 
+#if EmADB
+
 #include "HW/ADB/adb.h"
 
 #ifdef _VIA_Debug
@@ -210,3 +212,5 @@ void ADB_Update(void)
 		}
 	}
 }
+
+#endif

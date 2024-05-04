@@ -150,6 +150,13 @@ MAC_SRC = {
 		HW_SRC['VIDCARD'] +
 		HW_SRC['ADB'] +
 		HW_SRC['VIA2'] +
+		HW_SRC['SOUND_ASC'],
+	'All':
+		MAC_SRC_COMMON +
+		HW_SRC['KBRD'] +
+		HW_SRC['VIDCARD'] +
+		HW_SRC['ADB'] +
+		HW_SRC['VIA2'] +
 		HW_SRC['SOUND_ASC']
 }
 
@@ -193,7 +200,7 @@ spdlog = dependency('spdlog')
 # Just gonna do an SDL2 Mac Plus for now
 executable(
 	'microvmac',
-	sources: MAC_SRC['Plus'] + UI_SRC + EMU_SRC + WIN_RSRC,
+	sources: MAC_SRC['All'] + UI_SRC + EMU_SRC + WIN_RSRC,
 	dependencies: [lSDL2, spdlog],
 	include_directories: EMU_INC,
 	win_subsystem: 'windows'

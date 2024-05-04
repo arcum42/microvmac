@@ -25,6 +25,8 @@
 #include "global_glue.h"
 #include "HW/VIA/via.h"
 
+#if EmASC
+
 #include "HW/SOUND/apple_sound_chip.h"
 
 /*
@@ -860,3 +862,5 @@ label_retry:
 		}
 	}
 }
+
+#endif
