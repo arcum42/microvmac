@@ -381,6 +381,8 @@ static void MainEventLoop(void)
 
 void ProgramMain(void)
 {
+	/* Let's get ready to start */
+	devices_setup();
 	spdlog::debug("Welcome to spdlog!");
 	
 	if (InitEmulation() == false) {return;}

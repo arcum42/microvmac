@@ -74,7 +74,9 @@ typedef struct DevMethods {
 	void (*timeend)(void);
 } DevMethods_t;
 
-extern const DevMethods_t DEVICES[DEV_MAX];
+extern DevMethods_t DEVICES[DEV_MAX];
+
+extern void devices_setup(void);
 
 extern void devices_init(void);
 extern void devices_reset(void);
