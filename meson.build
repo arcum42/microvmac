@@ -138,7 +138,7 @@ HW_SRC = {
 	]
 }
 
-MAC_SRC_COMMON = HW_SRC['DISK'] + HW_SRC['M68K'] + HW_SRC['RTC'] + HW_SRC['SOUND'] + HW_SRC['VIA1'] + HW_SRC['SCREEN'] + HW_SRC['SCC'] + HW_SRC['SCSI'] + HW_SRC['MOUSE'] + HW_SRC['ROM']
+MAC_SRC_COMMON = HW_SRC['DISK'] + HW_SRC['M68K'] + HW_SRC['RTC'] + HW_SRC['SOUND'] + HW_SRC['VIA1'] + HW_SRC['SCREEN'] + HW_SRC['SCC'] + HW_SRC['SCSI'] + HW_SRC['MOUSE'] + HW_SRC['ROM'] + 'src/HW/hardware.cpp'
 
 # Macintosh definitions
 MAC_SRC = {

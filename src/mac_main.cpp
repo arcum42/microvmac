@@ -25,249 +25,13 @@
 #include "UI/my_os_glue.h"
 #include "EMCONFIG.h"
 #include "global_glue.h"
-#include "HW/M68K/instruct_table_68k.h"
-#include "HW/M68K/cpu_68k.h"
-#include "HW/VIA/via.h"
-#include "HW/VIA/via2.h"
-#include "HW/DISK/int_woz_machine.h"
-#include "HW/SCC/serial_comm.h"
-#include "HW/RTC/rtc.h"
-#include "PATCHES/rom.h"
-#include "HW/SCSI/scsi.h"
-#include "HW/DISK/sony_floppy.h"
-#include "HW/SCREEN/screen.h"
-#include "HW/VIDCARD/video.h"
-#include "HW/KBRD/keyboard.h"
-#include "HW/POWERMAN/power.h"
-#include "HW/ADB/adb.h"
-#include "HW/SOUND/apple_sound_chip.h"
-#include "HW/SOUND/sound.h"
-#include "HW/MOUSE/mouse.h"
+#include "HW/hardware.h"
 
 #include "mac_main.h"
 
-// Let's define a bunch of function structure thingies
-
-#define ARRAY_SIZE(array) (sizeof(array) / sizeof(*array))
-
-typedef struct DevMethods {
-	bool (*init)(void);
-	void (*reset)(void);
-	void (*starttick)(void);
-	void (*endtick)(void);
-	void (*subtick)(int);
-	void (*timebegin)(void);
-	void (*timeend)(void);
-} DevMethods_t;
-
-const DevMethods_t DEVICES[] = {
-	// RTC
-	{
-	.init = EmRTC ? RTC_Init : nullptr,
-	.reset = nullptr,
-	.starttick = nullptr,
-	.endtick = nullptr,
-	.subtick = nullptr,
-	.timebegin = nullptr,
-	.timeend = nullptr,
-	},
-	// ROM
-	{
-	.init = ROM_Init,
-	.reset = nullptr,
-	.starttick = nullptr,
-	.endtick = nullptr,
-	.subtick = nullptr,
-	.timebegin = nullptr,
-	.timeend = nullptr,
-	},
-	// Memory
-	{
-	.init = AddrSpac_Init,
-	.reset = Memory_Reset,
-	.starttick = nullptr,
-	.endtick = nullptr,
-	.subtick = nullptr,
-	.timebegin = nullptr,
-	.timeend = nullptr,
-	},
-	// ICT
-	{
-	.init = nullptr,
-	.reset = ICT_Zap,
-	.starttick = nullptr,
-	.endtick = nullptr,
-	.subtick = nullptr,
-	.timebegin = nullptr,
-	.timeend = nullptr,
-	},
-	// IWM
-	{
-	.init = nullptr,
-	.reset = IWM_Reset,
-	.starttick = nullptr,
-	.endtick = nullptr,
-	.subtick = nullptr,
-	.timebegin = nullptr,
-	.timeend = nullptr,
-	},
-	// SCC
-	{
-	.init = nullptr,
-	.reset = SCC_Reset,
-	.starttick = nullptr,
-	.endtick = nullptr,
-	.subtick = nullptr,
-	.timebegin = nullptr,
-	.timeend = nullptr,
-	},
-	// SCSI
-	{
-	.init = nullptr,
-	.reset = SCSI_Reset,
-	.starttick = nullptr,
-	.endtick = nullptr,
-	.subtick = nullptr,
-	.timebegin = nullptr,
-	.timeend = nullptr,
-	},
-	// VIA1
-	{
-	.init = VIA1_Zap,
-	.reset = VIA1_Reset,
-	.starttick = nullptr,
-	.endtick = nullptr,
-	.subtick = nullptr,
-	.timebegin = VIA1_ExtraTimeBegin,
-	.timeend = VIA1_ExtraTimeEnd,
-	},
-	// VIA2
-	{
-	.init = nullptr,
-	.reset = EmVIA2 ? VIA2_Zap : nullptr,
-	.starttick = nullptr,
-	.endtick = nullptr,
-	.subtick = nullptr,
-	.timebegin = EmVIA2 ? VIA2_ExtraTimeBegin : nullptr,
-	.timeend = EmVIA2 ? VIA2_ExtraTimeEnd : nullptr,
-	},
-	// Sony disk drive
-	{
-	.init = nullptr,
-	.reset = Sony_Reset,
-	.starttick = Sony_Update,
-	.endtick = nullptr,
-	.subtick = nullptr,
-	.timebegin = nullptr,
-	.timeend = nullptr,
-	},
-	// Extn
-	{
-	.init = nullptr,
-	.reset = Extn_Reset,
-	.starttick = nullptr,
-	.endtick = nullptr,
-	.subtick = nullptr,
-	.timebegin = nullptr,
-	.timeend = nullptr,
-	},
-	// m68k
-	{
-	.init = nullptr,
-	.reset = m68k_reset,
-	.starttick = nullptr,
-	.endtick = nullptr,
-	.subtick = nullptr,
-	.timebegin = nullptr,
-	.timeend = nullptr,
-	},
-	// Mouse
-	{
-	.init = nullptr,
-	.reset = nullptr,
-	.starttick = Mouse_Update,
-	.endtick = Mouse_EndTickNotify,
-	.subtick = nullptr,
-	.timebegin = nullptr,
-	.timeend = nullptr,
-	},
-	// Classic Keyboard
-	{
-	.init = nullptr,
-	.reset = nullptr,
-	.starttick = EmClassicKbrd ? KeyBoard_Update : nullptr,
-	.endtick = nullptr,
-	.subtick = nullptr,
-	.timebegin = nullptr,
-	.timeend = nullptr,
-	},
-	// ADB
-	/*{
-	.init = nullptr,
-	.reset = nullptr,
-	.starttick = EmADB ? ADB_Update : nullptr,
-	.endtick = nullptr,
-	.subtick = nullptr,
-	.timebegin = nullptr,
-	.timeend = nullptr,
-	},*/
-	// LocalTalk
-	/*{
-	.init = nullptr,
-	.reset = nullptr,
-	.starttick = EmLocalTalk ? LocalTalkTick : nullptr,
-	.endtick = nullptr,
-	.timebegin = nullptr,
-	.timeend = nullptr,
-	},*/
-	// Video card
-	/*{
-	.init = EmVidCard ? Vid_Init : nullptr,
-	.reset = nullptr,
-	.starttick = EmVidCard ? Vid_Update : nullptr,
-	.endtick = nullptr,
-	.subtick = nullptr,
-	.timebegin = nullptr,
-	.timeend = nullptr,
-	},*/
-	// ASC
-	{
-	.init = nullptr,
-	.reset = nullptr,
-	.starttick = nullptr,
-	.endtick = nullptr,
-	.subtick = EmASC ? ASC_SubTick : nullptr,
-	.timebegin = nullptr,
-	.timeend = nullptr
-	},
-	// Sound (non-ASC)
-	{
-	.init = nullptr,
-	.reset = nullptr,
-	.starttick = nullptr,
-	.endtick = nullptr,
-	.subtick = (SoundEnabled && (CurEmMd != kEmMd_PB100)) ? MacSound_SubTick : nullptr,
-	.timebegin = nullptr,
-	.timeend = nullptr
-	},
-	// Screen
-	{
-	.init = Screen_Init,
-	.reset = nullptr,
-	.starttick = Sixtieth_PulseNtfy, // VBlank interrupt
-	.endtick = Screen_EndTickNotify,
-	.subtick = nullptr,
-	.timebegin = nullptr,
-	.timeend = nullptr,
-	},
-};
-
 static void EmulatedHardwareZap(void)
 {
-	uint32_t i;
-	for ( i = 0; i < ARRAY_SIZE(DEVICES); i++ ) {
-		if (DEVICES[i].reset != nullptr) { DEVICES[i].reset(); }
-	}
+	devices_reset();
 }
 
 static void DoMacReset(void)
@@ -290,12 +54,9 @@ static void InterruptReset_Update(void)
 	}
 }
 
-static void SubTickNotify(int SubTick)
+static void SubTickNotify(int value)
 {
-	uint32_t i;
-	for ( i = 0; i < ARRAY_SIZE(DEVICES); i++ ) {
-		if (DEVICES[i].subtick != nullptr) { DEVICES[i].subtick(SubTick); }
-	}
+	devices_subtick(value);
 }
 
 #define CyclesScaledPerTick (130240UL * ClockMult * kCycleScale)
@@ -331,12 +92,10 @@ static void SubTickTaskEnd(void)
 
 static void SixtiethSecondNotify(void)
 {
-	/*uint32_t i;
+	/*
 	// Begin new frame
 	InterruptReset_Update();
-	for ( i = 0; i < ARRAY_SIZE(DEVICES); i++ ) {
-		if (DEVICES[i].starttick != nullptr) { DEVICES[i].starttick(); }
-	}*/
+	devices_starttick();*/
 	
 	// Temporary fix to non-functional RTC
 	
@@ -359,28 +118,20 @@ static void SixtiethSecondNotify(void)
 
 static void SixtiethEndNotify(void)
 {
-	uint32_t i;
 	SubTickTaskEnd();
-	for ( i = 0; i < ARRAY_SIZE(DEVICES); i++ ) {
-		if (DEVICES[i].endtick != nullptr) { DEVICES[i].endtick(); }
-	}
+
+	devices_endtick();
 	// End frame
 }
 
 static void ExtraTimeBeginNotify(void)
 {
-	uint32_t i;
-	for ( i = 0; i < ARRAY_SIZE(DEVICES); i++ ) {
-		if (DEVICES[i].timebegin != nullptr) { DEVICES[i].timebegin(); }
-	}
+	devices_timebegin();
 }
 
 static void ExtraTimeEndNotify(void)
 {
-	uint32_t i;
-	for ( i = 0; i < ARRAY_SIZE(DEVICES); i++ ) {
-		if (DEVICES[i].timeend != nullptr) { DEVICES[i].timeend(); }
-	}
+	devices_timeend();
 }
 
 void EmulationReserveAlloc(void)
@@ -399,12 +150,7 @@ void EmulationReserveAlloc(void)
 
 static bool InitEmulation(void)
 {
-	uint32_t i;
-	for ( i = 0; i < ARRAY_SIZE(DEVICES); i++ ) {
-		if (DEVICES[i].init != nullptr) {
-			assert(DEVICES[i].init());
-		}
-	}
+	devices_init();
 
 	EmulatedHardwareZap();
 	return true;
