@@ -34,7 +34,6 @@
 #define EnableMouseMotion 0
 
 #define IncludeHostTextClipExchange 0
-#define EmLocalTalk 0
 #define AutoLocation 1
 #define AutoTimeZone 1
 

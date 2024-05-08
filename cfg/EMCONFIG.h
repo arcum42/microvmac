@@ -73,6 +73,7 @@
 #define CurEmMd kEmMd_Plus
 //#define CurEmMd kEmMd_II
 #include "hw_config.h"
+#include "HW/wires.h"
 #include "global_glue.h"
 
 //#if (CurEmMd == kEmMd_Plus)

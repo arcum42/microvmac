@@ -26,8 +26,26 @@
 
 #include "HW/hardware.h"
 
+device_config_t hw_config;
+DevMethods_t DEVICES[DEV_MAX];
+
 // Sets up commands that can be called for all the various devices, and iterators over them.
 // Should probably be converted to two classes, one for an individual device, and one for all devices, with a way of enabling and disabling them.
+
+void setup_hw_config()
+{
+	hw_config.classic_keyboard = EmClassicKbrd;
+	hw_config.adb = EmADB;
+	hw_config.rtc = EmRTC;
+	hw_config.pmu = EmPMU;
+	hw_config.via2 = EmVIA2;
+	hw_config.use68020 = Use68020;
+	hw_config.fpu = EmFPU;
+	hw_config.mmu = EmMMU;
+	hw_config.asc = EmASC;
+	hw_config.video_card = EmVidCard;
+	hw_config.video_memory = IncludeVidMem;
+}
 
 const DevMethods_t null_device = 
 {
@@ -209,7 +227,7 @@ const DevMethods_t localtalk_device =
 {
 	.init = nullptr,
 	.reset = nullptr,
-	.starttick = /*EmLocalTalk ? LocalTalkTick :*/ nullptr,
+	.starttick = /*EmLocalTalk ? LocalTalkTick : */ nullptr,
 	.endtick = nullptr,
     .subtick = nullptr,
 	.timebegin = nullptr,
@@ -260,11 +278,11 @@ const DevMethods_t screen_device =
 	.timeend = nullptr
 };
 
-DevMethods_t DEVICES[DEV_MAX];
-
 void devices_setup()
 {
-	if (EmRTC)
+	setup_hw_config();
+
+	if (hw_config.rtc)
 		DEVICES[DEV_RTC] = rtc_device;
 	else
 		DEVICES[DEV_RTC] = null_device;
@@ -277,7 +295,7 @@ void devices_setup()
 	DEVICES[DEV_SCSI] = scsi_device;
 	DEVICES[DEV_VIA1] = via1_device;
 
-	if (EmVIA2)
+	if (hw_config.via2)
 		DEVICES[DEV_VIA2] = via2_device;
 	else
 		DEVICES[DEV_VIA2] = null_device;
@@ -287,12 +305,12 @@ void devices_setup()
 	DEVICES[DEV_68K] = cpu_device;
 	DEVICES[DEV_MOUSE] = mouse_device;
 
-	if (EmClassicKbrd)
+	if (hw_config.classic_keyboard)
 		DEVICES[DEV_KEYBOARD] = legacy_keyboard_device;
 	else
 		DEVICES[DEV_KEYBOARD] = null_device;
 
-	if (EmADB)
+	if (hw_config.adb)
 		DEVICES[DEV_ADB] = adb_device;
 	else
 		DEVICES[DEV_ADB] = null_device;
@@ -302,12 +320,12 @@ void devices_setup()
 	else
 		DEVICES[DEV_LOCALTALK] = null_device;
 
-	if (EmVidCard)
+	if (hw_config.video_card)
 		DEVICES[DEV_VIDEO] = videocard_device;
 	else
 		DEVICES[DEV_VIDEO] = null_device;
 
-	if (EmASC)
+	if (hw_config.asc)
 		DEVICES[DEV_ASC] = asc_device;
 	else
 		DEVICES[DEV_ASC] = null_device;

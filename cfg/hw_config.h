@@ -9,6 +9,10 @@
 
 #pragma once
 
+#define EmLocalTalk 0
+
+//#include "HW/wires.h"
+
 #if (CurEmMd == kEmMd_Plus)
 #define EmClassicKbrd 1
 #define EmADB 0
@@ -20,6 +24,9 @@
 #define EmMMU 0
 #define EmASC 0
 
+#define IncludeVidMem 0
+#define EmVidCard 0
+
 #define ClockMult 1
 
 #define WantCycByPriOp 1
@@ -27,9 +34,6 @@
 
 #define kRAMa_Size 0x00200000
 #define kRAMb_Size 0x00200000
-
-#define IncludeVidMem 0
-#define EmVidCard 0
 
 #define RomFileName "vMac.ROM"
 #define kCheckSumRom_Size 0x00020000
@@ -40,7 +44,7 @@
 
 /* the Wire variables are 1/0, not true/false */
 
-enum {
+/*enum {
 
 	Wire_VIA1_iA0_SoundVolb0,
 #define SoundVolb0 (Wires[Wire_VIA1_iA0_SoundVolb0])
@@ -123,7 +127,7 @@ enum {
 #define SCCinterruptChngNtfy VIAorSCCinterruptChngNtfy
 
 	kNumWires
-};
+};*/
 
 
 /* VIA configuration */
@@ -171,6 +175,12 @@ enum {
 #define EmMMU 0
 #define EmASC 1
 
+#define IncludeVidMem 1
+#define kVidMemRAM_Size 0x00040000
+
+#define EmVidCard 1
+#define kVidROM_Size 0x000800
+
 #define ClockMult 2
 
 #define WantCycByPriOp 0
@@ -184,11 +194,6 @@ enum {
 #define kRAMa_Size 0x00400000
 #define kRAMb_Size 0x00400000
 
-#define IncludeVidMem 1
-#define kVidMemRAM_Size 0x00040000
-
-#define EmVidCard 1
-#define kVidROM_Size 0x000800
 
 #define RomFileName "MacII.ROM"
 #define kRomCheckSum1 0x97851DB
@@ -197,7 +202,7 @@ enum {
 
 /* the Wire variables are 1/0, not true/false */
 
-enum {
+/*enum {
 
 	Wire_unknown_SoundDisable,
 #define SoundDisable (Wires[Wire_unknown_SoundDisable])
@@ -220,7 +225,7 @@ enum {
 	Wire_VIA1_iA2_unknown,
 #define VIA1_iA2 (Wires[Wire_VIA1_iA2_unknown])
 
-	Wire_VIA1_iB7_unknown, /* for compatibility with SoundDisable */
+	Wire_VIA1_iB7_unknown, // for compatibility with SoundDisable
 #define VIA1_iB7 (Wires[Wire_VIA1_iB7_unknown])
 
 	Wire_VIA2_InterruptRequest,
@@ -319,7 +324,7 @@ enum {
 #define Vid_VBLintunenbl (Wires[Wire_VBLintunenbl])
 
 	kNumWires
-};
+};*/
 
 
 /* VIA configuration */

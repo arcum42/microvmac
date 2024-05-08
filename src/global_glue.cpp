@@ -136,8 +136,6 @@ void customreset(void)
  uint8_t * VidMem = nullptr;
 #endif
 
- uint8_t Wires[kNumWires];
-
 #ifndef ReportAbnormalInterrupt
 #define ReportAbnormalInterrupt 0
 #endif

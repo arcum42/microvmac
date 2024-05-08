@@ -6,7 +6,8 @@
 uint8_t * ROM = nullptr;
 bool ROM_loaded = false;
 
-uint32_t Calc_Checksum(uint8_t *rom, uint32_t len)
+// Commented out for now, since it's not used yet. Rework later.
+/*uint32_t Calc_Checksum(uint8_t *rom, uint32_t len)
 {
 	uint32_t i;
 	uint32_t CheckSum = 0;
@@ -18,7 +19,7 @@ uint32_t Calc_Checksum(uint8_t *rom, uint32_t len)
 	}
 
 	return CheckSum;
-}
+}*/
 
 bool ROM_IsValid(void)
 {

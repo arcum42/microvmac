@@ -85,3 +85,32 @@ extern void devices_endtick(void);
 extern void devices_subtick(int value);
 extern void devices_timebegin();
 extern void devices_timeend();
+
+typedef struct device_config {
+    bool classic_keyboard;
+    bool adb;
+    bool rtc;
+    bool pmu;
+    bool via2;
+    bool use68020;
+    bool fpu;
+    bool mmu;
+    bool asc;
+    bool video_card;
+    bool video_memory;
+} device_config_t;
+
+extern device_config_t hw_config;
+
+#define EmClassicKbrd 1
+#define EmADB 0
+#define EmRTC 1
+#define EmPMU 0
+#define EmVIA2 0
+#define Use68020 0
+#define EmFPU 0
+#define EmMMU 0
+#define EmASC 0
+
+#define IncludeVidMem 0
+#define EmVidCard 0

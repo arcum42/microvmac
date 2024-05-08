@@ -155,8 +155,6 @@ extern uimr ICTactive;
 extern iCountt ICTwhen[kNumICTs];
 extern iCountt NextiCount;
 
-extern uint8_t Wires[kNumWires];
-
 #define kLn2CycleScale 6
 #define kCycleScale (1 << kLn2CycleScale)
 
