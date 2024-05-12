@@ -14,6 +14,7 @@
 #define EmLocalTalk 0
 
 //#include "HW/wires.h"
+#include "EMCONFIG.h"
 
 #if (CurEmMd == kEmMd_Plus)
 #define EmClassicKbrd 1
