@@ -80,6 +80,10 @@ endif
 
 # Hardware libraries
 HW_SRC = {
+	'HW': [
+		'src/HW/hardware.cpp',
+		'src/HW/wires.cpp'
+	],
 	'ADB':  [
 		'src/HW/ADB/adb.cpp'
 	],
@@ -138,19 +142,30 @@ HW_SRC = {
 	]
 }
 
-MAC_SRC_COMMON = HW_SRC['DISK'] + HW_SRC['M68K'] + HW_SRC['RTC'] + HW_SRC['SOUND'] + HW_SRC['VIA1'] + HW_SRC['SCREEN'] + HW_SRC['SCC'] + HW_SRC['SCSI'] + HW_SRC['MOUSE'] + HW_SRC['ROM'] + 'src/HW/hardware.cpp' + 'src/HW/wires.cpp'
+MAC_SRC_COMMON = \
+		HW_SRC['DISK'] + \
+		HW_SRC['M68K'] + \
+		HW_SRC['RTC'] + \
+		HW_SRC['SOUND'] + \
+		HW_SRC['VIA1'] + \
+		HW_SRC['SCREEN'] + \
+		HW_SRC['SCC'] + \
+		HW_SRC['SCSI'] + \
+		HW_SRC['MOUSE'] + \
+		HW_SRC['ROM'] + \
+		HW_SRC['HW']
 
 # Macintosh definitions
 MAC_SRC = {
-	'Plus': 
-		MAC_SRC_COMMON +
-		HW_SRC['KBRD'],
-	'II': 
-		MAC_SRC_COMMON +
-		HW_SRC['VIDCARD'] +
-		HW_SRC['ADB'] +
-		HW_SRC['VIA2'] +
-		HW_SRC['SOUND_ASC'],
+#	'Plus': 
+#		MAC_SRC_COMMON +
+#		HW_SRC['KBRD'],
+#	'II': 
+#		MAC_SRC_COMMON +
+#		HW_SRC['VIDCARD'] +
+#		HW_SRC['ADB'] +
+#		HW_SRC['VIA2'] +
+#		HW_SRC['SOUND_ASC'],
 	'All':
 		MAC_SRC_COMMON +
 		HW_SRC['KBRD'] +
