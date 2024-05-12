@@ -666,8 +666,8 @@ void VIA1_ShiftInData(uint8_t v)
 	}
 }
 
-#define CyclesPerViaTime (10 * ClockMult)
-#define CyclesScaledPerViaTime (kCycleScale * CyclesPerViaTime)
+constexpr uint32_t CyclesPerViaTime = (10 * ClockMult);
+constexpr uint32_t CyclesScaledPerViaTime = (kCycleScale * CyclesPerViaTime);
 
 static bool VIA1_T1Running = true;
 static iCountt VIA1_T1LastTime = 0;

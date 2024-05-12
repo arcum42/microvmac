@@ -22,6 +22,7 @@
 
 #include "sys_dependencies.h"
 #include "global_glue.h"
+#include "HW/M68K/cpu_68k.h"
 
 /*
 	ReportAbnormalID unused 0x0306 - 0x03FF

@@ -19,6 +19,14 @@
 #ifndef MINEM68K_H
 #define MINEM68K_H
 
+#define uint32_t_FromSByte(x) ((uint32_t)(int32_t)(int8_t)(uint8_t)(x))
+#define uint32_t_FromSWord(x) ((uint32_t)(int32_t)(int16_t)(uint16_t)(x))
+#define uint32_t_FromSLong(x) ((uint32_t)(int32_t)(int32_t)(uint32_t)(x))
+
+#define uint32_t_FromUByte(x) ((uint32_t)(uint8_t)(x))
+#define uint32_t_FromUWord(x) ((uint32_t)(uint16_t)(x))
+#define uint32_t_FromULong(x) ((uint32_t)(uint32_t)(x))
+
 extern void MINEM68K_Init(
 	uint8_t *fIPL);
 #if SmallGlobals

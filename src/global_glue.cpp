@@ -171,11 +171,13 @@ label_1:
 /* extension mechanism */
 
 #if IncludeExtnPbufs
-#define kCmndPbufFeatures 1
-#define kCmndPbufNew 2
-#define kCmndPbufDispose 3
-#define kCmndPbufGetSize 4
-#define kCmndPbufTransfer 5
+enum kCmndPbuf {
+	kCmndPbufFeatures = 1,
+	kCmndPbufNew = 2,
+	kCmndPbufDispose = 3,
+	kCmndPbufGetSize = 4,
+	kCmndPbufTransfer = 5
+};
 
 static void ExtnParamBuffers_Access(CPTR p)
 {
@@ -252,9 +254,11 @@ static void ExtnParamBuffers_Access(CPTR p)
 #endif
 
 #if IncludeExtnHostTextClipExchange
-#define kCmndHTCEFeatures 1
-#define kCmndHTCEExport 2
-#define kCmndHTCEImport 3
+enum kCmndHTCE {
+	kCmndHTCEFeatures = 1,
+	kCmndHTCEExport = 2,
+	kCmndHTCEImport = 3
+};
 #endif
 
 #if IncludeExtnHostTextClipExchange
@@ -294,21 +298,23 @@ static void ExtnHostTextClipExchange_Access(CPTR p)
 }
 #endif
 
-#define kFindExtnExtension 0x64E1F58A
-#define kDiskDriverExtension 0x4C9219E6
+constexpr uint32_t kFindExtnExtension = 0x64E1F58A;
+constexpr uint32_t kDiskDriverExtension = 0x4C9219E6;
 #if IncludeExtnPbufs
-#define kHostParamBuffersExtension 0x314C87BF
+constexpr uint32_t kHostParamBuffersExtension = 0x314C87BF;
 #endif
 #if IncludeExtnHostTextClipExchange
-#define kHostClipExchangeExtension 0x27B130CA
+constexpr uint32_t kHostClipExchangeExtension = 0x27B130CA;
 #endif
 
-#define kCmndFindExtnFind 1
-#define kCmndFindExtnId2Code 2
-#define kCmndFindExtnCount 3
+enum kCmndFindExtn {
+	kCmndFindExtnFind = 1,
+	kCmndFindExtnId2Code = 2,
+	kCmndFindExtnCount = 3
+};
 
-#define kParamFindExtnTheExtn 8
-#define kParamFindExtnTheId 12
+constexpr uint32_t kParamFindExtnTheExtn = 8;
+constexpr uint32_t kParamFindExtnTheId = 12;
 
 static void ExtnFind_Access(CPTR p)
 {
@@ -393,9 +399,11 @@ static void ExtnFind_Access(CPTR p)
 	put_vm_word(p + ExtnDat_result, result);
 }
 
-#define kDSK_Params_Hi 0
-#define kDSK_Params_Lo 1
-#define kDSK_QuitOnEject 3 /* obsolete */
+enum kDSK {
+	kDSK_Params_Hi = 0,
+	kDSK_Params_Lo = 1,
+	kDSK_QuitOnEject = 3 /* obsolete */
+};
 
 static uint16_t ParamAddrHi;
 

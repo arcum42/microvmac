@@ -108,16 +108,6 @@ extern uint8_t * get_real_address0(uint32_t L, bool WritableMem, CPTR addr,
 */
 
 extern bool AddrSpac_Init(void);
-
-
-#define uint32_t_FromSByte(x) ((uint32_t)(int32_t)(int8_t)(uint8_t)(x))
-#define uint32_t_FromSWord(x) ((uint32_t)(int32_t)(int16_t)(uint16_t)(x))
-#define uint32_t_FromSLong(x) ((uint32_t)(int32_t)(int32_t)(uint32_t)(x))
-
-#define uint32_t_FromUByte(x) ((uint32_t)(uint8_t)(x))
-#define uint32_t_FromUWord(x) ((uint32_t)(uint16_t)(x))
-#define uint32_t_FromULong(x) ((uint32_t)(uint32_t)(x))
-
 extern void VIAorSCCinterruptChngNtfy(void);
 
 extern bool InterruptButton;
@@ -155,15 +145,15 @@ extern uimr ICTactive;
 extern iCountt ICTwhen[kNumICTs];
 extern iCountt NextiCount;
 
-#define kLn2CycleScale 6
-#define kCycleScale (1 << kLn2CycleScale)
+constexpr uint32_t kLn2CycleScale = 6;
+constexpr uint32_t kCycleScale = (1 << kLn2CycleScale);
 
 #if WantCycByPriOp
-#define RdAvgXtraCyc /* 0 */ (kCycleScale + kCycleScale / 4)
-#define WrAvgXtraCyc /* 0 */ (kCycleScale + kCycleScale / 4)
+constexpr uint32_t RdAvgXtraCyc = /* 0 */ (kCycleScale + kCycleScale / 4);
+constexpr uint32_t WrAvgXtraCyc = /* 0 */ (kCycleScale + kCycleScale / 4);
 #endif
 
-#define kNumSubTicks 16
+constexpr uint32_t kNumSubTicks = 16;
 
 
 #define HaveMasterEvtQLock EmClassicKbrd
@@ -175,14 +165,16 @@ extern bool FindKeyEvent(int *VirtualKey, bool *KeyDown);
 
 /* minivmac extensions */
 
-#define ExtnDat_checkval 0
-#define ExtnDat_extension 2
-#define ExtnDat_commnd 4
-#define ExtnDat_result 6
-#define ExtnDat_params 8
+enum minivmac_extension {
+	ExtnDat_checkval = 0,
+	ExtnDat_extension = 2,
+	ExtnDat_commnd = 4,
+	ExtnDat_result = 6,
+	ExtnDat_params = 8
+};
 
-#define kCmndVersion 0
-#define ExtnDat_version 8
+constexpr uint32_t kCmndVersion = 0;
+constexpr uint32_t ExtnDat_version = 8;
 
 enum {
 	kExtnFindExtn, /* must be first */
@@ -227,17 +219,19 @@ struct ATTer {
 typedef struct ATTer ATTer;
 typedef ATTer *ATTep;
 
-#define kATTA_readreadybit 0
-#define kATTA_writereadybit 1
-#define kATTA_mmdvbit 2
-#define kATTA_ntfybit 3
+enum kATTA {
+	kATTA_readreadybit = 0,
+	kATTA_writereadybit,
+	kATTA_mmdvbit,
+	kATTA_ntfybit
+};
 
-#define kATTA_readwritereadymask \
-	((1 << kATTA_readreadybit) | (1 << kATTA_writereadybit))
-#define kATTA_readreadymask (1 << kATTA_readreadybit)
-#define kATTA_writereadymask (1 << kATTA_writereadybit)
-#define kATTA_mmdvmask (1 << kATTA_mmdvbit)
-#define kATTA_ntfymask (1 << kATTA_ntfybit)
+constexpr uint32_t kATTA_readwritereadymask = \
+	((1 << kATTA_readreadybit) | (1 << kATTA_writereadybit));
+constexpr uint32_t kATTA_readreadymask = (1 << kATTA_readreadybit);
+constexpr uint32_t kATTA_writereadymask = (1 << kATTA_writereadybit);
+constexpr uint32_t kATTA_mmdvmask = (1 << kATTA_mmdvbit);
+constexpr uint32_t kATTA_ntfymask = (1 << kATTA_ntfybit);
 
 extern uint32_t MMDV_Access(ATTep p, uint32_t Data,
 	bool WriteMem, bool ByteSize, CPTR addr);
