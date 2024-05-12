@@ -9,6 +9,8 @@
 
 #pragma once
 
+#include <cstdint>
+
 #define EmLocalTalk 0
 
 //#include "HW/wires.h"
@@ -36,11 +38,11 @@
 #define kRAMb_Size 0x00200000
 
 #define RomFileName "vMac.ROM"
-#define kCheckSumRom_Size 0x00020000
-#define kRomCheckSum1 0x4D1EEEE1
-#define kRomCheckSum2 0x4D1EEAE1
-#define kRomCheckSum3 0x4D1F8172
-#define kROM_Size 0x00020000
+constexpr uint32_t kCheckSumRom_Size = 0x00020000;
+constexpr uint32_t kRomCheckSum1 = 0x4D1EEEE1;
+constexpr uint32_t kRomCheckSum2 = 0x4D1EEAE1;
+constexpr uint32_t kRomCheckSum3 = 0x4D1F8172;
+constexpr uint32_t kROM_Size = 0x00020000;
 
 /* VIA configuration */
 #define VIA1_ORA_FloatVal 0xFF
@@ -54,10 +56,10 @@
 #define VIA1_CB2modesAllowed 0x01
 #define VIA1_CA2modesAllowed 0x01
 
-#define kExtn_Block_Base 0x00F40000
+constexpr uint32_t kExtn_Block_Base = 0x00F40000;
 #define kExtn_ln2Spc 5
 
-#define kROM_Base 0x00400000
+constexpr uint32_t kROM_Base = 0x00400000;
 #define kROM_ln2Spc 20
 #endif
 
@@ -75,10 +77,10 @@
 #define EmASC 1
 
 #define IncludeVidMem 1
-#define kVidMemRAM_Size 0x00040000
+constexpr uint32_t kVidMemRAM_Size = 0x00040000;
 
 #define EmVidCard 1
-#define kVidROM_Size 0x000800
+constexpr uint32_t kVidROM_Size = 0x000800;
 
 #define ClockMult 2
 
@@ -95,9 +97,9 @@
 
 
 #define RomFileName "MacII.ROM"
-#define kRomCheckSum1 0x97851DB
-#define kRomCheckSum2 0x9779D2C
-#define kROM_Size (1 << 18)
+constexpr uint32_t kRomCheckSum1 = 0x97851DB;
+constexpr uint32_t kRomCheckSum2 = 0x9779D2C;
+constexpr uint32_t kROM_Size = (1 << 18);
 
 /* VIA configuration */
 #define VIA1_ORA_FloatVal 0xBF
@@ -124,12 +126,12 @@
 #define VIA2_CB2modesAllowed 0x01
 #define VIA2_CA2modesAllowed 0x01
 
-#define kCheckSumRom_Size kROM_Size
+constexpr uint32_t kCheckSumRom_Size = kROM_Size;
 
-#define kExtn_Block_Base 0x50F0C000
+constexpr uint32_t kExtn_Block_Base = 0x50F0C000;
 #define kExtn_ln2Spc 5
 
-#define kROM_Base 0x00800000
+constexpr uint32_t kROM_Base = 0x00800000;
 #define kROM_ln2Spc 20
 
 #endif
