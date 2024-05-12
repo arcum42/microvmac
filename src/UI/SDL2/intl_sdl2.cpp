@@ -16,12 +16,12 @@
 #define CanGetAppPath 1
 #endif
 
-static char *d_arg = nullptr;
-static char *n_arg = nullptr;
+[[maybe_unused]] static char *d_arg = nullptr;
+[[maybe_unused]] static char *n_arg = nullptr;
 
 #if CanGetAppPath
-static char *app_parent = nullptr;
-static char *pref_dir = nullptr;
+[[maybe_unused]] static char *app_parent = nullptr;
+[[maybe_unused]] static char *pref_dir = nullptr;
 #endif
 
 #ifdef _WIN32
