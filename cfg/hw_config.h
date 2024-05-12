@@ -34,8 +34,8 @@
 #define WantCycByPriOp 1
 #define WantCloserCyc 0
 
-#define kRAMa_Size 0x00200000
-#define kRAMb_Size 0x00200000
+constexpr uint32_t kRAMa_Size = 0x00200000;
+constexpr uint32_t kRAMb_Size = 0x00200000;
 
 #define RomFileName "vMac.ROM"
 constexpr uint32_t kCheckSumRom_Size = 0x00020000;
@@ -92,8 +92,8 @@ constexpr uint32_t kVidROM_Size = 0x000800;
 #define r_MaxCyclesToGo "r6"
 #define r_pc_pHi "r7"
 
-#define kRAMa_Size 0x00400000
-#define kRAMb_Size 0x00400000
+constexpr uint32_t kRAMa_Size = 0x00400000;
+constexpr uint32_t kRAMb_Size = 0x00400000;
 
 
 #define RomFileName "MacII.ROM"
