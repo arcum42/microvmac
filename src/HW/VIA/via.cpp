@@ -254,77 +254,104 @@ static uint8_t VIA1_Get_ORB(uint8_t Selection)
 	return Value;
 }
 
-inline bool ViaORcheckBit(uint8_t Selection, uint8_t Data, u_int8_t p, u_int8_t x, uint8_t v)
-{
-	return (Ui3rTestBit(Selection, p) && ((v = (Data >> p) & 1) != x));
-}
-
 static void VIA1_Put_ORA(uint8_t Selection, uint8_t Data)
 {
 	uint8_t v = 0;
 
-	if (Ui3rTestBit(VIA1_ORA_CanOut, 7) && ViaORcheckBit(Selection, Data, 7, VIA1_iA7, v))
+	if (Ui3rTestBit(VIA1_ORA_CanOut, 7) && (Ui3rTestBit(Selection, 7)))
 	{
-		VIA1_iA7 = v;
+		v = (Data >> 7) & 1;
+		if (v != VIA1_iA7)
+		{
+			VIA1_iA7 = v;
 #ifdef VIA1_iA7_ChangeNtfy
-		VIA1_iA7_ChangeNtfy();
+			VIA1_iA7_ChangeNtfy();
 #endif
+		}
 	}
 
-	if (Ui3rTestBit(VIA1_ORA_CanOut, 6) && ViaORcheckBit(Selection, Data, 6, VIA1_iA6, v))
+	if (Ui3rTestBit(VIA1_ORA_CanOut, 6) && (Ui3rTestBit(Selection, 6)))
 	{
-		VIA1_iA6 = v;
+		v = (Data >> 6) & 1;
+		if (v != VIA1_iA6)
+		{
+			VIA1_iA6 = v;
 #ifdef VIA1_iA6_ChangeNtfy
-		VIA1_iA6_ChangeNtfy();
+			VIA1_iA6_ChangeNtfy();
 #endif
+		}
 	}
 
-	if (Ui3rTestBit(VIA1_ORA_CanOut, 5) && ViaORcheckBit(Selection, Data, 5, VIA1_iA5, v))
+	if (Ui3rTestBit(VIA1_ORA_CanOut, 5) && (Ui3rTestBit(Selection, 5)))
 	{
-		VIA1_iA5 = v;
+		v = (Data >> 5) & 1;
+		if (v != VIA1_iA5)
+		{
+			VIA1_iA5 = v;
 #ifdef VIA1_iA5_ChangeNtfy
-		VIA1_iA5_ChangeNtfy();
+			VIA1_iA5_ChangeNtfy();
 #endif
+		}
 	}
 
-	if (Ui3rTestBit(VIA1_ORA_CanOut, 4) && ViaORcheckBit(Selection, Data, 4, VIA1_iA4, v))
+	if (Ui3rTestBit(VIA1_ORA_CanOut, 4) && (Ui3rTestBit(Selection, 4)))
 	{
-		VIA1_iA4 = v;
+		v = (Data >> 4) & 1;
+		if (v != VIA1_iA4)
+		{
+			VIA1_iA4 = v;
 #ifdef VIA1_iA4_ChangeNtfy
-		VIA1_iA4_ChangeNtfy();
+			VIA1_iA4_ChangeNtfy();
 #endif
+		}
 	}
 
-	if (Ui3rTestBit(VIA1_ORA_CanOut, 3) && ViaORcheckBit(Selection, Data, 3, VIA1_iA3, v))
+	if (Ui3rTestBit(VIA1_ORA_CanOut, 3) && (Ui3rTestBit(Selection, 3)))
 	{
-		VIA1_iA3 = v;
+		v = (Data >> 3) & 1;
+		if (v != VIA1_iA3)
+		{
+			VIA1_iA3 = v;
 #ifdef VIA1_iA3_ChangeNtfy
-		VIA1_iA3_ChangeNtfy();
+			VIA1_iA3_ChangeNtfy();
 #endif
+		}
 	}
 
-	if (Ui3rTestBit(VIA1_ORA_CanOut, 2) && ViaORcheckBit(Selection, Data, 2, VIA1_iA2, v))
+	if (Ui3rTestBit(VIA1_ORA_CanOut, 2) && (Ui3rTestBit(Selection, 2)))
 	{
-		VIA1_iA2 = v;
+		v = (Data >> 2) & 1;
+		if (v != VIA1_iA2)
+		{
+			VIA1_iA2 = v;
 #ifdef VIA1_iA2_ChangeNtfy
-		VIA1_iA2_ChangeNtfy();
+			VIA1_iA2_ChangeNtfy();
 #endif
+		}
 	}
 
-	if (Ui3rTestBit(VIA1_ORA_CanOut, 1) && ViaORcheckBit(Selection, Data, 1, VIA1_iA1, v))
+	if (Ui3rTestBit(VIA1_ORA_CanOut, 1) && (Ui3rTestBit(Selection, 1)))
 	{
-		VIA1_iA1 = v;
+		v = (Data >> 1) & 1;
+		if (v != VIA1_iA1)
+		{
+			VIA1_iA1 = v;
 #ifdef VIA1_iA1_ChangeNtfy
-		VIA1_iA1_ChangeNtfy();
+			VIA1_iA1_ChangeNtfy();
 #endif
+		}
 	}
 
-	if (Ui3rTestBit(VIA1_ORA_CanOut, 0) && ViaORcheckBit(Selection, Data, 0, VIA1_iA0, v))
+	if (Ui3rTestBit(VIA1_ORA_CanOut, 0) && (Ui3rTestBit(Selection, 0)))
 	{
-		VIA1_iA0 = v;
+		v = (Data >> 0) & 1;
+		if (v != VIA1_iA0)
+		{
+			VIA1_iA0 = v;
 #ifdef VIA1_iA0_ChangeNtfy
-		VIA1_iA0_ChangeNtfy();
+			VIA1_iA0_ChangeNtfy();
 #endif
+		}
 	}
 }
 
@@ -332,68 +359,100 @@ static void VIA1_Put_ORB(uint8_t Selection, uint8_t Data)
 {
 	uint8_t v = 0;
 
-	if (Ui3rTestBit(VIA1_ORB_CanOut, 7) && ViaORcheckBit(Selection, Data, 7, VIA1_iB7, v))
+	if (Ui3rTestBit(VIA1_ORB_CanOut, 7) && (Ui3rTestBit(Selection, 7)))
 	{
-		VIA1_iB7 = v;
+		v = (Data >> 7) & 1;
+		if (v != VIA1_iB7)
+		{
+			VIA1_iB7 = v;
 #ifdef VIA1_iB7_ChangeNtfy
-		VIA1_iB7_ChangeNtfy();
+			VIA1_iB7_ChangeNtfy();
 #endif
+		}
 	}
 
-	if (Ui3rTestBit(VIA1_ORB_CanOut, 6) && ViaORcheckBit(Selection, Data, 6, VIA1_iB6, v))
+	if (Ui3rTestBit(VIA1_ORB_CanOut, 6) && (Ui3rTestBit(Selection, 6)))
 	{
-		VIA1_iB6 = v;
+		v = (Data >> 6) & 1;
+		if (v != VIA1_iB6)
+		{
+			VIA1_iB6 = v;
 #ifdef VIA1_iB6_ChangeNtfy
-		VIA1_iB6_ChangeNtfy();
+			VIA1_iB6_ChangeNtfy();
 #endif
+		}
 	}
 
-	if (Ui3rTestBit(VIA1_ORB_CanOut, 5) && ViaORcheckBit(Selection, Data, 5, VIA1_iB5, v))
+	if (Ui3rTestBit(VIA1_ORB_CanOut, 5) && (Ui3rTestBit(Selection, 5)))
 	{
-		VIA1_iB5 = v;
+		v = (Data >> 5) & 1;
+		{
+			if (v != VIA1_iB5)
+				VIA1_iB5 = v;
 #ifdef VIA1_iB5_ChangeNtfy
-		VIA1_iB5_ChangeNtfy();
+			VIA1_iB5_ChangeNtfy();
 #endif
+		}
 	}
 
-	if (Ui3rTestBit(VIA1_ORB_CanOut, 4) && ViaORcheckBit(Selection, Data, 4, VIA1_iB4, v))
+	if (Ui3rTestBit(VIA1_ORB_CanOut, 4) && (Ui3rTestBit(Selection, 4)))
 	{
-		VIA1_iB4 = v;
+		v = (Data >> 4) & 1;
+		if (v != VIA1_iB4)
+		{
+			VIA1_iB4 = v;
 #ifdef VIA1_iB4_ChangeNtfy
-		VIA1_iB4_ChangeNtfy();
+			VIA1_iB4_ChangeNtfy();
 #endif
+		}
 	}
 
-	if (Ui3rTestBit(VIA1_ORB_CanOut, 3) && ViaORcheckBit(Selection, Data, 3, VIA1_iB3, v))
+	if (Ui3rTestBit(VIA1_ORB_CanOut, 3) && (Ui3rTestBit(Selection, 3)))
 	{
-		VIA1_iB3 = v;
+		v = (Data >> 3) & 1;
+		if (v != VIA1_iB3)
+		{
+			VIA1_iB3 = v;
 #ifdef VIA1_iB3_ChangeNtfy
-		VIA1_iB3_ChangeNtfy();
+			VIA1_iB3_ChangeNtfy();
 #endif
+		}
 	}
 
-	if (Ui3rTestBit(VIA1_ORB_CanOut, 2) && ViaORcheckBit(Selection, Data, 2, VIA1_iB2, v))
+	if (Ui3rTestBit(VIA1_ORB_CanOut, 2) && (Ui3rTestBit(Selection, 2)))
 	{
-		VIA1_iB2 = v;
+		v = (Data >> 2) & 1;
+		{
+			if (v != VIA1_iB2)
+				VIA1_iB2 = v;
 #ifdef VIA1_iB2_ChangeNtfy
-		VIA1_iB2_ChangeNtfy();
+			VIA1_iB2_ChangeNtfy();
 #endif
+		}
 	}
 
-	if (Ui3rTestBit(VIA1_ORB_CanOut, 1) && ViaORcheckBit(Selection, Data, 1, VIA1_iB1, v))
+	if (Ui3rTestBit(VIA1_ORB_CanOut, 1) && (Ui3rTestBit(Selection, 1)))
 	{
-		VIA1_iB1 = v;
+		v = (Data >> 1) & 1;
+		{
+			if (v != VIA1_iB1)
+				VIA1_iB1 = v;
 #ifdef VIA1_iB1_ChangeNtfy
-		VIA1_iB1_ChangeNtfy();
+			VIA1_iB1_ChangeNtfy();
 #endif
+		}
 	}
 
-	if (Ui3rTestBit(VIA1_ORB_CanOut, 0) && ViaORcheckBit(Selection, Data, 0, VIA1_iB0, v))
+	if (Ui3rTestBit(VIA1_ORB_CanOut, 0) && (Ui3rTestBit(Selection, 0)))
 	{
-		VIA1_iB0 = v;
+		v = (Data >> 0) & 1;
+		{
+			if (v != VIA1_iB0)
+				VIA1_iB0 = v;
 #ifdef VIA1_iB0_ChangeNtfy
-		VIA1_iB0_ChangeNtfy();
+			VIA1_iB0_ChangeNtfy();
 #endif
+		}
 	}
 }
 
