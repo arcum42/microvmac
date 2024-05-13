@@ -797,22 +797,24 @@ void VIA1_DoTimer2Check(void)
 	}
 }
 
-#define kORB 0x00
-#define kORA_H 0x01
-#define kDDR_B 0x02
-#define kDDR_A 0x03
-#define kT1C_L 0x04
-#define kT1C_H 0x05
-#define kT1L_L 0x06
-#define kT1L_H 0x07
-#define kT2_L 0x08
-#define kT2_H 0x09
-#define kSR 0x0A
-#define kACR 0x0B
-#define kPCR 0x0C
-#define kIFR 0x0D
-#define kIER 0x0E
-#define kORA 0x0F
+enum {
+kORB = 0x00,
+kORA_H = 0x01,
+kDDR_B = 0x02,
+kDDR_A = 0x03,
+kT1C_L = 0x04,
+kT1C_H = 0x05,
+kT1L_L = 0x06,
+kT1L_H = 0x07,
+kT2_L = 0x08,
+kT2_H = 0x09,
+kSR = 0x0A,
+kACR = 0x0B,
+kPCR = 0x0C,
+kIFR = 0x0D,
+kIER = 0x0E,
+kORA = 0x0F
+};
 
 uint32_t VIA1_Access(uint32_t Data, bool WriteMem, CPTR addr)
 {
