@@ -227,13 +227,15 @@ typedef struct {
 
 static VIA2_Ty VIA2_D;
 
-#define kIntCA2 0 /* One_Second */
-#define kIntCA1 1 /* Vertical_Blanking */
-#define kIntSR 2 /* Keyboard_Data_Ready */
-#define kIntCB2 3 /* Keyboard_Data */
-#define kIntCB1 4 /* Keyboard_Clock */
-#define kIntT2 5 /* Timer_2 */
-#define kIntT1 6 /* Timer_1 */
+enum kInt {
+	kIntCA2 = 0, /* One_Second */
+	kIntCA1, /* Vertical_Blanking */
+	kIntSR, /* Keyboard_Data_Ready */
+	kIntCB2, /* Keyboard_Data */
+	kIntCB1, /* Keyboard_Clock */
+	kIntT2, /* Timer_2 */
+	kIntT1 /* Timer_1 */
+};
 
 #define VIA2_dolog (dbglog_HAVE && 0)
 
