@@ -87,7 +87,7 @@
 #include <stdlib.h>
 #include <stdint.h>
 #include <stdbool.h>
-#include "VIAEMDEV.h"
+#include "via.h"
 
 /* Global state */
 

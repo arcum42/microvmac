@@ -1,5 +1,6 @@
 # Project definition
-project('microvmac', 'c', default_options: ['warning_level=3', 'prefer_static=true', 'c_std=c17'])
+project('microvmac', ['c', 'cpp'], default_options: ['warning_level=3', 'prefer_static=true', 'c_std=c2x', 'cpp_std=c++20'])
+# Note: TOML parser is still c. Replace with C++ library? FIXME
 
 # Configuration data
 conf = configuration_data({
@@ -17,7 +18,7 @@ conf = configuration_data({
 	'MayNotFullScreen': 1,
 	# Start magnified?
 	'WantInitMagnify': 0,
-	# Magnificaton power
+	# Magnification power
 	'WindowScale': 2,
 	# Allow background running by default?
 	'WantInitRunInBackground': 1,
@@ -79,73 +80,95 @@ endif
 
 # Hardware libraries
 HW_SRC = {
+	'HW': [
+		'src/HW/hardware.cpp',
+		'src/HW/wires.cpp'
+	],
 	'ADB':  [
-		'src/HW/ADB/ADBEMDEV.c'
+		'src/HW/ADB/adb.cpp'
 	],
 	'DISK': [
-		'src/HW/DISK/IWMEMDEV.c',
-		'src/HW/DISK/SONYEMDV.c',
-		'src/PATCHES/SONYDRV.c'
+		'src/HW/DISK/int_woz_machine.cpp',
+		'src/HW/DISK/sony_floppy.cpp',
+		'src/PATCHES/sony_driver_hack.cpp'
     ],
     'KBRD': [
-		'src/HW/KBRD/KBRDEMDV.c',
+		'src/HW/KBRD/keyboard.cpp',
 	],
 	'M68K': [
-#		'src/HW/M68K/DISAM68K.c',
-		'src/HW/M68K/M68KITAB.c',
-		'src/HW/M68K/MINEM68K.c',
-#		'src/HW/M68K/FPCPEMDV.c',
+#		'src/HW/M68K/disassembly_68k.cpp',
+		'src/HW/M68K/instruct_table_68k.cpp',
+		'src/HW/M68K/cpu_68k.cpp',
+#		'src/HW/M68K/fpu.cpp',
 	],
 	'MOUSE': [
-		'src/HW/MOUSE/MOUSEMDV.c',
+		'src/HW/MOUSE/mouse.cpp',
 	],
 	'POWERMAN': [
-		'src/HW/POWERMAN/PMUEMDEV.c',
+		'src/HW/POWERMAN/power.cpp',
 	],
 	'RTC': [
-		'src/HW/RTC/RTCEMDEV.c',
+		'src/HW/RTC/rtc.cpp',
 	],
 	'SCC': [
-		'src/HW/SCC/SCCEMDEV.c',
+		'src/HW/SCC/serial_comm.cpp',
 	],
 	'SCREEN': [
-		'src/HW/SCREEN/SCRNEMDV.c',
-		'src/PATCHES/SCRNHACK.c',
+		'src/HW/SCREEN/screen.cpp',
+		'src/PATCHES/screen_hack.cpp',
 	],
 	'SCSI': [
-		'src/HW/SCSI/SCSIEMDV.c',
+		'src/HW/SCSI/scsi.cpp',
 	],
 	'SOUND': [
-		'src/HW/SOUND/SNDEMDEV.c',
+		'src/HW/SOUND/sound.cpp',
 	],
 	'SOUND_ASC': [
-		'src/HW/SOUND/ASCEMDEV.c',
+		'src/HW/SOUND/apple_sound_chip.cpp',
 	],
 	'VIA1': [
-		'src/HW/VIA/VIAEMDEV.c',
+		'src/HW/VIA/via.cpp',
 	],
 	'VIA2': [
-		'src/HW/VIA/VIA2EMDV.c',
+		'src/HW/VIA/via2.cpp',
 	],
 	'VIDCARD': [
-		'src/HW/VIDCARD/VIDEMDEV.c',
+		'src/HW/VIDCARD/video.cpp',
 	],
 	'RAM': [
 	],
 	'ROM': [
-		'src/HW/ROM/ROMEMDEV.c',
+		'src/HW/ROM/rom.cpp',
 	]
 }
 
-MAC_SRC_COMMON = HW_SRC['DISK'] + HW_SRC['M68K'] + HW_SRC['RTC'] + HW_SRC['SOUND'] + HW_SRC['VIA1'] + HW_SRC['SCREEN'] + HW_SRC['SCC'] + HW_SRC['SCSI'] + HW_SRC['MOUSE'] + HW_SRC['ROM']
+MAC_SRC_COMMON = \
+		HW_SRC['DISK'] + \
+		HW_SRC['M68K'] + \
+		HW_SRC['RTC'] + \
+		HW_SRC['SOUND'] + \
+		HW_SRC['VIA1'] + \
+		HW_SRC['SCREEN'] + \
+		HW_SRC['SCC'] + \
+		HW_SRC['SCSI'] + \
+		HW_SRC['MOUSE'] + \
+		HW_SRC['ROM'] + \
+		HW_SRC['HW']
 
 # Macintosh definitions
 MAC_SRC = {
-	'Plus': 
+#	'Plus': 
+#		MAC_SRC_COMMON +
+#		HW_SRC['KBRD'],
+#	'II': 
+#		MAC_SRC_COMMON +
+#		HW_SRC['VIDCARD'] +
+#		HW_SRC['ADB'] +
+#		HW_SRC['VIA2'] +
+#		HW_SRC['SOUND_ASC'],
+	'All':
 		MAC_SRC_COMMON +
-		HW_SRC['KBRD'],
-	'II': 
-		MAC_SRC_COMMON +
+		HW_SRC['KBRD'] +
 		HW_SRC['VIDCARD'] +
 		HW_SRC['ADB'] +
 		HW_SRC['VIA2'] +
@@ -154,28 +177,29 @@ MAC_SRC = {
 
 # User interface definitions
 UI_SRC = [
-	'src/UI/COMOSGLU.c',
-	'src/UI/CONTROLM.c',
-	'src/UI/SDL2/OSGLUSD2.c',
-	#'src/UI/SDL2/CLIPBRD.c',
-	'src/UI/SDL2/DBGLOG.c',
-	'src/UI/SDL2/DRIVES.c',
-	'src/UI/SDL2/INTL.c',
-	'src/UI/SDL2/KEYBOARD.c',
-	'src/UI/SDL2/MOUSE.c',
-	'src/UI/SDL2/ROM.c',
-	'src/UI/SDL2/SOUND.c',
-	'src/UI/SDL2/TIMEDATE.c',
-	'src/UI/SDL2/VIDEO.c',
+	'src/UI/common_os_glue.cpp',
+	'src/UI/control_mode.cpp',
+	'src/UI/SDL2/os_glue_sdl2.cpp',
+	#'src/UI/SDL2/clipboard_sdl2.cpp',
+	'src/UI/SDL2/debug_log_sdl2.cpp',
+	'src/UI/SDL2/drives_sdl2.cpp',
+	'src/UI/SDL2/intl_sdl2.cpp',
+	'src/UI/SDL2/keyboard_sdl2.cpp',
+	'src/UI/SDL2/mouse_sdl2.cpp',
+	'src/UI/SDL2/rom_sdl2.cpp',
+	'src/UI/SDL2/sound_sdl2.cpp',
+	'src/UI/SDL2/time_date_sdl2.cpp',
+	'src/UI/SDL2/video_sdl2.cpp',
 ]
 
 EMU_SRC = [
-	'src/PROGMAIN.c',
-	'src/GLOBGLUE.c',
-	'src/CFGMAN.c',
-	'src/PATCHES/ROMEMDEV.c',
-	'src/UTIL/DATE2SEC.c',
-	'src/LANG/INTLCHAR.c',
+	'src/mac_main.cpp',
+	'src/global_glue.cpp',
+	'src/config_manage.cpp',
+	'src/PATCHES/rom.cpp',
+	'src/UTIL/date_to_seconds.cpp',
+	'src/UTIL/dbglog.cpp',
+	'src/LANG/intl_chars.cpp',
 	'lib/tomlc99/toml.c',
 ]
 
@@ -185,13 +209,15 @@ EMU_INC = include_directories([
 	'lib/'
 ])
 
+spdlog = dependency('spdlog')
+
 ## Final compiled program definition
 # Just gonna do an SDL2 Mac Plus for now
 executable(
 	'microvmac',
-	sources: MAC_SRC['Plus'] + UI_SRC + EMU_SRC + WIN_RSRC,
-	dependencies: [lSDL2],
+	sources: MAC_SRC['All'] + UI_SRC + EMU_SRC + WIN_RSRC,
+	dependencies: [lSDL2, spdlog],
 	include_directories: EMU_INC,
-	gui_app: true
+	win_subsystem: 'windows'
 )
 
