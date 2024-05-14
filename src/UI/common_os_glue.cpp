@@ -177,10 +177,7 @@ static bool ColorTransValid = false;
  int8_t EmLagTime = 0;
  uint32_t OnTrueTime = 0;
  
- int16_t ScreenChangedTop;
- int16_t ScreenChangedLeft;
- int16_t ScreenChangedBottom;
- int16_t ScreenChangedRight;
+ int16_t ScreenChangedTop, ScreenChangedLeft, ScreenChangedBottom, ScreenChangedRight;
 
 void ScreenClearChanges(void)
 {
@@ -199,10 +196,7 @@ void ScreenChangedAll(void)
 }
 
 #if MayFullScreen
- uint16_t ViewHSize;
- uint16_t ViewVSize;
- uint16_t ViewHStart = 0;
- uint16_t ViewVStart = 0;
+ uint16_t ViewHSize, ViewVSize, ViewHStart = 0, ViewVStart = 0;
 #endif
 
 static void SetLongs(uint32_t *p, long n)
@@ -451,8 +445,7 @@ void MouseButtonSet(bool down)
 	}
 }
 
-static uint16_t MousePosCurV = 0;
-static uint16_t MousePosCurH = 0;
+static uint16_t MousePosCurV = 0, MousePosCurH = 0;
 
 void MousePositionSet(uint16_t h, uint16_t v)
 {
@@ -531,9 +524,11 @@ void EvtQTryRecoverFromFull(void)
 
  char *SavedBriefMsg = nullptr;
  char *SavedLongMsg = nullptr;
+
 #if WantAbnormalReports
  uint16_t SavedIDMsg = 0;
 #endif
+
  bool SavedFatalMsg = false;
 
 void MacMsg(char *briefMsg, char *longMsg, bool fatal)

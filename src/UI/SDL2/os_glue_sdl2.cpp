@@ -206,8 +206,8 @@ static void HandleTheEvent(SDL_Event *event)
 
 /* --- main window creation and disposal --- */
 
-static int argc;
-static char **argv;
+[[maybe_unused]] static int argc;
+[[maybe_unused]] static char **argv;
 
 static bool SDL_InitDisplay(void)
 {

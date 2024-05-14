@@ -252,7 +252,7 @@ static int rx_data_offset = 0;
 	/* when data pending, this is used */
 #endif
 
-extern bool SCC_InterruptsEnabled(void)
+bool SCC_InterruptsEnabled(void)
 {
 	return SCC.MIE;
 }
