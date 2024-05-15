@@ -22,6 +22,59 @@
 	This code adapted from vMac by Philip Cummins.
 */
 
+// Note: See Inside Macintosh III, page 39.
+
+// VIA data register A is at vBase+vBufA. The corresponding data direction register is at
+// vBase+vDirA.
+
+// Bit(s) Name Description
+// 7 vSCCWReq sec wait/request
+// 6 vPage2 Alternate screen buffer
+// 5 vHeadSel Disk SEL line
+// 4 vOverlay ROM low-memory overlay
+// 3 vSndPg2 Alternate sound buffer
+// 0-2 vSound (mask) Sound volume
+
+// The vSCCWReq bit can signal that the SCC has received a character (used to maintain serial
+// communications during disk accesses, when the CPU's interrupts from the SCC are disabled).
+// The vPage2 bit controls which screen buffer is being displayed, and the vHeadSel bit is the SEL
+// control line used by the disk interface. The vOverlay bit (used only during system startup) can be
+// used to place another image of ROM at the bottom of memory, where RAM usually is (RAM
+// moves to $600000). The sound buffer is selected by the vSndPg2 bit. Finally, the vSound bits
+// control the sound volume.
+
+// VIA data register Bis at vBase+vBufB. The corresponding data direction register is at
+// vBase+vDirB.
+
+// Bit Name Description
+// 7 vSndEnb Sound enable/disable
+// 6 vH4 Horizontal blanking
+// 5 vY2 MouseY2
+// 4 vX2 MouseX2
+// 3 vSW Mouse switch
+// 2 trCEnb Real-time clock serial enable
+// 1 trCClk Real-time clock data-clock line
+// 0 trCData Real-time clock serial data
+
+// The vSndEnb bit turns the sound generator on or off, and the vH4 bit is set when the video beam
+// is in its horizontal blanking period. The vY2 and vX2 bits read the quadrature signals from the Y
+// (vertical) and X (horizontal) directions, respectively, of the mouse's motion lines. The vSW bit
+// reads the mouse switch. The trCEnb, trCClk , and trCData bits control and read the real-time
+// clock.
+
+// The VIA's peripheral control register, at vBase+vPCR, allows you to set some very low-level
+// parameters (such as positive-edge or negative-edge triggering) dealing with the keyboard data and
+// clock interrupts, the one-second real-time clock interrupt line, and the vertical blanking interrupt.
+
+// Bit(s)
+// 5-7  Keyboard data interrupt control
+// 4    Keyboard clock interrupt control
+// 1-3  One-second interrupt control
+// 0    Vertical blanking interrupt control
+
+
+// There's also information on the VIA's in "Guide to Macintosh Family Hardware 2nd Edition", Chapter 4, page 147.
+
 #include "sys_dependencies.h"
 
 #include "UI/my_os_glue.h"

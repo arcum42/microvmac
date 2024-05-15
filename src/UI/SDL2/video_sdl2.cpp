@@ -13,6 +13,10 @@
 #include "os_glue_sdl2.h"
 #include "HW/SCREEN/screen.h"
 
+#include "imgui_impl_sdl2.h"
+#include "imgui_impl_sdlrenderer2.h"
+#include "imgui.h"
+
 /* --- video out --- */
 
 #if MayFullScreen
@@ -124,9 +128,14 @@ void Screen_OutputFrame(uint8_t * src_ptr)
 	SDL_FreeSurface(src);
 	SDL_FreeSurface(dst);
 	
+	//ImGui::Render();
+
 	// Render the texture
 	SDL_RenderCopy(renderer, texture, nullptr, nullptr);
 	SDL_UnlockTexture(texture);
+
+	//ImGui_ImplSDLRenderer2_RenderDrawData(ImGui::GetDrawData());
+
 	SDL_RenderPresent(renderer);
 }
 

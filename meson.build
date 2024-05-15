@@ -203,10 +203,22 @@ EMU_SRC = [
 	'lib/tomlc99/toml.c',
 ]
 
+IMGUI_SRC = [
+	'lib/imgui/imgui_draw.cpp',
+	'lib/imgui/imgui_tables.cpp',
+	'lib/imgui/imgui_widgets.cpp',
+	'lib/imgui/imgui.cpp',
+	'lib/imgui/backends/imgui_impl_sdl2.cpp',
+	'lib/imgui/backends/imgui_impl_sdlrenderer2.cpp',
+	'lib/imgui/imgui_demo.cpp'
+
+]
 EMU_INC = include_directories([
 	'cfg/',
 	'src/',
-	'lib/'
+	'lib/',
+	'lib/imgui/',
+	'lib/imgui/backends'
 ])
 
 spdlog = dependency('spdlog')
@@ -215,7 +227,7 @@ spdlog = dependency('spdlog')
 # Just gonna do an SDL2 Mac Plus for now
 executable(
 	'microvmac',
-	sources: MAC_SRC['All'] + UI_SRC + EMU_SRC + WIN_RSRC,
+	sources: MAC_SRC['All'] + UI_SRC + EMU_SRC + IMGUI_SRC + WIN_RSRC,
 	dependencies: [lSDL2, spdlog],
 	include_directories: EMU_INC,
 	win_subsystem: 'windows'

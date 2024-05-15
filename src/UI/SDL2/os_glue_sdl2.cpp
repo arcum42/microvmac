@@ -35,6 +35,9 @@
 #include "HW/SCREEN/screen.h"
 #include "HW/ROM/rom.h"
 #include "config_manage.h"
+#include "imgui_impl_sdl2.h"
+#include "imgui_impl_sdlrenderer2.h"
+#include "imgui.h"
 
 /* --- some simple utilities --- */
 
@@ -418,6 +421,16 @@ static bool CreateMainWindow(void)
 
 			return false;
 		}
+		//ImGui::CreateContext();
+		//ImGui_ImplSDL2_InitForSDLRenderer(main_wind, renderer);
+		//ImGui_ImplSDLRenderer2_Init(renderer);
+        //ImGui_ImplSDL2_NewFrame();
+		//ImGui_ImplSDLRenderer2_NewFrame();
+		//ImGui::NewFrame();
+
+		//ImGui::Begin("Hello, world!");
+    	//ImGui::Text("Hello, world");
+		//ImGui::End();
 
 		if (UseFullScreen)
 #if MayFullScreen
