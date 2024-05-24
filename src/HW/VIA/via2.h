@@ -18,6 +18,7 @@
 
 #ifndef VIA2EMDV_H
 #define VIA2EMDV_H
+#include "via.h"
 
 extern void VIA2_Zap(void);
 extern void VIA2_Reset(void);

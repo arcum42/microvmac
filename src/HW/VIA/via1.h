@@ -19,6 +19,7 @@
 #ifndef VIA1EMDEV_H
 #define VIA1EMDEV_H
 #include <stdint.h>
+#include "via.h"
 
 bool VIA1_Zap(void);
 void VIA1_Reset(void);
