@@ -10,7 +10,6 @@
 #include <Windows.h>
 #endif
 
-#include "EMCONFIG.h"
 #include "global_glue.h"
 #include "UTIL/endian.h"
 #include "UI/my_os_glue.h"

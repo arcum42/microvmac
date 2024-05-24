@@ -3,7 +3,6 @@
 #include <stdio.h>
 #include <SDL.h>
 #include "CNFGRAPI.h"
-#include "EMCONFIG.h"
 #include "sys_dependencies.h"
 #include "UTIL/endian.h"
 #include "UI/my_os_glue.h"

@@ -20,7 +20,6 @@
 #define GLOBGLUE_H
 
 #include "CNFGRAPI.h"
-#include "EMCONFIG.h"
 #include "sys_dependencies.h"
 #include "UTIL/dbglog.h"
 

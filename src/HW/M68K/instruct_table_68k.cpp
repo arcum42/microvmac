@@ -21,7 +21,6 @@
 #include "sys_dependencies.h"
 
 #include "UI/my_os_glue.h"
-#include "EMCONFIG.h"
 #include "global_glue.h"
 
 #include "HW/M68K/instruct_table_68k.h"

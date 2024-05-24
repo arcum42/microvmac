@@ -13,8 +13,41 @@
 
 #define EmLocalTalk 0
 
-//#include "HW/wires.h"
-#include "EMCONFIG.h"
+// Breaks compilation.
+/*enum EmMachine {
+	kEmMd_Twig43 = 0,
+	kEmMd_Twiggy,
+	kEmMd_128K,
+	kEmMd_512Ke,
+	kEmMd_Plus,
+	kEmMd_SE,
+	kEmMd_SEFDHD,
+	kEmMd_Classic,
+	kEmMd_PB100,
+	kEmMd_II,
+	kEmMd_IIx
+};*/
+//constexpr EmMachine CurEmMd = kEmMd_Plus;
+//constexpr EmMachine CurEmMd = kEmMd_II;
+
+// Use the old version instead.
+/* Define the emulated machine here.*/
+
+#define kEmMd_Twig43      0
+#define kEmMd_Twiggy      1
+#define kEmMd_128K        2
+#define kEmMd_512Ke       3
+#define kEmMd_Plus        4
+#define kEmMd_SE          5
+#define kEmMd_SEFDHD      6
+#define kEmMd_Classic     7
+#define kEmMd_PB100       8
+#define kEmMd_II          9
+#define kEmMd_IIx        10
+
+
+#define CurEmMd kEmMd_Plus
+//#define CurEmMd kEmMd_II
 
 #if (CurEmMd == kEmMd_Plus)
 #define EmClassicKbrd 1

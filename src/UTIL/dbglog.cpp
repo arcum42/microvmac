@@ -20,7 +20,6 @@
 
 #include "UI/my_os_glue.h"
 #include "UTIL/endian.h"
-#include "EMCONFIG.h"
 #include "dbglog.h"
 
 #if WantDisasm

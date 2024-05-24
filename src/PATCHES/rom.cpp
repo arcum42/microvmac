@@ -25,7 +25,6 @@
 	Support for "Twiggy" Mac by Mathew Hybler.
 */
 
-#include "EMCONFIG.h"
 #include "sys_dependencies.h"
 #include "global_glue.h"
 #include "UI/my_os_glue.h"

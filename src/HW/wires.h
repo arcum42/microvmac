@@ -1,6 +1,7 @@
 #pragma once
 
 #include <cstdint>
+#include "hw_config.h"
 
 /* the Wire variables are 1/0, not true/false */
 
@@ -8,6 +9,9 @@
 // The others are referenced in defines in this file that are used elsewhere.
 
 // As such, Wire could be replaced by separate variables for each wire, if needed.
+
+#ifndef WIRES_H
+#define WIRES_H
 
 #if (CurEmMd == kEmMd_Plus)
 enum {
@@ -222,3 +226,5 @@ extern uint8_t Wires[kNumWires];
 #define RTC_OneSecond_PulseNtfy VIA1_iCA2_RTC_OneSecond_PulseNtfy
 
 #define GetSoundInvertTime VIA1_GetT1InvertTime
+
+#endif

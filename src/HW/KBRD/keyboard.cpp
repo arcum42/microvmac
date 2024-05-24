@@ -24,7 +24,6 @@
 
 #include "sys_dependencies.h"
 #include "UI/my_os_glue.h"
-#include "EMCONFIG.h"
 #include "hw_config.h"
 #include "global_glue.h"
 
