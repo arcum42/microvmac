@@ -126,6 +126,9 @@ HW_SRC = {
 	'SOUND_ASC': [
 		'src/HW/SOUND/apple_sound_chip.cpp',
 	],
+	'VIA': [
+		'src/HW/VIA/via.cpp',
+	],
 	'VIA1': [
 		'src/HW/VIA/via1.cpp',
 	],
@@ -147,6 +150,7 @@ MAC_SRC_COMMON = \
 		HW_SRC['M68K'] + \
 		HW_SRC['RTC'] + \
 		HW_SRC['SOUND'] + \
+		HW_SRC['VIA'] + \
 		HW_SRC['VIA1'] + \
 		HW_SRC['SCREEN'] + \
 		HW_SRC['SCC'] + \

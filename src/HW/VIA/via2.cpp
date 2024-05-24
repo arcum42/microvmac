@@ -106,7 +106,7 @@ extern void VIA2_iCB2_ChangeNtfy(void);
 constexpr u_int8_t VIA2_ORA_CanInOrOut = (VIA2_ORA_CanIn | VIA2_ORA_CanOut);
 constexpr u_int8_t VIA2_ORB_CanInOrOut = (VIA2_ORB_CanIn | VIA2_ORB_CanOut);
 
-static VIA_Ty VIA2_D;
+static VIA VIA2_D;
 
 #define VIA2_dolog (dbglog_HAVE && 0)
 
@@ -420,50 +420,50 @@ static void VIA2_Put_ORB(uint8_t Selection, uint8_t Data)
 
 static void VIA2_SetDDR_A(uint8_t Data)
 {
-	uint8_t floatbits = VIA2_D.DDR_A & ~Data;
-	uint8_t unfloatbits = Data & ~VIA2_D.DDR_A;
+	uint8_t floatbits = VIA2_D.Ty.DDR_A & ~Data;
+	uint8_t unfloatbits = Data & ~VIA2_D.Ty.DDR_A;
 
 	if (floatbits != 0)
 	{
 		VIA2_Put_ORA(floatbits, VIA2_ORA_FloatVal);
 	}
-	VIA2_D.DDR_A = Data;
+	VIA2_D.Ty.DDR_A = Data;
 	if (unfloatbits != 0)
 	{
-		VIA2_Put_ORA(unfloatbits, VIA2_D.ORA);
+		VIA2_Put_ORA(unfloatbits, VIA2_D.Ty.ORA);
 	}
 	if ((Data & ~VIA2_ORA_CanOut) != 0)
 	{
 		ReportAbnormalID(0x0501,
-						 "Set VIA2_D.DDR_A unexpected direction");
+						 "Set VIA2_D.Ty.DDR_A unexpected direction");
 	}
 }
 
 static void VIA2_SetDDR_B(uint8_t Data)
 {
-	uint8_t floatbits = VIA2_D.DDR_B & ~Data;
-	uint8_t unfloatbits = Data & ~VIA2_D.DDR_B;
+	uint8_t floatbits = VIA2_D.Ty.DDR_B & ~Data;
+	uint8_t unfloatbits = Data & ~VIA2_D.Ty.DDR_B;
 
 	if (floatbits != 0)
 	{
 		VIA2_Put_ORB(floatbits, VIA2_ORB_FloatVal);
 	}
-	VIA2_D.DDR_B = Data;
+	VIA2_D.Ty.DDR_B = Data;
 	if (unfloatbits != 0)
 	{
-		VIA2_Put_ORB(unfloatbits, VIA2_D.ORB);
+		VIA2_Put_ORB(unfloatbits, VIA2_D.Ty.ORB);
 	}
 	if ((Data & ~VIA2_ORB_CanOut) != 0)
 	{
 		ReportAbnormalID(0x0502,
-						 "Set VIA2_D.DDR_B unexpected direction");
+						 "Set VIA2_D.Ty.DDR_B unexpected direction");
 	}
 }
 
 static void VIA2_CheckInterruptFlag(void)
 {
 	uint8_t NewInterruptRequest =
-		((VIA2_D.IFR & VIA2_D.IER) != 0) ? 1 : 0;
+		((VIA2_D.Ty.IFR & VIA2_D.Ty.IER) != 0) ? 1 : 0;
 
 	if (NewInterruptRequest != VIA2_InterruptRequest)
 	{
@@ -481,16 +481,7 @@ static bool VIA2_T1IntReady = false;
 
 static void VIA2_Clear(void)
 {
-	VIA2_D.ORA = 0;
-	VIA2_D.DDR_A = 0;
-	VIA2_D.ORB = 0;
-	VIA2_D.DDR_B = 0;
-	VIA2_D.T1L_L = VIA2_D.T1L_H = 0x00;
-	VIA2_D.T2L_L = 0x00;
-	VIA2_D.T1C_F = 0;
-	VIA2_D.T2C_F = 0;
-	VIA2_D.SR = VIA2_D.ACR = 0x00;
-	VIA2_D.PCR = VIA2_D.IFR = VIA2_D.IER = 0x00;
+	VIA2_D.Ty.Clear();
 	VIA2_T1_Active = VIA2_T2_Active = 0x00;
 	VIA2_T1IntReady = false;
 }
@@ -513,13 +504,13 @@ void VIA2_Reset(void)
 
 static void VIA2_SetInterruptFlag(uint8_t VIA_Int)
 {
-	VIA2_D.IFR |= ((uint8_t)1 << VIA_Int);
+	VIA2_D.Ty.IFR |= ((uint8_t)1 << VIA_Int);
 	VIA2_CheckInterruptFlag();
 }
 
 static void VIA2_ClrInterruptFlag(uint8_t VIA_Int)
 {
-	VIA2_D.IFR &= ~((uint8_t)1 << VIA_Int);
+	VIA2_D.Ty.IFR &= ~((uint8_t)1 << VIA_Int);
 	VIA2_CheckInterruptFlag();
 }
 
@@ -533,7 +524,7 @@ void VIA2_ShiftInData(uint8_t v)
 		external hardware generates 8 pulses on CB1,
 		writes 8 bits to CB2
 	*/
-	uint8_t ShiftMode = (VIA2_D.ACR & 0x1C) >> 2;
+	uint8_t ShiftMode = (VIA2_D.Ty.ACR & 0x1C) >> 2;
 
 	if (ShiftMode != 3)
 	{
@@ -554,7 +545,7 @@ void VIA2_ShiftInData(uint8_t v)
 	}
 	else
 	{
-		VIA2_D.SR = v;
+		VIA2_D.Ty.SR = v;
 		VIA2_SetInterruptFlag(kIntSR);
 		VIA2_SetInterruptFlag(kIntCB1);
 	}
@@ -566,7 +557,7 @@ uint8_t VIA2_ShiftOutData(void)
 		external hardware generates 8 pulses on CB1,
 		reads 8 bits from CB2
 	*/
-	if (((VIA2_D.ACR & 0x1C) >> 2) != 7)
+	if (((VIA2_D.Ty.ACR & 0x1C) >> 2) != 7)
 	{
 		ReportAbnormalID(0x0504, "VIA Not ready to shift out");
 		return 0;
@@ -575,13 +566,10 @@ uint8_t VIA2_ShiftOutData(void)
 	{
 		VIA2_SetInterruptFlag(kIntSR);
 		VIA2_SetInterruptFlag(kIntCB1);
-		VIA2_iCB2 = (VIA2_D.SR & 1);
-		return VIA2_D.SR;
+		VIA2_iCB2 = (VIA2_D.Ty.SR & 1);
+		return VIA2_D.Ty.SR;
 	}
 }
-
-constexpr uint32_t CyclesPerViaTime = (10 * ClockMult);
-constexpr uint32_t CyclesScaledPerViaTime = (kCycleScale * CyclesPerViaTime);
 
 static bool VIA2_T1Running = true;
 static iCountt VIA2_T1LastTime = 0;
@@ -594,22 +582,22 @@ void VIA2_DoTimer1Check(void)
 		iCountt deltaTime = (NewTime - VIA2_T1LastTime);
 		if (deltaTime != 0)
 		{
-			uint32_t Temp = VIA2_D.T1C_F; /* Get Timer 1 Counter */
+			uint32_t Temp = VIA2_D.Ty.T1C_F; /* Get Timer 1 Counter */
 			uint32_t deltaTemp =
 				(deltaTime / CyclesPerViaTime) << (16 - kLn2CycleScale);
 			/* may overflow */
 			uint32_t NewTemp = Temp - deltaTemp;
 			if ((deltaTime > (0x00010000UL * CyclesScaledPerViaTime)) || ((Temp <= deltaTemp) && (Temp != 0)))
 			{
-				if ((VIA2_D.ACR & 0x40) != 0)
+				if ((VIA2_D.Ty.ACR & 0x40) != 0)
 				{ /* Free Running? */
 					/* Reload Counter from Latches */
-					uint16_t v = (VIA2_D.T1L_H << 8) + VIA2_D.T1L_L;
+					uint16_t v = (VIA2_D.Ty.T1L_H << 8) + VIA2_D.Ty.T1L_L;
 					uint16_t ntrans = 1 + ((v == 0) ? 0 : (((deltaTemp - Temp) / v) >> 16));
 					NewTemp += (((uint32_t)v * ntrans) << 16);
 					if (Ui3rTestBit(VIA2_ORB_CanOut, 7))
 					{
-						if ((VIA2_D.ACR & 0x80) != 0)
+						if ((VIA2_D.Ty.ACR & 0x80) != 0)
 						{ /* invert ? */
 							if ((ntrans & 1) != 0)
 							{
@@ -638,16 +626,16 @@ void VIA2_DoTimer1Check(void)
 				}
 			}
 
-			VIA2_D.T1C_F = NewTemp;
+			VIA2_D.Ty.T1C_F = NewTemp;
 			VIA2_T1LastTime = NewTime;
 		}
 
 		VIA2_T1IntReady = false;
-		if ((VIA2_D.IFR & (1 << kIntT1)) == 0)
+		if ((VIA2_D.Ty.IFR & (1 << kIntT1)) == 0)
 		{
-			if (((VIA2_D.ACR & 0x40) != 0) || (VIA2_T1_Active == 1))
+			if (((VIA2_D.Ty.ACR & 0x40) != 0) || (VIA2_T1_Active == 1))
 			{
-				uint32_t NewTemp = VIA2_D.T1C_F; /* Get Timer 1 Counter */
+				uint32_t NewTemp = VIA2_D.Ty.T1C_F; /* Get Timer 1 Counter */
 				uint32_t NewTimer;
 #ifdef _VIA_Debug
 				fprintf(stderr, "posting Timer1Check, %d, %d\n",
@@ -675,9 +663,9 @@ static void CheckT1IntReady(void)
 	{
 		bool NewT1IntReady = false;
 
-		if ((VIA2_D.IFR & (1 << kIntT1)) == 0)
+		if ((VIA2_D.Ty.IFR & (1 << kIntT1)) == 0)
 		{
-			if (((VIA2_D.ACR & 0x40) != 0) || (VIA2_T1_Active == 1))
+			if (((VIA2_D.Ty.ACR & 0x40) != 0) || (VIA2_T1_Active == 1))
 			{
 				NewT1IntReady = true;
 			}
@@ -698,9 +686,9 @@ uint16_t VIA2_GetT1InvertTime(void)
 {
 	uint16_t v;
 
-	if ((VIA2_D.ACR & 0xC0) == 0xC0)
+	if ((VIA2_D.Ty.ACR & 0xC0) == 0xC0)
 	{
-		v = (VIA2_D.T1L_H << 8) + VIA2_D.T1L_L;
+		v = (VIA2_D.Ty.T1L_H << 8) + VIA2_D.Ty.T1L_L;
 	}
 	else
 	{
@@ -718,7 +706,7 @@ void VIA2_DoTimer2Check(void)
 	if (VIA2_T2Running)
 	{
 		iCountt NewTime = GetCuriCount();
-		uint32_t Temp = VIA2_D.T2C_F; /* Get Timer 2 Counter */
+		uint32_t Temp = VIA2_D.Ty.T2C_F; /* Get Timer 2 Counter */
 		iCountt deltaTime = (NewTime - VIA2_T2LastTime);
 		uint32_t deltaTemp = (deltaTime / CyclesPerViaTime)
 							 << (16 - kLn2CycleScale); /* may overflow */
@@ -752,30 +740,10 @@ void VIA2_DoTimer2Check(void)
 				ICT_add(kICT_VIA2_Timer2Check, NewTimer);
 			}
 		}
-		VIA2_D.T2C_F = NewTemp;
+		VIA2_D.Ty.T2C_F = NewTemp;
 		VIA2_T2LastTime = NewTime;
 	}
 }
-
-enum
-{
-	kORB = 0x00,
-	kORA_H = 0x01,
-	kDDR_B = 0x02,
-	kDDR_A = 0x03,
-	kT1C_L = 0x04,
-	kT1C_H = 0x05,
-	kT1L_L = 0x06,
-	kT1L_H = 0x07,
-	kT2_L = 0x08,
-	kT2_H = 0x09,
-	kSR = 0x0A,
-	kACR = 0x0B,
-	kPCR = 0x0C,
-	kIFR = 0x0D,
-	kIER = 0x0E,
-	kORA = 0x0F
-};
 
 uint32_t VIA2_Access(uint32_t Data, bool WriteMem, CPTR addr)
 {
@@ -783,7 +751,7 @@ uint32_t VIA2_Access(uint32_t Data, bool WriteMem, CPTR addr)
 	{
 	case kORB:
 #if VIA2_CB2modesAllowed != 0x01
-		if ((VIA2_D.PCR & 0xE0) == 0)
+		if ((VIA2_D.Ty.PCR & 0xE0) == 0)
 #endif
 		{
 			VIA2_ClrInterruptFlag(kIntCB2);
@@ -791,12 +759,12 @@ uint32_t VIA2_Access(uint32_t Data, bool WriteMem, CPTR addr)
 		VIA2_ClrInterruptFlag(kIntCB1);
 		if (WriteMem)
 		{
-			VIA2_D.ORB = Data;
-			VIA2_Put_ORB(VIA2_D.DDR_B, VIA2_D.ORB);
+			VIA2_D.Ty.ORB = Data;
+			VIA2_Put_ORB(VIA2_D.Ty.DDR_B, VIA2_D.Ty.ORB);
 		}
 		else
 		{
-			Data = (VIA2_D.ORB & VIA2_D.DDR_B) | VIA2_Get_ORB(~VIA2_D.DDR_B);
+			Data = (VIA2_D.Ty.ORB & VIA2_D.Ty.DDR_B) | VIA2_Get_ORB(~VIA2_D.Ty.DDR_B);
 		}
 #if VIA2_dolog && 1
 		dbglog_Access("VIA2_Access kORB", Data, WriteMem);
@@ -809,7 +777,7 @@ uint32_t VIA2_Access(uint32_t Data, bool WriteMem, CPTR addr)
 		}
 		else
 		{
-			Data = VIA2_D.DDR_B;
+			Data = VIA2_D.Ty.DDR_B;
 		}
 #if VIA2_dolog && 1
 		dbglog_Access("VIA2_Access kDDR_B", Data, WriteMem);
@@ -822,7 +790,7 @@ uint32_t VIA2_Access(uint32_t Data, bool WriteMem, CPTR addr)
 		}
 		else
 		{
-			Data = VIA2_D.DDR_A;
+			Data = VIA2_D.Ty.DDR_A;
 		}
 #if VIA2_dolog && 1
 		dbglog_Access("VIA2_Access kDDR_A", Data, WriteMem);
@@ -831,13 +799,13 @@ uint32_t VIA2_Access(uint32_t Data, bool WriteMem, CPTR addr)
 	case kT1C_L:
 		if (WriteMem)
 		{
-			VIA2_D.T1L_L = Data;
+			VIA2_D.Ty.T1L_L = Data;
 		}
 		else
 		{
 			VIA2_ClrInterruptFlag(kIntT1);
 			VIA2_DoTimer1Check();
-			Data = (VIA2_D.T1C_F & 0x00FF0000) >> 16;
+			Data = (VIA2_D.Ty.T1C_F & 0x00FF0000) >> 16;
 		}
 #if VIA2_dolog && 1
 		dbglog_Access("VIA2_Access kT1C_L", Data, WriteMem);
@@ -846,10 +814,10 @@ uint32_t VIA2_Access(uint32_t Data, bool WriteMem, CPTR addr)
 	case kT1C_H:
 		if (WriteMem)
 		{
-			VIA2_D.T1L_H = Data;
+			VIA2_D.Ty.T1L_H = Data;
 			VIA2_ClrInterruptFlag(kIntT1);
-			VIA2_D.T1C_F = (Data << 24) + (VIA2_D.T1L_L << 16);
-			if ((VIA2_D.ACR & 0x40) == 0)
+			VIA2_D.Ty.T1C_F = (Data << 24) + (VIA2_D.Ty.T1L_L << 16);
+			if ((VIA2_D.Ty.ACR & 0x40) == 0)
 			{
 				VIA2_T1_Active = 1;
 			}
@@ -859,7 +827,7 @@ uint32_t VIA2_Access(uint32_t Data, bool WriteMem, CPTR addr)
 		else
 		{
 			VIA2_DoTimer1Check();
-			Data = (VIA2_D.T1C_F & 0xFF000000) >> 24;
+			Data = (VIA2_D.Ty.T1C_F & 0xFF000000) >> 24;
 		}
 #if VIA2_dolog && 1
 		dbglog_Access("VIA2_Access kT1C_H", Data, WriteMem);
@@ -868,11 +836,11 @@ uint32_t VIA2_Access(uint32_t Data, bool WriteMem, CPTR addr)
 	case kT1L_L:
 		if (WriteMem)
 		{
-			VIA2_D.T1L_L = Data;
+			VIA2_D.Ty.T1L_L = Data;
 		}
 		else
 		{
-			Data = VIA2_D.T1L_L;
+			Data = VIA2_D.Ty.T1L_L;
 		}
 #if VIA2_dolog && 1
 		dbglog_Access("VIA2_Access kT1L_L", Data, WriteMem);
@@ -881,11 +849,11 @@ uint32_t VIA2_Access(uint32_t Data, bool WriteMem, CPTR addr)
 	case kT1L_H:
 		if (WriteMem)
 		{
-			VIA2_D.T1L_H = Data;
+			VIA2_D.Ty.T1L_H = Data;
 		}
 		else
 		{
-			Data = VIA2_D.T1L_H;
+			Data = VIA2_D.Ty.T1L_H;
 		}
 #if VIA2_dolog && 1
 		dbglog_Access("VIA2_Access kT1L_H", Data, WriteMem);
@@ -894,13 +862,13 @@ uint32_t VIA2_Access(uint32_t Data, bool WriteMem, CPTR addr)
 	case kT2_L:
 		if (WriteMem)
 		{
-			VIA2_D.T2L_L = Data;
+			VIA2_D.Ty.T2L_L = Data;
 		}
 		else
 		{
 			VIA2_ClrInterruptFlag(kIntT2);
 			VIA2_DoTimer2Check();
-			Data = (VIA2_D.T2C_F & 0x00FF0000) >> 16;
+			Data = (VIA2_D.Ty.T2C_F & 0x00FF0000) >> 16;
 		}
 #if VIA2_dolog && 1
 		dbglog_Access("VIA2_Access kT2_L", Data, WriteMem);
@@ -909,11 +877,11 @@ uint32_t VIA2_Access(uint32_t Data, bool WriteMem, CPTR addr)
 	case kT2_H:
 		if (WriteMem)
 		{
-			VIA2_D.T2C_F = (Data << 24) + (VIA2_D.T2L_L << 16);
+			VIA2_D.Ty.T2C_F = (Data << 24) + (VIA2_D.Ty.T2L_L << 16);
 			VIA2_ClrInterruptFlag(kIntT2);
 			VIA2_T2_Active = 1;
 
-			if ((VIA2_D.T2C_F < (128UL << 16)) && (VIA2_D.T2C_F != 0))
+			if ((VIA2_D.Ty.T2C_F < (128UL << 16)) && (VIA2_D.Ty.T2C_F != 0))
 			{
 				VIA2_T2C_ShortTime = true;
 				VIA2_T2Running = true;
@@ -930,7 +898,7 @@ uint32_t VIA2_Access(uint32_t Data, bool WriteMem, CPTR addr)
 		else
 		{
 			VIA2_DoTimer2Check();
-			Data = (VIA2_D.T2C_F & 0xFF000000) >> 24;
+			Data = (VIA2_D.Ty.T2C_F & 0xFF000000) >> 24;
 		}
 #if VIA2_dolog && 1
 		dbglog_Access("VIA2_Access kT2_H", Data, WriteMem);
@@ -938,20 +906,20 @@ uint32_t VIA2_Access(uint32_t Data, bool WriteMem, CPTR addr)
 		break;
 	case kSR:
 #ifdef _VIA_Debug
-		fprintf(stderr, "VIA2_D.SR: %d, %d, %d\n",
-				WriteMem, ((VIA2_D.ACR & 0x1C) >> 2), Data);
+		fprintf(stderr, "VIA2_D.Ty.SR: %d, %d, %d\n",
+				WriteMem, ((VIA2_D.Ty.ACR & 0x1C) >> 2), Data);
 #endif
 		if (WriteMem)
 		{
-			VIA2_D.SR = Data;
+			VIA2_D.Ty.SR = Data;
 		}
 		VIA2_ClrInterruptFlag(kIntSR);
-		switch ((VIA2_D.ACR & 0x1C) >> 2)
+		switch ((VIA2_D.Ty.ACR & 0x1C) >> 2)
 		{
 		case 3: /* Shifting In */
 			break;
 		case 6: /* shift out under o2 clock */
-			if ((!WriteMem) || (VIA2_D.SR != 0))
+			if ((!WriteMem) || (VIA2_D.Ty.SR != 0))
 			{
 				ReportAbnormalID(0x0505,
 								 "VIA shift mode 6, non zero");
@@ -978,7 +946,7 @@ uint32_t VIA2_Access(uint32_t Data, bool WriteMem, CPTR addr)
 		}
 		if (!WriteMem)
 		{
-			Data = VIA2_D.SR;
+			Data = VIA2_D.Ty.SR;
 		}
 #if VIA2_dolog && 1
 		dbglog_Access("VIA2_Access kSR", Data, WriteMem);
@@ -987,7 +955,7 @@ uint32_t VIA2_Access(uint32_t Data, bool WriteMem, CPTR addr)
 	case kACR:
 		if (WriteMem)
 		{
-			if ((VIA2_D.ACR & 0x10) != ((uint8_t)Data & 0x10))
+			if ((VIA2_D.Ty.ACR & 0x10) != ((uint8_t)Data & 0x10))
 			{
 				/* shift direction has changed */
 				if ((Data & 0x10) == 0)
@@ -1005,23 +973,23 @@ uint32_t VIA2_Access(uint32_t Data, bool WriteMem, CPTR addr)
 					}
 				}
 			}
-			VIA2_D.ACR = Data;
-			if ((VIA2_D.ACR & 0x20) != 0)
+			VIA2_D.Ty.ACR = Data;
+			if ((VIA2_D.Ty.ACR & 0x20) != 0)
 			{
 				/* Not pulse counting? */
 				ReportAbnormalID(0x0506,
-								 "Set VIA2_D.ACR T2 Timer pulse counting");
+								 "Set VIA2_D.Ty.ACR T2 Timer pulse counting");
 			}
-			switch ((VIA2_D.ACR & 0xC0) >> 6)
+			switch ((VIA2_D.Ty.ACR & 0xC0) >> 6)
 			{
 			/* case 1: happens in early System 6 */
 			case 2:
 				ReportAbnormalID(0x0507,
-								 "Set VIA2_D.ACR T1 Timer mode 2");
+								 "Set VIA2_D.Ty.ACR T1 Timer mode 2");
 				break;
 			}
 			CheckT1IntReady();
-			switch ((VIA2_D.ACR & 0x1C) >> 2)
+			switch ((VIA2_D.Ty.ACR & 0x1C) >> 2)
 			{
 			case 0: /* this isn't sufficient */
 				VIA2_ClrInterruptFlag(kIntSR);
@@ -1031,20 +999,20 @@ uint32_t VIA2_Access(uint32_t Data, bool WriteMem, CPTR addr)
 			case 4:
 			case 5:
 				ReportAbnormalID(0x0508,
-								 "Set VIA2_D.ACR shift mode 1,2,4,5");
+								 "Set VIA2_D.Ty.ACR shift mode 1,2,4,5");
 				break;
 			default:
 				break;
 			}
-			if ((VIA2_D.ACR & 0x03) != 0)
+			if ((VIA2_D.Ty.ACR & 0x03) != 0)
 			{
 				ReportAbnormalID(0x0509,
-								 "Set VIA2_D.ACR T2 Timer latching enabled");
+								 "Set VIA2_D.Ty.ACR T2 Timer latching enabled");
 			}
 		}
 		else
 		{
-			Data = VIA2_D.ACR;
+			Data = VIA2_D.Ty.ACR;
 		}
 #if VIA2_dolog && 1
 		dbglog_Access("VIA2_Access kACR", Data, WriteMem);
@@ -1053,34 +1021,34 @@ uint32_t VIA2_Access(uint32_t Data, bool WriteMem, CPTR addr)
 	case kPCR:
 		if (WriteMem)
 		{
-			VIA2_D.PCR = Data;
+			VIA2_D.Ty.PCR = Data;
 #define Ui3rSetContains(s, i) (((s) & (1 << (i))) != 0)
 			if (!Ui3rSetContains(VIA2_CB2modesAllowed,
-								 (VIA2_D.PCR >> 5) & 0x07))
+								 (VIA2_D.Ty.PCR >> 5) & 0x07))
 			{
 				ReportAbnormalID(0x050A,
-								 "Set VIA2_D.PCR CB2 Control mode?");
+								 "Set VIA2_D.Ty.PCR CB2 Control mode?");
 			}
-			if ((VIA2_D.PCR & 0x10) != 0)
+			if ((VIA2_D.Ty.PCR & 0x10) != 0)
 			{
 				ReportAbnormalID(0x050B,
-								 "Set VIA2_D.PCR CB1 INTERRUPT CONTROL?");
+								 "Set VIA2_D.Ty.PCR CB1 INTERRUPT CONTROL?");
 			}
 			if (!Ui3rSetContains(VIA2_CA2modesAllowed,
-								 (VIA2_D.PCR >> 1) & 0x07))
+								 (VIA2_D.Ty.PCR >> 1) & 0x07))
 			{
 				ReportAbnormalID(0x050C,
-								 "Set VIA2_D.PCR CA2 INTERRUPT CONTROL?");
+								 "Set VIA2_D.Ty.PCR CA2 INTERRUPT CONTROL?");
 			}
-			if ((VIA2_D.PCR & 0x01) != 0)
+			if ((VIA2_D.Ty.PCR & 0x01) != 0)
 			{
 				ReportAbnormalID(0x050D,
-								 "Set VIA2_D.PCR CA1 INTERRUPT CONTROL?");
+								 "Set VIA2_D.Ty.PCR CA1 INTERRUPT CONTROL?");
 			}
 		}
 		else
 		{
-			Data = VIA2_D.PCR;
+			Data = VIA2_D.Ty.PCR;
 		}
 #if VIA2_dolog && 1
 		dbglog_Access("VIA2_Access kPCR", Data, WriteMem);
@@ -1089,15 +1057,15 @@ uint32_t VIA2_Access(uint32_t Data, bool WriteMem, CPTR addr)
 	case kIFR:
 		if (WriteMem)
 		{
-			VIA2_D.IFR = VIA2_D.IFR & ((~Data) & 0x7F);
+			VIA2_D.Ty.IFR = VIA2_D.Ty.IFR & ((~Data) & 0x7F);
 			/* Clear Flag Bits */
 			VIA2_CheckInterruptFlag();
 			CheckT1IntReady();
 		}
 		else
 		{
-			Data = VIA2_D.IFR;
-			if ((VIA2_D.IFR & VIA2_D.IER) != 0)
+			Data = VIA2_D.Ty.IFR;
+			if ((VIA2_D.Ty.IFR & VIA2_D.Ty.IER) != 0)
 			{
 				Data |= 0x80;
 			}
@@ -1111,7 +1079,7 @@ uint32_t VIA2_Access(uint32_t Data, bool WriteMem, CPTR addr)
 		{
 			if ((Data & 0x80) == 0)
 			{
-				VIA2_D.IER = VIA2_D.IER & ((~Data) & 0x7F);
+				VIA2_D.Ty.IER = VIA2_D.Ty.IER & ((~Data) & 0x7F);
 				/* Clear Enable Bits */
 #if 0 != VIA2_IER_Never0
 					/*
@@ -1125,10 +1093,10 @@ uint32_t VIA2_Access(uint32_t Data, bool WriteMem, CPTR addr)
 			}
 			else
 			{
-				VIA2_D.IER = VIA2_D.IER | (Data & 0x7F);
+				VIA2_D.Ty.IER = VIA2_D.Ty.IER | (Data & 0x7F);
 				/* Set Enable Bits */
 #if 0 != VIA2_IER_Never1
-					if ((VIA2_D.IER & VIA2_IER_Never1) != 0) {
+					if ((VIA2_D.Ty.IER & VIA2_IER_Never1) != 0) {
 						ReportAbnormalID(0x050F, "IER Never1 set");
 					}
 #endif
@@ -1137,7 +1105,7 @@ uint32_t VIA2_Access(uint32_t Data, bool WriteMem, CPTR addr)
 		}
 		else
 		{
-			Data = VIA2_D.IER | 0x80;
+			Data = VIA2_D.Ty.IER | 0x80;
 		}
 #if VIA2_dolog && 1
 		dbglog_Access("VIA2_Access kIER", Data, WriteMem);
@@ -1145,19 +1113,19 @@ uint32_t VIA2_Access(uint32_t Data, bool WriteMem, CPTR addr)
 		break;
 	case kORA:
 	case kORA_H:
-		if ((VIA2_D.PCR & 0xE) == 0)
+		if ((VIA2_D.Ty.PCR & 0xE) == 0)
 		{
 			VIA2_ClrInterruptFlag(kIntCA2);
 		}
 		VIA2_ClrInterruptFlag(kIntCA1);
 		if (WriteMem)
 		{
-			VIA2_D.ORA = Data;
-			VIA2_Put_ORA(VIA2_D.DDR_A, VIA2_D.ORA);
+			VIA2_D.Ty.ORA = Data;
+			VIA2_Put_ORA(VIA2_D.Ty.DDR_A, VIA2_D.Ty.ORA);
 		}
 		else
 		{
-			Data = (VIA2_D.ORA & VIA2_D.DDR_A) | VIA2_Get_ORA(~VIA2_D.DDR_A);
+			Data = (VIA2_D.Ty.ORA & VIA2_D.Ty.DDR_A) | VIA2_Get_ORA(~VIA2_D.Ty.DDR_A);
 		}
 #if VIA2_dolog && 1
 		dbglog_Access("VIA2_Access kORA", Data, WriteMem);
