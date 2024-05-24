@@ -19,7 +19,6 @@
 */
 
 #include "sys_dependencies.h"
-#include "CNFGGLOB.h"
 #include "CNFGRAPI.h"
 #include "STRCONST.h"
 #include "error_codes.h"
