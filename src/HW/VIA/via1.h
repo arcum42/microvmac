@@ -16,8 +16,8 @@
 
 #pragma once
 
-#ifndef VIAEMDEV_H
-#define VIAEMDEV_H
+#ifndef VIA1EMDEV_H
+#define VIA1EMDEV_H
 #include <stdint.h>
 
 bool VIA1_Zap(void);

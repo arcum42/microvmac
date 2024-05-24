@@ -80,7 +80,7 @@
 #include "UI/my_os_glue.h"
 #include "global_glue.h"
 
-#include "via.h"
+#include "via1.h"
 
 /*
 	ReportAbnormalID unused 0x0410 - 0x04FF

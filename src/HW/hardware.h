@@ -24,7 +24,7 @@
 
 #include "M68K/instruct_table_68k.h"
 #include "M68K/cpu_68k.h"
-#include "VIA/via.h"
+#include "VIA/via1.h"
 #include "VIA/via2.h"
 #include "DISK/int_woz_machine.h"
 #include "SCC/serial_comm.h"

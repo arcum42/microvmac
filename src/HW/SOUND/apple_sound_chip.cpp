@@ -22,7 +22,7 @@
 #include "UTIL/endian.h"
 #include "UI/my_os_glue.h"
 #include "global_glue.h"
-#include "HW/VIA/via.h"
+#include "HW/VIA/via1.h"
 
 #if EmASC
 

@@ -127,7 +127,7 @@ HW_SRC = {
 		'src/HW/SOUND/apple_sound_chip.cpp',
 	],
 	'VIA1': [
-		'src/HW/VIA/via.cpp',
+		'src/HW/VIA/via1.cpp',
 	],
 	'VIA2': [
 		'src/HW/VIA/via2.cpp',
