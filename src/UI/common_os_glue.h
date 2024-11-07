@@ -30,7 +30,7 @@
 #include "event_queue.h"
 #include "memory.h"
 
-#define EnableRecreateW 1
+#define EnableRecreateW 0
 
 extern uint32_t vSonyWritableMask;
 extern uint32_t vSonyInsertedMask;
@@ -95,12 +95,6 @@ void PbufDisposeNotify(tPbuf Pbuf_No);
 MacErr_t CheckPbuf(tPbuf Pbuf_No);
 MacErr_t PbufGetSize(tPbuf Pbuf_No, uint32_t *Count);
 #endif
-
- bool FirstFreeDisk(tDrive *Drive_No);
-bool AnyDiskInserted(void);
-void DiskRevokeWritable(tDrive Drive_No);
-void DiskInsertNotify(tDrive Drive_No, bool locked);
-void DiskEjectedNotify(tDrive Drive_No);
 
 /*
 	block type - for operating on multiple uint8_t elements

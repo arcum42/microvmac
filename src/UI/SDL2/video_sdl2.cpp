@@ -13,11 +13,6 @@
 #include "os_glue_sdl2.h"
 #include "HW/SCREEN/screen.h"
 
-#include "imgui_impl_sdl2.h"
-#include "imgui_impl_sdlrenderer2.h"
-#include "imgui.h"
-
-
 /* --- video out --- */
 
 #if MayFullScreen
@@ -36,7 +31,7 @@ SDL_Renderer *renderer = nullptr;
 SDL_Texture *texture = nullptr;
 SDL_PixelFormat *format = nullptr;
 
-uint8_t * ScalingBuff = nullptr;
+uint8_t *ScalingBuff = nullptr;
 
 SDL_Color bwpalette[2];
 bool bwpalette_loaded = false;
@@ -55,13 +50,14 @@ bool SDL_InitDisplay()
 	if (SDL_Init(SDL_INIT_AUDIO | SDL_INIT_VIDEO | SDL_INIT_TIMER) < 0)
 	{
 		fprintf(stderr, "Unable to init SDL: %s\n", SDL_GetError());
-	} else {
+	}
+	else
+	{
 		v = true;
 	}
 
 	return v;
 }
-
 
 #if MayFullScreen
 bool GrabMachine = false;
@@ -82,14 +78,15 @@ void GrabTheMachine()
 		even if HaveMouseMotion already true
 	*/
 	if (MoveMouse(ViewHStart + (ViewHSize / 2),
-		ViewVStart + (ViewVSize / 2)))
+				  ViewVStart + (ViewVSize / 2)))
 	{
 		SavedMouseH = ViewHStart + (ViewHSize / 2);
 		SavedMouseV = ViewVStart + (ViewVSize / 2);
 		HaveMouseMotion = true;
 	}
 #else
-	if (0 == SDL_SetRelativeMouseMode(SDL_ENABLE)) {
+	if (0 == SDL_SetRelativeMouseMode(SDL_ENABLE))
+	{
 		HaveMouseMotion = true;
 	}
 #endif
@@ -103,9 +100,10 @@ void UngrabMachine()
 {
 #if EnableFSMouseMotion
 
-	if (HaveMouseMotion) {
+	if (HaveMouseMotion)
+	{
 #if HaveWorkingWarp
-		(void) MoveMouse(CurMouseH, CurMouseV);
+		(void)MoveMouse(CurMouseH, CurMouseV);
 #else
 		SDL_SetRelativeMouseMode(SDL_DISABLE);
 #endif
@@ -127,24 +125,36 @@ static void MouseConstrain(void)
 	int16_t shiftdh;
 	int16_t shiftdv;
 
-	if (SavedMouseH < ViewHStart + (ViewHSize / 4)) {
+	if (SavedMouseH < ViewHStart + (ViewHSize / 4))
+	{
 		shiftdh = ViewHSize / 2;
-	} else if (SavedMouseH > ViewHStart + ViewHSize - (ViewHSize / 4)) {
-		shiftdh = - ViewHSize / 2;
-	} else {
+	}
+	else if (SavedMouseH > ViewHStart + ViewHSize - (ViewHSize / 4))
+	{
+		shiftdh = -ViewHSize / 2;
+	}
+	else
+	{
 		shiftdh = 0;
 	}
-	if (SavedMouseV < ViewVStart + (ViewVSize / 4)) {
+	if (SavedMouseV < ViewVStart + (ViewVSize / 4))
+	{
 		shiftdv = ViewVSize / 2;
-	} else if (SavedMouseV > ViewVStart + ViewVSize - (ViewVSize / 4)) {
-		shiftdv = - ViewVSize / 2;
-	} else {
+	}
+	else if (SavedMouseV > ViewVStart + ViewVSize - (ViewVSize / 4))
+	{
+		shiftdv = -ViewVSize / 2;
+	}
+	else
+	{
 		shiftdv = 0;
 	}
-	if ((shiftdh != 0) || (shiftdv != 0)) {
+	if ((shiftdh != 0) || (shiftdv != 0))
+	{
 		SavedMouseH += shiftdh;
 		SavedMouseV += shiftdv;
-		if (! MoveMouse(SavedMouseH, SavedMouseV)) {
+		if (!MoveMouse(SavedMouseH, SavedMouseV))
+		{
 			HaveMouseMotion = false;
 		}
 	}
@@ -157,19 +167,26 @@ static int SetPalette(SDL_Palette *palette, const SDL_Color *macColors, int ncol
 	return SDL_SetPaletteColors(palette, macColors, 0, ncolors);
 }
 
-static SDL_Color HexToColor(const char *hexIn, SDL_Color fallback) {
+static SDL_Color HexToColor(const char *hexIn, SDL_Color fallback)
+{
 	unsigned char r, g, b;
 	assert(hexIn != nullptr);
 	int numRead = sscanf(hexIn, "#%02hhx%02hhx%02hhx", &r, &g, &b);
-	if (numRead != 3) { return fallback; }
+	if (numRead != 3)
+	{
+		return fallback;
+	}
 	SDL_Color result = {.r = r, .g = g, .b = b, .a = 255};
 	return result;
 }
 
 void LoadCustomPalette()
 {
-	if (bwpalette_loaded) { return; }
-	SDL_Color fallbacks[] = { {.r=255,.g=255,.b=255, .a=255}, {.r=0,.g=0,.b=0, .a=255} };
+	if (bwpalette_loaded)
+	{
+		return;
+	}
+	SDL_Color fallbacks[] = {{.r = 255, .g = 255, .b = 255, .a = 255}, {.r = 0, .g = 0, .b = 0, .a = 255}};
 	bwpalette[0] = HexToColor(ScreenColorWhite, fallbacks[0]);
 	bwpalette[1] = HexToColor(ScreenColorBlack, fallbacks[1]);
 	bwpalette_loaded = true;
@@ -179,9 +196,9 @@ void LoadCustomPalette()
 // Note: this is complete and total guesswork right now. Lol.
 uint32_t GetPixFormatFromDepth(int depth)
 {
-	switch(depth)
+	switch (depth)
 	{
-	case 1:	
+	case 1:
 		return SDL_PIXELFORMAT_INDEX1MSB;
 	case 4:
 		return SDL_PIXELFORMAT_INDEX4MSB;
@@ -200,52 +217,53 @@ uint32_t GetPixFormatFromDepth(int depth)
 
 // We aren't being smart about *what* to update, since if we use SDL2 properly
 // the update operating is stunningly cheap.
-void Screen_OutputFrame(uint8_t * src_ptr)
+void Screen_OutputFrame(uint8_t *src_ptr)
 {
-	if (EmVideoDisable) { return; }
-	
-	uint32_t src_format = GetPixFormatFromDepth(vMacScreenDepth+1);
+	if (EmVideoDisable)
+	{
+		return;
+	}
+
+	uint32_t src_format = GetPixFormatFromDepth(vMacScreenDepth + 1);
 	void *pixels;
 	int pitch;
-	
+
 	// Setup source surface
 	SDL_Surface *src = SDL_CreateRGBSurfaceWithFormatFrom(
-		src_ptr, 
+		src_ptr,
 		vMacScreenWidth,
 		vMacScreenHeight,
-		vMacScreenDepth+1,
+		vMacScreenDepth + 1,
 		vMacScreenByteWidth,
-		src_format
-	);
+		src_format);
 	LoadCustomPalette();
 	SetPalette(src->format->palette, bwpalette, 2);
-	
+
 	// Setup dst surface
 	SDL_LockTexture(texture, nullptr, &pixels, &pitch);
 	SDL_Surface *dst = SDL_CreateRGBSurfaceWithFormatFrom(
-		pixels, 
+		pixels,
 		vMacScreenWidth,
 		vMacScreenHeight,
 		32, vMacScreenWidth * 4,
-		SDL_PIXELFORMAT_RGBX8888
-	);
-	
+		SDL_PIXELFORMAT_RGBX8888);
+
 	// Blit src to dst
 	SDL_BlitSurface(src, nullptr, dst, nullptr);
 	// For teh lulz, try a crappy blur
-	//blur(dst, 1);
-	
+	// blur(dst, 1);
+
 	// Free surfaces
 	SDL_FreeSurface(src);
 	SDL_FreeSurface(dst);
-	
-	//ImGui::Render();
+
+	// ImGui::Render();
 
 	// Render the texture
 	SDL_RenderCopy(renderer, texture, nullptr, nullptr);
 	SDL_UnlockTexture(texture);
 
-	//ImGui_ImplSDLRenderer2_RenderDrawData(ImGui::GetDrawData());
+	// ImGui_ImplSDLRenderer2_RenderDrawData(ImGui::GetDrawData());
 
 	SDL_RenderPresent(renderer);
 }
@@ -255,7 +273,8 @@ void DoneWithDrawingForTick(void)
 	return;
 }
 
-enum {
+enum
+{
 	kMagStateNormal,
 	kMagStateMagnifgy,
 	kNumMagStates
@@ -296,17 +315,22 @@ bool CreateMainWindow()
 	{
 		int WinIndx;
 
-		if (UseMagnify) {
+		if (UseMagnify)
+		{
 			WinIndx = kMagStateMagnifgy;
-		} else
+		}
+		else
 		{
 			WinIndx = kMagStateNormal;
 		}
 
-		if (! HavePositionWins[WinIndx]) {
+		if (!HavePositionWins[WinIndx])
+		{
 			NewWindowX = SDL_WINDOWPOS_CENTERED;
 			NewWindowY = SDL_WINDOWPOS_CENTERED;
-		} else {
+		}
+		else
+		{
 			NewWindowX = WinPositionsX[WinIndx];
 			NewWindowY = WinPositionsY[WinIndx];
 		}
@@ -316,60 +340,51 @@ bool CreateMainWindow()
 #endif
 
 	if (nullptr == (main_wind = SDL_CreateWindow(
-		kStrAppName,
-		NewWindowX, NewWindowY,
-		NewWindowWidth, NewWindowHeight,
-		flags)))
+						kStrAppName,
+						NewWindowX, NewWindowY,
+						NewWindowWidth, NewWindowHeight,
+						flags)))
 	{
 		fprintf(stderr, "SDL_CreateWindow fails: %s\n", SDL_GetError());
-	} else
-	if (nullptr == (renderer = SDL_CreateRenderer(
-		main_wind, -1,
-		0 /* SDL_RENDERER_ACCELERATED|SDL_RENDERER_PRESENTVSYNC */
-			/*
-				SDL_RENDERER_ACCELERATED not needed
-				"no flags gives priority to available
-				SDL_RENDERER_ACCELERATED renderers"
-			*/
-			/* would rather not require vsync */
-		)))
+	}
+	else if (nullptr == (renderer = SDL_CreateRenderer(
+							 main_wind, -1,
+							 0 /* SDL_RENDERER_ACCELERATED|SDL_RENDERER_PRESENTVSYNC */
+							   /*
+								   SDL_RENDERER_ACCELERATED not needed
+								   "no flags gives priority to available
+								   SDL_RENDERER_ACCELERATED renderers"
+							   */
+							   /* would rather not require vsync */
+							 )))
 	{
 		fprintf(stderr, "SDL_CreateRenderer fails: %s\n", SDL_GetError());
-	} else
-	if (nullptr == (texture = SDL_CreateTexture(
-		renderer,
-		SDL_PIXELFORMAT_RGBX8888,
-		SDL_TEXTUREACCESS_STREAMING,
-		vMacScreenWidth, vMacScreenHeight
-		)))
+	}
+	else if (nullptr == (texture = SDL_CreateTexture(
+							 renderer,
+							 SDL_PIXELFORMAT_RGBX8888,
+							 SDL_TEXTUREACCESS_STREAMING,
+							 vMacScreenWidth, vMacScreenHeight)))
 	{
 		fprintf(stderr, "SDL_CreateTexture fails: %s\n", SDL_GetError());
-	} else
-	if (nullptr == (format = SDL_AllocFormat(SDL_PIXELFORMAT_ARGB8888)))
+	}
+	else if (nullptr == (format = SDL_AllocFormat(SDL_PIXELFORMAT_ARGB8888)))
 	{
 		fprintf(stderr, "SDL_AllocFormat fails: %s\n", SDL_GetError());
-	} else
+	}
+	else
 	{
 		SDL_RenderClear(renderer);
 
 		SDL_DisplayMode info;
 
-		if (0 != SDL_GetCurrentDisplayMode(0, &info)) {
+		if (0 != SDL_GetCurrentDisplayMode(0, &info))
+		{
 			fprintf(stderr, "SDL_GetCurrentDisplayMode fails: %s\n",
-				SDL_GetError());
+					SDL_GetError());
 
 			return false;
 		}
-		//ImGui::CreateContext();
-		//ImGui_ImplSDL2_InitForSDLRenderer(main_wind, renderer);
-		//ImGui_ImplSDLRenderer2_Init(renderer);
-        //ImGui_ImplSDL2_NewFrame();
-		//ImGui_ImplSDLRenderer2_NewFrame();
-		//ImGui::NewFrame();
-
-		//ImGui::Begin("Hello, world!");
-    	//ImGui::Text("Hello, world");
-		//ImGui::End();
 
 		if (UseFullScreen)
 #if MayFullScreen
@@ -381,31 +396,44 @@ bool CreateMainWindow()
 
 			ViewHSize = wr;
 			ViewVSize = hr;
-			if (UseMagnify) {
+			if (UseMagnify)
+			{
 				ViewHSize /= WindowScale;
 				ViewVSize /= WindowScale;
 			}
-			if (ViewHSize >= vMacScreenWidth) {
+			if (ViewHSize >= vMacScreenWidth)
+			{
 				ViewHStart = 0;
 				ViewHSize = vMacScreenWidth;
-			} else {
-				ViewHSize &= ~ 1;
 			}
-			if (ViewVSize >= vMacScreenHeight) {
+			else
+			{
+				ViewHSize &= ~1;
+			}
+			if (ViewVSize >= vMacScreenHeight)
+			{
 				ViewVStart = 0;
 				ViewVSize = vMacScreenHeight;
-			} else {
-				ViewVSize &= ~ 1;
+			}
+			else
+			{
+				ViewVSize &= ~1;
 			}
 
-			if (wr > NewWindowWidth) {
+			if (wr > NewWindowWidth)
+			{
 				hOffset = (wr - NewWindowWidth) / 2;
-			} else {
+			}
+			else
+			{
 				hOffset = 0;
 			}
-			if (hr > NewWindowHeight) {
+			if (hr > NewWindowHeight)
+			{
 				vOffset = (hr - NewWindowHeight) / 2;
-			} else {
+			}
+			else
+			{
 				vOffset = 0;
 			}
 		}
@@ -423,22 +451,26 @@ bool CreateMainWindow()
 
 void CloseMainWindow()
 {
-	if (nullptr != format) {
+	if (nullptr != format)
+	{
 		SDL_FreeFormat(format);
 		format = nullptr;
 	}
 
-	if (nullptr != texture) {
+	if (nullptr != texture)
+	{
 		SDL_DestroyTexture(texture);
 		texture = nullptr;
 	}
 
-	if (nullptr != renderer) {
+	if (nullptr != renderer)
+	{
 		SDL_DestroyRenderer(renderer);
 		renderer = nullptr;
 	}
 
-	if (nullptr != main_wind) {
+	if (nullptr != main_wind)
+	{
 		SDL_DestroyWindow(main_wind);
 		main_wind = nullptr;
 	}
@@ -455,7 +487,8 @@ static void ZapWState(void)
 #endif
 
 #if EnableRecreateW
-struct WState {
+struct WState
+{
 #if MayFullScreen
 	uint16_t f_ViewHSize;
 	uint16_t f_ViewVSize;
@@ -466,7 +499,6 @@ struct WState {
 #endif
 	bool f_UseFullScreen;
 	bool f_UseMagnify;
-#endif
 #if MayNotFullScreen
 	int f_CurWinIndx;
 #endif
@@ -476,6 +508,7 @@ struct WState {
 	SDL_PixelFormat *f_format;
 };
 typedef struct WState WState;
+#endif
 
 #if EnableRecreateW
 static void GetWState(WState *r)
@@ -523,7 +556,8 @@ static void SetWState(WState *r)
 }
 #endif
 
-enum {
+enum
+{
 	kWinStateWindowed,
 	kWinStateFullScreen,
 	kNumWinStates
@@ -547,12 +581,12 @@ bool ReCreateMainWindow()
 	WinMagStates[OldWinState] =
 		OldMagState;
 
-	if (! UseFullScreen)
+	if (!UseFullScreen)
 #if MayNotFullScreen
 	{
 		SDL_GetWindowPosition(main_wind,
-			&WinPositionsX[CurWinIndx],
-			&WinPositionsY[CurWinIndx]);
+							  &WinPositionsX[CurWinIndx],
+							  &WinPositionsY[CurWinIndx]);
 		HavePositionWins[CurWinIndx] = true;
 	}
 #endif
@@ -560,7 +594,8 @@ bool ReCreateMainWindow()
 	ForceShowCursor(); /* hide/show cursor api is per window */
 
 #if MayFullScreen
-	if (GrabMachine) {
+	if (GrabMachine)
+	{
 		GrabMachine = false;
 		UngrabMachine();
 	}
@@ -573,23 +608,26 @@ bool ReCreateMainWindow()
 	UseMagnify = WantMagnify;
 	UseFullScreen = WantFullScreen;
 
-	if (! CreateMainWindow()) {
+	if (!CreateMainWindow())
+	{
 		CloseMainWindow();
 		SetWState(&old_state);
 
 		/* avoid retry */
 		WantFullScreen = UseFullScreen;
 		WantMagnify = UseMagnify;
-
-	} else {
+	}
+	else
+	{
 		GetWState(&new_state);
 		SetWState(&old_state);
 		CloseMainWindow();
 		SetWState(&new_state);
 
 #if HaveWorkingWarp
-		if (HadCursorHidden) {
-			(void) MoveMouse(CurMouseH, CurMouseV);
+		if (HadCursorHidden)
+		{
+			(void)MoveMouse(CurMouseH, CurMouseV);
 		}
 #endif
 	}
@@ -602,17 +640,15 @@ void ZapWinStateVars(void)
 {
 #if MayNotFullScreen
 	{
-		int i;
-
-		for (i = 0; i < kNumMagStates; ++i) {
+		for (int i = 0; i < kNumMagStates; ++i)
+		{
 			HavePositionWins[i] = false;
 		}
 	}
 #endif
 	{
-		int i;
-
-		for (i = 0; i < kNumWinStates; ++i) {
+		for (int i = 0; i < kNumWinStates; ++i)
+		{
 			WinMagStates[i] = kMagStateAuto;
 		}
 	}
@@ -620,32 +656,33 @@ void ZapWinStateVars(void)
 
 void ToggleWantFullScreen(void)
 {
-	WantFullScreen = ! WantFullScreen;
+	WantFullScreen = !WantFullScreen;
 
+	int OldWinState =
+		UseFullScreen ? kWinStateFullScreen : kWinStateWindowed;
+	int OldMagState =
+		UseMagnify ? kMagStateMagnifgy : kMagStateNormal;
+	int NewWinState =
+		WantFullScreen ? kWinStateFullScreen : kWinStateWindowed;
+	int NewMagState = WinMagStates[NewWinState];
+
+	WinMagStates[OldWinState] = OldMagState;
+	if (kMagStateAuto != NewMagState)
 	{
-		int OldWinState =
-			UseFullScreen ? kWinStateFullScreen : kWinStateWindowed;
-		int OldMagState =
-			UseMagnify ? kMagStateMagnifgy : kMagStateNormal;
-		int NewWinState =
-			WantFullScreen ? kWinStateFullScreen : kWinStateWindowed;
-		int NewMagState = WinMagStates[NewWinState];
+		WantMagnify = (kMagStateMagnifgy == NewMagState);
+	}
+	else
+	{
+		WantMagnify = false;
+		if (WantFullScreen)
+		{
+			SDL_Rect r;
 
-		WinMagStates[OldWinState] = OldMagState;
-		if (kMagStateAuto != NewMagState) {
-			WantMagnify = (kMagStateMagnifgy == NewMagState);
-		} else {
-			WantMagnify = false;
-			if (WantFullScreen) {
-				SDL_Rect r;
-
-				if (0 == SDL_GetDisplayBounds(0, &r)) {
-					if ((r.w >= vMacScreenWidth * WindowScale)
-						&& (r.h >= vMacScreenHeight * WindowScale)
-						)
-					{
-						WantMagnify = true;
-					}
+			if (0 == SDL_GetDisplayBounds(0, &r))
+			{
+				if ((r.w >= vMacScreenWidth * WindowScale) && (r.h >= vMacScreenHeight * WindowScale))
+				{
+					WantMagnify = true;
 				}
 			}
 		}

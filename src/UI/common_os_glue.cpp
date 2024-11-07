@@ -123,47 +123,6 @@ MacErr_t PbufGetSize(tPbuf Pbuf_No, uint32_t *Count)
 }
 #endif
 
- bool FirstFreeDisk(tDrive *Drive_No)
-{
-	tDrive i;
-
-	for (i = 0; i < NumDrives; ++i) {
-		if (! vSonyIsInserted(i)) {
-			if (nullptr != Drive_No) {
-				*Drive_No = i;
-			}
-			return true;
-		}
-	}
-	return false;
-}
-
-bool AnyDiskInserted(void)
-{
-	return 0 != vSonyInsertedMask;
-}
-
-void DiskRevokeWritable(tDrive Drive_No)
-{
-	vSonyWritableMask &= ~ ((uint32_t)1 << Drive_No);
-}
-
-void DiskInsertNotify(tDrive Drive_No, bool locked)
-{
-	vSonyInsertedMask |= ((uint32_t)1 << Drive_No);
-	if (! locked) {
-		vSonyWritableMask |= ((uint32_t)1 << Drive_No);
-	}
-
-	QuietEnds();
-}
-
-void DiskEjectedNotify(tDrive Drive_No)
-{
-	vSonyWritableMask &= ~ ((uint32_t)1 << Drive_No);
-	vSonyInsertedMask &= ~ ((uint32_t)1 << Drive_No);
-}
-
 #if WantColorTransValid
 static bool ColorTransValid = false;
 #endif
