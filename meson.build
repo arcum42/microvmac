@@ -185,6 +185,7 @@ UI_SRC = [
 	'src/UI/common_os_glue.cpp',
 	'src/UI/event_queue.cpp',
 	'src/UI/control_mode.cpp',
+	'src/UI/memory.cpp',
 	'src/UI/SDL2/os_glue_sdl2.cpp',
 	#'src/UI/SDL2/clipboard_sdl2.cpp',
 	'src/UI/SDL2/debug_log_sdl2.cpp',

@@ -28,6 +28,8 @@
 #include "global_glue.h"
 #include "my_os_glue.h"
 #include "event_queue.h"
+#include "memory.h"
+
 #define EnableRecreateW 1
 
 extern uint32_t vSonyWritableMask;
@@ -170,11 +172,6 @@ extern uint16_t ViewVStart;
 #define FloorPow2Mult(i, p) ((i) & (~ Pow2Mask(p)))
 #define CeilPow2Mult(i, p) FloorPow2Mult((i) + Pow2Mask(p), (p))
 	/* warning - CeilPow2Mult evaluates p twice */
-
-extern uimr ReserveAllocOffset;
-extern uint8_t * ReserveAllocBigBlock;
-extern void ReserveAllocOneBlock(uint8_t * *p, uimr n, uint8_t align, bool FillOnes);
-extern void EmulationReserveAlloc(void);
 
 /* --- sending debugging info to file --- */
 
