@@ -1,5 +1,5 @@
 /*
-	common_os_glue.h
+	dbglog.cpp
 
 	Copyright (C) 2009 Paul C. Pratt
 
@@ -15,7 +15,7 @@
 */
 
 /*
-	COMmon code for Operating System GLUe
+	Debug Log code.
 */
 
 #include <stdlib.h>
@@ -23,13 +23,7 @@
 #include "global_glue.h"
 #include "my_os_glue.h"
 #include "CNFGRAPI.h"
-#include "common_os_glue.h"
 #include "HW/SCREEN/screen.h"
-
-bool RequestMacOff = false;
-bool ForceMacOff = false;
-bool WantMacInterrupt = false;
-bool WantMacReset = false;
 
 /* --- sending debugging info to file --- */
 

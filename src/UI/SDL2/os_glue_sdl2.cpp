@@ -38,6 +38,14 @@
 #include "LANG/intl_chars.h"
 #include "HW/SCREEN/screen.h"
 #include "HW/ROM/rom.h"
+#include "UI/event_queue.h"
+#include "UI/memory.h"
+#include "UI/SDL2/video_sdl2.h"
+
+bool RequestMacOff = false;
+bool ForceMacOff = false;
+bool WantMacInterrupt = false;
+bool WantMacReset = false;
 
 extern bool ReCreateMainWindow();
 extern void ZapWinStateVars();
@@ -53,8 +61,6 @@ void MoveBytes(anyp srcPtr, anyp destPtr, int32_t byteCount)
 }
 
 /* --- information about the environment --- */
-
-#include "UI/common_os_glue.h"
 #include "UTIL/param_buffers.h"
 #include "UI/control_mode.h"
 

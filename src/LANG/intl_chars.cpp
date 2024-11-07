@@ -31,7 +31,6 @@
 	ClStrAppendSubstCStr encoding
 	HTML character entity
 */
-#include "UI/common_os_glue.h"
 #include "UI/my_os_glue.h"
 #include "UI/control_mode.h"
 #include "LANG/intl_chars.h"

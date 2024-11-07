@@ -4,10 +4,10 @@
 #include <SDL.h>
 #include "CNFGRAPI.h"
 #include "sys_dependencies.h"
-#include "UI/common_os_glue.h"
 #include "UTIL/endian.h"
 #include "UI/my_os_glue.h"
 #include "STRCONST.h"
+#include "UI/event_queue.h"
 
 /* --- keyboard input --- */
 

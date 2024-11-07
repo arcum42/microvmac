@@ -24,13 +24,13 @@
 #include "error_codes.h"
 
 #include "LANG/intl_chars.h"
-#include "UI/common_os_glue.h"
 #include "UI/my_os_glue.h"
 #include "UTIL/endian.h"
 
 #include "UI/control_mode.h"
 #include <SDL.h>
 #include "UI/SDL2/os_glue_sdl2.h"
+#include "UI/SDL2/video_sdl2.h"
 
 /* Constants and globals */
 

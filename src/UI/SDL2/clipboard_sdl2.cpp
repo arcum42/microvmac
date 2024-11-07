@@ -6,7 +6,6 @@
 #include "sys_dependencies.h"
 #include "UTIL/endian.h"
 #include "UI/my_os_glue.h"
-#include "UI/common_os_glue.h"
 #include "STRCONST.h"
 
 /* --- clipboard --- */

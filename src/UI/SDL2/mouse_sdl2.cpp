@@ -6,10 +6,11 @@
 #include "sys_dependencies.h"
 #include "UTIL/endian.h"
 #include "UI/my_os_glue.h"
-#include "UI/common_os_glue.h"
 #include "STRCONST.h"
 #include "os_glue_sdl2.h"
- 
+#include "UI/event_queue.h"
+#include "UI/SDL2/video_sdl2.h"
+
 /* --- mouse --- */
 
 #if MayFullScreen

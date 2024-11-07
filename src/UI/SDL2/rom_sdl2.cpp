@@ -5,7 +5,6 @@
 #include "error_codes.h"
 #include "STRCONST.h"
 #include "UI/my_os_glue.h"
-#include "UI/common_os_glue.h"
 #include "UI/control_mode.h"
 #include "UI/SDL2/os_glue_sdl2.h"
 #include "HW/ROM/rom.h"

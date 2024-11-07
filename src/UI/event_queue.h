@@ -69,9 +69,9 @@ constexpr uint32_t kKeepMaskCommand = (1 << 2);
 constexpr uint32_t kKeepMaskOption = (1 << 3);
 constexpr uint32_t kKeepMaskShift = (1 << 4);
 
-void Keyboard_UpdateKeyMap(uint8_t key, bool down);
-void MouseButtonSet(bool down);
-void MousePositionSet(uint16_t h, uint16_t v);
-void MousePositionNotify(int h, int v);
-void InitKeyCodes(void);
-void DisconnectKeyCodes(uint32_t KeepMask);
+extern void Keyboard_UpdateKeyMap(uint8_t key, bool down);
+extern void MouseButtonSet(bool down);
+extern void MousePositionSet(uint16_t h, uint16_t v);
+extern void MousePositionNotify(int h, int v);
+extern void InitKeyCodes(void);
+extern void DisconnectKeyCodes(uint32_t KeepMask);
