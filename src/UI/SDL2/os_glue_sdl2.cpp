@@ -38,6 +38,7 @@
 #include "LANG/intl_chars.h"
 #include "HW/SCREEN/screen.h"
 #include "HW/ROM/rom.h"
+
 #include "UI/event_queue.h"
 #include "UI/memory.h"
 #include "UI/SDL2/video_sdl2.h"

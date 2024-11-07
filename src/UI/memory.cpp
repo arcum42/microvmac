@@ -1,9 +1,10 @@
 #include "sys_dependencies.h"
+#include "STRCONST.h"
+
 #include "HW/SCREEN/screen.h"
+#include "UI/math.h"
 
 extern void MacMsg(char *briefMsg, char *longMsg, bool fatal);
-#include "STRCONST.h"
-#include "UI/math.h"
 
  uimr ReserveAllocOffset;
  uint8_t * ReserveAllocBigBlock = nullptr;

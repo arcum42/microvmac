@@ -1,13 +1,19 @@
 #include <stdlib.h>
 #include <string.h>
 #include <stdio.h>
+
 #include <SDL.h>
+
 #include "CNFGRAPI.h"
-#include "sys_dependencies.h"
-#include "UTIL/endian.h"
-#include "UI/my_os_glue.h"
 #include "STRCONST.h"
+
+#include "sys_dependencies.h"
+
+#include "UTIL/endian.h"
+
+#include "UI/my_os_glue.h"
 #include "os_glue_sdl2.h"
+
 #include "UI/event_queue.h"
 #include "UI/SDL2/video_sdl2.h"
 

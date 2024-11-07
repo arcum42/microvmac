@@ -24,14 +24,15 @@
 */
 
 #include "sys_dependencies.h"
-#include "UI/my_os_glue.h"
 #include "UTIL/endian.h"
+
 #include "global_glue.h"
+#include "UI/my_os_glue.h"
+#include "UI/event_queue.h"
+
 #include "HW/SCC/serial_comm.h"
 #include "HW/M68K/cpu_68k.h"
-
 #include "HW/MOUSE/mouse.h"
-#include "UI/event_queue.h"
 
 uint16_t CurMouseV = 0;
 uint16_t CurMouseH = 0;

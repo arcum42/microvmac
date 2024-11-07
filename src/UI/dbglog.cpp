@@ -19,10 +19,12 @@
 */
 
 #include <stdlib.h>
+#include "CNFGRAPI.h"
 #include "sys_dependencies.h"
+
 #include "global_glue.h"
 #include "my_os_glue.h"
-#include "CNFGRAPI.h"
+
 #include "HW/SCREEN/screen.h"
 
 /* --- sending debugging info to file --- */

@@ -1,16 +1,21 @@
 #include <stdlib.h>
 #include <string.h>
 #include <stdio.h>
+
 #include <SDL.h>
 
 #include "CNFGRAPI.h"
-#include "sys_dependencies.h"
-#include "UTIL/endian.h"
-#include "UI/my_os_glue.h"
 #include "STRCONST.h"
+
+#include "sys_dependencies.h"
+
+#include "UTIL/endian.h"
+
 #include "HW/ROM/rom.h"
 #include "HW/DISK/sony_floppy.h"
+
 #include "UI/control_mode.h"
+#include "UI/my_os_glue.h"
 #include "UI/SDL2/os_glue_sdl2.h"
 
 extern void MacMsg(char *briefMsg, char *longMsg, bool fatal);

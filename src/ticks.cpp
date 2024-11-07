@@ -2,8 +2,10 @@
 
 #include "CNFGRAPI.h"
 #include "sys_dependencies.h"
+
 #include "UTIL/dbglog.h"
 #include "ticks.h"
+
 #include "HW/M68K/cpu_68k.h"
 #include "HW/KBRD/keyboard.h"
 #include "HW/VIA/via1.h"

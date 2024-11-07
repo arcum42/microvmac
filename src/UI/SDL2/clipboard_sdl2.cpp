@@ -1,12 +1,16 @@
 #include <stdlib.h>
 #include <string.h>
 #include <stdio.h>
+
 #include <SDL.h>
+
 #include "CNFGRAPI.h"
+#include "STRCONST.h"
+
 #include "sys_dependencies.h"
+
 #include "UTIL/endian.h"
 #include "UI/my_os_glue.h"
-#include "STRCONST.h"
 
 /* --- clipboard --- */
 

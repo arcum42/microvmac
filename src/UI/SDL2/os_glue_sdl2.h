@@ -3,11 +3,9 @@
 #include <stdbool.h>
 #include <stdint.h>
 #include <SDL.h>
-#include "UI/my_os_glue.h"
-
-/* --- defines and macros and such --- */
 
 #include "sound_sdl2.h"
+#include "UI/my_os_glue.h"
 #include "UTIL/param_buffers.h"
 
 /* --- globals --- */

@@ -1,3 +1,6 @@
+#pragma once
+
+#include "sys_dependencies.h"
 
 // Duplicate of os glue, for the moment.
 #define PowOf2(p) ((uimr)1 << (p))
