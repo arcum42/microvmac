@@ -30,11 +30,18 @@ extern void WaitForNextTick(void);
 // mac main
 extern void InterruptReset_Update(void);
 
-uint32_t QuietTime = 0;
-uint32_t QuietSubTicks = 0;
 //int8_t EmLagTime = 0;
 static uint16_t SubTickCounter = 0;
 static uint32_t ExtraSubTicksToDo = 0;
+
+uint32_t QuietTime = 0;
+uint32_t QuietSubTicks = 0;
+
+void QuietEnds()
+{
+	QuietTime = 0;
+	QuietSubTicks = 0;
+}
 
 void InterruptReset_Update(void)
 {

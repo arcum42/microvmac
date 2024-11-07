@@ -1448,35 +1448,3 @@ void PowerOff_ChangeNtfy(void)
 	}
 }
 #endif
-
-/* user event queue utilities */
-
-#if HaveMasterEvtQLock
- uint16_t MasterEvtQLock = 0;
-	/*
-		Takes a few ticks to process button event because
-		of debounce code of Mac. So have this mechanism
-		to prevent processing further events meanwhile.
-	*/
-#endif
-
- bool FindKeyEvent(int *VirtualKey, bool *KeyDown)
-{
-	EvtQEl *p;
-
-	if (
-#if HaveMasterEvtQLock
-		(0 == MasterEvtQLock) &&
-#endif
-		(nullptr != (p = EvtQOutP())))
-	{
-		if (EvtQElKindKey == p->kind) {
-			*VirtualKey = p->u.press.key;
-			*KeyDown = p->u.press.down;
-			EvtQOutDone();
-			return true;
-		}
-	}
-
-	return false;
-}

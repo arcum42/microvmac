@@ -151,25 +151,16 @@ extern uint8_t SpeedValue;
 extern uint16_t CurMouseV;
 extern uint16_t CurMouseH;
 
-extern uint32_t QuietTime;
-extern uint32_t QuietSubTicks;
-
-#define QuietEnds() \
-{ \
-	QuietTime = 0; \
-	QuietSubTicks = 0; \
-}
-
 #if 3 == kLn2SoundSampSz
-#define trSoundSamp uint8_t
-#define tbSoundSamp uint8_t
-#define tpSoundSamp uint8_t *
-#define kCenterSound 0x80
+typedef uint8_t trSoundSamp;
+typedef uint8_t tbSoundSamp;
+typedef uint8_t* tpSoundSamp;
+constexpr uint32_t kCenterSound = 0x80;
 #elif 4 == kLn2SoundSampSz
-#define trSoundSamp uint16_t
-#define tbSoundSamp uint16_t
-#define tpSoundSamp uint16_t *
-#define kCenterSound 0x8000
+typedef uint16_t trSoundSamp;
+typedef uint16_t tbSoundSamp;
+typedef uint16_t* tpSoundSamp;
+constexpr uint32_t kCenterSound = 0x8000;
 #else
 #error "unsupported kLn2SoundSampSz"
 #endif
@@ -196,34 +187,6 @@ extern uint32_t LT_RxBuffSz;
 extern void LT_ReceivePacket(void);
 
 #endif
-
-extern void WaitForNextTick(void);
-
-typedef enum EvtQKind {
-	EvtQElKindKey,
-	EvtQElKindMouseButton,
-	EvtQElKindMousePos,
-	EvtQElKindMouseDelta
-} EvtQKind_t;
-
-struct EvtQEl {
-	/* expected size : 8 bytes */
-	EvtQKind_t kind;
-	union {
-		struct {
-			uint8_t down;
-			uint8_t key;
-		} press;
-		struct {
-			uint16_t h;
-			uint16_t v;
-		} pos;
-	} u;
-};
-typedef struct EvtQEl EvtQEl;
-
-extern EvtQEl * EvtQOutP(void);
-extern void EvtQOutDone(void);
 
 /*** Might be SDL2-specific? ***/
 // INTL.c

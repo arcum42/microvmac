@@ -31,6 +31,7 @@
 #include "HW/M68K/cpu_68k.h"
 
 #include "HW/MOUSE/mouse.h"
+#include "UI/event_queue.h"
 
 void Mouse_Update(void)
 {
@@ -57,7 +58,7 @@ void Mouse_Update(void)
 #if HaveMasterEvtQLock
 			(0 == MasterEvtQLock) &&
 #endif
-			(nullptr != (p = EvtQOutP())))
+			(nullptr != (p = EvtQ.OutP())))
 		{
 #if EmClassicKbrd
 #if EnableMouseMotion
@@ -71,7 +72,7 @@ void Mouse_Update(void)
 					put_ram_byte(0x08CE, get_ram_byte(0x08CF));
 						/* Tell MacOS to redraw the Mouse */
 				}
-				EvtQOutDone();
+				EvtQ.OutDone();
 			} else
 #endif
 #endif
@@ -91,7 +92,7 @@ void Mouse_Update(void)
 						/* Tell MacOS to redraw the Mouse */
 #endif
 				}
-				EvtQOutDone();
+				EvtQ.OutDone();
 			}
 		}
 	}
@@ -104,11 +105,11 @@ void Mouse_Update(void)
 #if HaveMasterEvtQLock
 			(0 == MasterEvtQLock) &&
 #endif
-			(nullptr != (p = EvtQOutP())))
+			(nullptr != (p = EvtQ.OutP())))
 		{
 			if (EvtQElKindMouseButton == p->kind) {
 				MouseBtnUp = p->u.press.down ? 0 : 1;
-				EvtQOutDone();
+				EvtQ.OutDone();
 				MasterEvtQLock = 4;
 			}
 		}

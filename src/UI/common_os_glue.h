@@ -27,6 +27,7 @@
 #include "CNFGRAPI.h"
 #include "global_glue.h"
 #include "my_os_glue.h"
+#include "event_queue.h"
 #define EnableRecreateW 1
 
 extern uint32_t vSonyWritableMask;
@@ -187,31 +188,6 @@ void dbglog_writeHex(uimr x);
 void dbglog_writeNum(uimr x);
 void dbglog_writeMacChar(uint8_t x);
 #endif
-
-/* my event queue */
-
-#define EvtQLg2Sz 4
-#define EvtQSz (1 << EvtQLg2Sz)
-#define EvtQIMask (EvtQSz - 1)
-
-EvtQEl * EvtQOutP(void);
-void EvtQOutDone(void);
-extern bool EvtQNeedRecover;
-
-#define kKeepMaskControl  (1 << 0)
-#define kKeepMaskCapsLock (1 << 1)
-#define kKeepMaskCommand  (1 << 2)
-#define kKeepMaskOption   (1 << 3)
-#define kKeepMaskShift    (1 << 4)
-
-
-void Keyboard_UpdateKeyMap(uint8_t key, bool down);
-void MouseButtonSet(bool down);
-void MousePositionSet(uint16_t h, uint16_t v);
-void MousePositionNotify(int h, int v);
-void InitKeyCodes(void);
-void DisconnectKeyCodes(uint32_t KeepMask);
-void EvtQTryRecoverFromFull(void);
 
 /* MacMsg */
 

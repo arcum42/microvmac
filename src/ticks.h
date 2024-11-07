@@ -4,6 +4,10 @@
 
 #include "sys_dependencies.h"
 
+extern uint32_t QuietTime;
+extern uint32_t QuietSubTicks;
+extern void QuietEnds();
+
 enum
 {
     kICT_SubTick,

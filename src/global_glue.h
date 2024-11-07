@@ -125,13 +125,7 @@ constexpr uint32_t RdAvgXtraCyc = /* 0 */ (kCycleScale + kCycleScale / 4);
 constexpr uint32_t WrAvgXtraCyc = /* 0 */ (kCycleScale + kCycleScale / 4);
 #endif
 
-
-#define HaveMasterEvtQLock EmClassicKbrd
-#if HaveMasterEvtQLock
-extern uint16_t MasterEvtQLock;
-#endif
 extern bool FindKeyEvent(int *VirtualKey, bool *KeyDown);
-
 
 /* minivmac extensions */
 

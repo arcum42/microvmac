@@ -252,11 +252,11 @@ void EnterSpeedStopped(void)
 
 static void CheckForSavedTasks(void)
 {
-	if (EvtQNeedRecover) {
-		EvtQNeedRecover = false;
+	if (EvtQ.NeedRecover) {
+		EvtQ.NeedRecover = false;
 
-		/* attempt cleanup, EvtQNeedRecover may get set again */
-		EvtQTryRecoverFromFull();
+		/* Attempt cleanup, EvtQ.NeedRecover may get set again */
+		EvtQ.TryRecoverFromFull();
 	}
 
 #if EnableFSMouseMotion && HaveWorkingWarp
