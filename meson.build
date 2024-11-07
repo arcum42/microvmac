@@ -182,7 +182,6 @@ MAC_SRC = {
 
 # User interface definitions
 UI_SRC = [
-	'src/UI/dbglog.cpp',
 	'src/UI/event_queue.cpp',
 	'src/UI/control_mode.cpp',
 	'src/UI/memory.cpp',
