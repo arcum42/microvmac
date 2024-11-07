@@ -385,3 +385,27 @@ void devices_timeend()
 		if (device.timeend != nullptr) { device.timeend(); }
 	} 
 }
+
+void customreset(void)
+{
+	IWM_Reset();
+	SCC_Reset();
+	SCSI_Reset();
+	VIA1_Reset();
+#if EmVIA2
+	VIA2_Reset();
+#endif
+	Sony_Reset();
+	Extn_Reset();
+#if CurEmMd <= kEmMd_Plus
+	WantMacReset = true;
+	/*
+		kludge, code in Finder appears
+		to do RESET and not expect
+		to come back. Maybe asserting
+		the RESET somehow causes
+		other hardware components to
+		later reset the 68000.
+	*/
+#endif
+}

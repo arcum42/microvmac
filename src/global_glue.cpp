@@ -51,17 +51,7 @@ bool RequestInsertDisk = false;
 uint8_t RequestIthDisk = 0;
 bool ControlKeyPressed = false;
 
-
-extern void m68k_reset(void);
-extern void IWM_Reset(void);
 extern void SCC_Reset(void);
-extern void SCSI_Reset(void);
-extern void VIA1_Reset(void);
-#if EmVIA2
-extern void VIA2_Reset(void);
-#endif
-extern void Sony_Reset(void);
-
 extern void ExtnDisk_Access(CPTR p);
 extern void ExtnSony_Access(CPTR p);
 #if EmVidCard
@@ -97,30 +87,6 @@ extern void put_vm_word(CPTR addr, uint16_t w);
 extern void put_vm_long(CPTR addr, uint32_t l);
 
  uint32_t disk_icon_addr;
-
-void customreset(void)
-{
-	IWM_Reset();
-	SCC_Reset();
-	SCSI_Reset();
-	VIA1_Reset();
-#if EmVIA2
-	VIA2_Reset();
-#endif
-	Sony_Reset();
-	Extn_Reset();
-#if CurEmMd <= kEmMd_Plus
-	WantMacReset = true;
-	/*
-		kludge, code in Finder appears
-		to do RESET and not expect
-		to come back. Maybe asserting
-		the RESET somehow causes
-		other hardware compenents to
-		later reset the 68000.
-	*/
-#endif
-}
 
  uint8_t * RAM = nullptr;
 
