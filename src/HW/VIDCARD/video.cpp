@@ -38,6 +38,13 @@
 #include "HW/DISK/sony_floppy.h"
 #include "HW/SCREEN/screen.h"
 
+#if EmVidCard
+uint8_t *VidROM = nullptr;
+#endif
+
+#if IncludeVidMem
+uint8_t *VidMem = nullptr;
+#endif
 
 int16_t ScreenChangedTop, ScreenChangedLeft, ScreenChangedBottom, ScreenChangedRight;
 

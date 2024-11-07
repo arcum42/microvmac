@@ -40,10 +40,10 @@ SDL_Color bwpalette[2];
 bool bwpalette_loaded = false;
 bool EmVideoDisable = false;
 
-/* --- main window creation and disposal --- */
+uint8_t* CLUT_final;
+uint8_t* screencomparebuff = nullptr;
 
-[[maybe_unused]] static int argc;
-[[maybe_unused]] static char **argv;
+/* --- main window creation and disposal --- */
 
 bool SDL_InitDisplay()
 {
@@ -65,9 +65,7 @@ bool SDL_InitDisplay()
 
 #if MayFullScreen
 bool GrabMachine = false;
-#endif
 
-#if MayFullScreen
 void GrabTheMachine()
 {
 #if GrabKeysFullScreen
@@ -97,9 +95,7 @@ void GrabTheMachine()
 
 #endif /* EnableFSMouseMotion */
 }
-#endif
 
-#if MayFullScreen
 void UngrabMachine()
 {
 #if EnableFSMouseMotion

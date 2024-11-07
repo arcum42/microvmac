@@ -8,6 +8,22 @@
 
 #define EnableRecreateW 0
 
+// video defines
+#ifndef UseSDLscaling
+#define UseSDLscaling 0
+#endif
+
+#if ! UseSDLscaling
+#define MaxScale WindowScale
+#else
+#define MaxScale 1
+#endif
+
+#define CLUT_finalsz (256 * 8 * 4 * MaxScale)
+
+extern uint8_t* CLUT_final;
+extern uint8_t* screencomparebuff;
+
 extern bool UseFullScreen;
 extern bool UseMagnify;
 extern bool UseColorMode;
