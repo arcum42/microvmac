@@ -37,7 +37,6 @@ SDL_Texture *texture = nullptr;
 SDL_PixelFormat *format = nullptr;
 
 uint8_t * ScalingBuff = nullptr;
-uint8_t * CLUT_final;
 
 SDL_Color bwpalette[2];
 bool bwpalette_loaded = false;

@@ -454,68 +454,6 @@ void ZapOSGLUVars(void)
 	ZapWinStateVars();
 }
 
-static void ReserveAllocAll(void)
-{
-#if dbglog_HAVE
-	dbglog_ReserveAlloc();
-#endif
-	ReserveAllocOneBlock(&ROM, kROM_Size, 5, false);
-
-	ReserveAllocOneBlock(&screencomparebuff,
-						 vMacScreenNumBytes, 5, true);
-#if UseControlKeys
-	ReserveAllocOneBlock(&CntrlDisplayBuff,
-						 vMacScreenNumBytes, 5, false);
-#endif
-
-	ReserveAllocOneBlock(&CLUT_final, CLUT_finalsz, 5, false);
-#if SoundEnabled
-	ReserveAllocOneBlock((uint8_t **)&TheSoundBuffer,
-						 dbhBufferSize, 5, false);
-#endif
-
-	EmulationReserveAlloc();
-}
-
-static bool AllocMemory(void)
-{
-	uimr n;
-	bool IsOk = false;
-
-	ReserveAllocOffset = 0;
-	ReserveAllocBigBlock = nullptr;
-	ReserveAllocAll();
-	n = ReserveAllocOffset;
-	ReserveAllocBigBlock = (uint8_t *)calloc(1, n);
-	if (nullptr == ReserveAllocBigBlock)
-	{
-		MacMsg(kStrOutOfMemTitle, kStrOutOfMemMessage, true);
-	}
-	else
-	{
-		ReserveAllocOffset = 0;
-		ReserveAllocAll();
-		if (n != ReserveAllocOffset)
-		{
-			/* oops, program error */
-		}
-		else
-		{
-			IsOk = true;
-		}
-	}
-
-	return IsOk;
-}
-
-static void UnallocMemory(void)
-{
-	if (nullptr != ReserveAllocBigBlock)
-	{
-		free((char *)ReserveAllocBigBlock);
-	}
-}
-
 #if CanGetAppPath
 static bool InitWhereAmI(void)
 {

@@ -91,14 +91,14 @@ bool LoadMacRom(void)
 MacErr_t LoadMacRomFrom(const char *path)
 {
 	MacErr_t err;
-	FilePtr ROM_File;
+	SDL_RWops* ROM_File;
 	int File_Size;
 
-	ROM_File = FileOpen(path, "rb");
+	ROM_File = SDL_RWFromFile(path, "rb");
 	if (nullptr == ROM_File) {
 		err = mnvm_fnfErr;
 	} else {
-		File_Size = FileRead(ROM, 1, kROM_Size, ROM_File);
+		File_Size = SDL_RWread(ROM_File, ROM, 1, kROM_Size);
 		if (File_Size != kROM_Size) {
 #ifdef FileEof
 			if (FileEof(ROM_File))
@@ -122,7 +122,7 @@ MacErr_t LoadMacRomFrom(const char *path)
 				// Throw a misc error. Why not? FIXME.
 				err= mnvm_miscErr;
 		}
-		FileClose(ROM_File);
+		SDL_RWclose(ROM_File);
 	}
 
 	return err;

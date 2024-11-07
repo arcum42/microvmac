@@ -164,8 +164,6 @@ void DiskEjectedNotify(tDrive Drive_No)
 	vSonyInsertedMask &= ~ ((uint32_t)1 << Drive_No);
 }
 
- uint8_t * screencomparebuff = nullptr;
-
 #if WantColorTransValid
 static bool ColorTransValid = false;
 #endif

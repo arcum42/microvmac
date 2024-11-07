@@ -102,8 +102,6 @@ void DiskRevokeWritable(tDrive Drive_No);
 void DiskInsertNotify(tDrive Drive_No, bool locked);
 void DiskEjectedNotify(tDrive Drive_No);
 
-extern uint8_t * screencomparebuff;
-
 /*
 	block type - for operating on multiple uint8_t elements
 		at a time.

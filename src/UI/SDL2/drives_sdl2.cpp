@@ -16,7 +16,7 @@
 
 #define NotAfileRef nullptr
 
-FilePtr Drives[NumDrives]; /* open disk image files */
+SDL_RWops* Drives[NumDrives]; /* open disk image files */
 
 void InitDrives(void)
 {
@@ -36,14 +36,14 @@ MacErr_t vSonyTransfer(bool IsWrite, uint8_t * Buffer,
 	uint32_t *Sony_ActCount)
 {
 	MacErr_t err = mnvm_miscErr;
-	FilePtr refnum = Drives[Drive_No];
+	SDL_RWops* refnum = Drives[Drive_No];
 	uint32_t NewSony_Count = 0;
 
-	if (Seek(refnum, Sony_Start, SeekSet) >= 0) {
+	if (SDL_RWseek(refnum, Sony_Start, RW_SEEK_SET) >= 0) {
 		if (IsWrite) {
-			NewSony_Count = FileWrite(Buffer, 1, Sony_Count, refnum);
+			NewSony_Count = SDL_RWwrite(refnum, Buffer, 1, Sony_Count);
 		} else {
-			NewSony_Count = FileRead(Buffer, 1, Sony_Count, refnum);
+			NewSony_Count = SDL_RWread(refnum, Buffer, 1, Sony_Count);
 		}
 
 		if (NewSony_Count == Sony_Count) {
@@ -61,11 +61,11 @@ MacErr_t vSonyTransfer(bool IsWrite, uint8_t * Buffer,
 MacErr_t vSonyGetSize(tDrive Drive_No, uint32_t *Sony_Count)
 {
 	MacErr_t err = mnvm_miscErr;
-	FilePtr refnum = Drives[Drive_No];
+	SDL_RWops* refnum = Drives[Drive_No];
 	long v;
 
-	if (Seek(refnum, 0, SeekEnd) >= 0) {
-		v = FileTell(refnum);
+	if (SDL_RWseek(refnum, 0, RW_SEEK_END) >= 0) {
+		v = SDL_RWtell(refnum);
 		if (v >= 0) {
 			*Sony_Count = v;
 			err = mnvm_noErr;
@@ -77,11 +77,11 @@ MacErr_t vSonyGetSize(tDrive Drive_No, uint32_t *Sony_Count)
 
 MacErr_t vSonyEject0(tDrive Drive_No, bool deleteit)
 {
-	FilePtr refnum = Drives[Drive_No];
+	SDL_RWops* refnum = Drives[Drive_No];
 
 	DiskEjectedNotify(Drive_No);
 
-	FileClose(refnum);
+	SDL_RWclose(refnum);
 	Drives[Drive_No] = NotAfileRef; /* not really needed */
 
 	return mnvm_noErr;
@@ -116,7 +116,7 @@ void UnInitDrives(void)
 	}
 }
 
-bool Sony_Insert0(FilePtr refnum, bool locked, char *drivepath)
+bool Sony_Insert0(SDL_RWops* refnum, bool locked, char *drivepath)
 {
 	tDrive Drive_No;
 	bool IsOk = false;
@@ -136,7 +136,7 @@ bool Sony_Insert0(FilePtr refnum, bool locked, char *drivepath)
 	}
 
 	if (! IsOk) {
-		FileClose(refnum);
+		SDL_RWclose(refnum);
 	}
 
 	return IsOk;
@@ -146,10 +146,10 @@ bool Sony_Insert1(char *drivepath, bool silentfail)
 {
 	bool locked = false;
 	printf("Sony_Insert1 %s\n", drivepath);
-	FilePtr refnum = FileOpen(drivepath, "rb+");
+	SDL_RWops* refnum = SDL_RWFromFile(drivepath, "rb+");
 	if (nullptr == refnum) {
 		locked = true;
-		refnum = FileOpen(drivepath, "rb");
+		refnum = SDL_RWFromFile(drivepath, "rb");
 	}
 	if (nullptr == refnum) {
 		if (! silentfail) {

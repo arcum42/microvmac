@@ -33,6 +33,7 @@
 #include "UTIL/date_to_seconds.h"
 #include "HW/KBRD/keycodes.h"
 #include "error_codes.h"
+#include "UI/SDL2/sound_sdl2.h"
 
 #if WantAbnormalReports
 extern void WarnMsgAbnormalID(uint16_t id);
@@ -150,28 +151,6 @@ extern uint8_t SpeedValue;
 /* where emulated machine thinks mouse is */
 extern uint16_t CurMouseV;
 extern uint16_t CurMouseH;
-
-#if 3 == kLn2SoundSampSz
-typedef uint8_t trSoundSamp;
-typedef uint8_t tbSoundSamp;
-typedef uint8_t* tpSoundSamp;
-constexpr uint32_t kCenterSound = 0x80;
-#elif 4 == kLn2SoundSampSz
-typedef uint16_t trSoundSamp;
-typedef uint16_t tbSoundSamp;
-typedef uint16_t* tpSoundSamp;
-constexpr uint32_t kCenterSound = 0x8000;
-#else
-#error "unsupported kLn2SoundSampSz"
-#endif
-
-#if SoundEnabled
-
-extern tpSoundSamp Sound_BeginWrite(uint16_t n, uint16_t *actL);
-extern void Sound_EndWrite(uint16_t actL);
-
-/* 370 samples per tick = 22,254.54 per second */
-#endif
 
 #if EmLocalTalk
 
