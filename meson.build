@@ -139,6 +139,7 @@ HW_SRC = {
 		'src/HW/VIDCARD/video.cpp',
 	],
 	'RAM': [
+		'src/HW/RAM/ram.cpp',
 	],
 	'ROM': [
 		'src/HW/ROM/rom.cpp',
