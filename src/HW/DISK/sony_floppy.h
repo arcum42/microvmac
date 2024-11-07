@@ -22,6 +22,10 @@
 #define SONYEMDV_H
 #endif
 
+#include "sys_dependencies.h"
+#include "UTIL/param_buffers.h"
+#include "error_codes.h"
+
 extern void ExtnDisk_Access(CPTR p);
 extern void ExtnSony_Access(CPTR p);
 
@@ -31,3 +35,55 @@ extern void Sony_EjectAllDisks(void);
 extern void Sony_Reset(void);
 
 extern void Sony_Update(void);
+
+
+#define tDrive uint16_t
+
+extern uint32_t vSonyWritableMask;
+extern uint32_t vSonyInsertedMask;
+
+#define vSonyIsInserted(Drive_No) \
+	((vSonyInsertedMask & ((uint32_t)1 << (Drive_No))) != 0)
+
+extern MacErr_t vSonyTransfer(bool IsWrite, uint8_t * Buffer,
+	tDrive Drive_No, uint32_t Sony_Start, uint32_t Sony_Count,
+	uint32_t *Sony_ActCount);
+extern MacErr_t vSonyEject(tDrive Drive_No);
+extern MacErr_t vSonyGetSize(tDrive Drive_No, uint32_t *Sony_Count);
+
+extern bool AnyDiskInserted(void);
+extern void DiskRevokeWritable(tDrive Drive_No);
+
+#if IncludeSonyRawMode
+extern bool vSonyRawMode;
+#endif
+
+#if IncludeSonyNew
+extern bool vSonyNewDiskWanted;
+extern uint32_t vSonyNewDiskSize;
+extern MacErr_t vSonyEjectDelete(tDrive Drive_No);
+#endif
+
+#if IncludeSonyNameNew
+extern tPbuf vSonyNewDiskName;
+#endif
+
+#if IncludeSonyGetName
+extern MacErr_t vSonyGetName(tDrive Drive_No, tPbuf *r);
+#endif
+
+extern uint32_t vSonyWritableMask;
+extern uint32_t vSonyInsertedMask;
+
+#if IncludeSonyRawMode
+extern bool vSonyRawMode;
+#endif
+
+#if IncludeSonyNew
+extern bool vSonyNewDiskWanted;
+extern uint32_t vSonyNewDiskSize;
+#endif
+
+#if IncludeSonyNameNew
+extern tPbuf vSonyNewDiskName;
+#endif

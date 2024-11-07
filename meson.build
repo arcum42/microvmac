@@ -207,6 +207,7 @@ EMU_SRC = [
 	'src/PATCHES/rom.cpp',
 	'src/UTIL/date_to_seconds.cpp',
 	'src/UTIL/dbglog.cpp',
+	'src/UTIL/param_buffers.cpp',
 	'src/LANG/intl_chars.cpp',
 	'lib/tomlc99/toml.c',
 ]

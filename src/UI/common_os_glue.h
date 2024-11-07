@@ -32,22 +32,6 @@
 
 #define EnableRecreateW 0
 
-extern uint32_t vSonyWritableMask;
-extern uint32_t vSonyInsertedMask;
-
-#if IncludeSonyRawMode
-extern bool vSonyRawMode;
-#endif
-
-#if IncludeSonyNew
-extern bool vSonyNewDiskWanted;
-extern uint32_t vSonyNewDiskSize;
-#endif
-
-#if IncludeSonyNameNew
-extern tPbuf vSonyNewDiskName;
-#endif
-
 extern uint32_t CurMacDateInSeconds;
 #if AutoLocation
 extern uint32_t CurMacLatitude;
@@ -82,18 +66,6 @@ extern uint32_t QuietSubTicks;
 
 #ifndef GrabKeysMaxFullScreen
 #define GrabKeysMaxFullScreen 0
-#endif
-
-#if IncludePbufs
- extern uint32_t PbufAllocatedMask;
- extern uint32_t PbufSize[NumPbufs];
-#define PbufIsAllocated(i) ((PbufAllocatedMask & ((uint32_t)1 << (i))) != 0)
-
- bool FirstFreePbuf(tPbuf *r);
-void PbufNewNotify(tPbuf Pbuf_No, uint32_t count);
-void PbufDisposeNotify(tPbuf Pbuf_No);
-MacErr_t CheckPbuf(tPbuf Pbuf_No);
-MacErr_t PbufGetSize(tPbuf Pbuf_No, uint32_t *Count);
 #endif
 
 /*

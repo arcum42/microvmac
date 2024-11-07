@@ -2,6 +2,7 @@
 #include <string.h>
 #include <stdio.h>
 #include <SDL.h>
+
 #include "CNFGRAPI.h"
 #include "sys_dependencies.h"
 #include "UTIL/endian.h"
@@ -9,14 +10,13 @@
 #include "UI/common_os_glue.h"
 #include "STRCONST.h"
 #include "HW/ROM/rom.h"
+#include "HW/DISK/sony_floppy.h"
 #include "UI/control_mode.h"
 #include "UI/SDL2/os_glue_sdl2.h"
 
 /* --- drives --- */
 
-#define NotAfileRef nullptr
-
-SDL_RWops *Drives[NumDrives]; /* open disk image files */
+SDL_RWops* Drives[NumDrives]; /* open disk image files */
 
 bool FirstFreeDisk(tDrive *Drive_No)
 {
@@ -69,7 +69,7 @@ void InitDrives(void)
 	*/
 	for (tDrive i = 0; i < NumDrives; ++i)
 	{
-		Drives[i] = NotAfileRef;
+		Drives[i] = nullptr;
 	}
 }
 
@@ -132,7 +132,7 @@ MacErr_t vSonyEject0(tDrive Drive_No, bool deleteit)
 	DiskEjectedNotify(Drive_No);
 
 	SDL_RWclose(refnum);
-	Drives[Drive_No] = NotAfileRef; /* not really needed */
+	Drives[Drive_No] = nullptr; /* not really needed */
 
 	return mnvm_noErr;
 }

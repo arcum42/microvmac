@@ -33,6 +33,7 @@
 
 #include "global_glue.h"
 #include "HW/RAM/ram.h"
+#include "UTIL/param_buffers.h"
 
 /*
 	ReportAbnormalID unused 0x111D - 0x11FF
@@ -100,119 +101,6 @@ extern void put_vm_long(CPTR addr, uint32_t l);
 
 #ifndef ReportAbnormalInterrupt
 #define ReportAbnormalInterrupt 0
-#endif
-
-#if IncludeExtnPbufs
-static MacErr_t PbufTransferVM(CPTR Buffera,
-	tPbuf i, uint32_t offset, uint32_t count, bool IsWrite)
-{
-	MacErr_t result;
-	uint32_t contig;
-	uint8_t * Buffer;
-
-label_1:
-	if (0 == count) {
-		result = mnvm_noErr;
-	} else {
-		Buffer = get_real_address0(count, ! IsWrite, Buffera, &contig);
-		if (0 == contig) {
-			result = mnvm_miscErr;
-		} else {
-			PbufTransfer(Buffer, i, offset, contig, IsWrite);
-			offset += contig;
-			Buffera += contig;
-			count -= contig;
-			goto label_1;
-		}
-	}
-
-	return result;
-}
-#endif
-
-/* extension mechanism */
-
-#if IncludeExtnPbufs
-enum kCmndPbuf {
-	kCmndPbufFeatures = 1,
-	kCmndPbufNew = 2,
-	kCmndPbufDispose = 3,
-	kCmndPbufGetSize = 4,
-	kCmndPbufTransfer = 5
-};
-
-static void ExtnParamBuffers_Access(CPTR p)
-{
-	MacErr_t result = mnvm_controlErr;
-
-	switch (get_vm_word(p + ExtnDat_commnd)) {
-		case kCmndVersion:
-			put_vm_word(p + ExtnDat_version, 1);
-			result = mnvm_noErr;
-			break;
-		case kCmndPbufFeatures:
-			put_vm_long(p + ExtnDat_params + 0, 0);
-			result = mnvm_noErr;
-			break;
-		case kCmndPbufNew:
-			{
-				tPbuf Pbuf_No;
-				uint32_t count = get_vm_long(p + ExtnDat_params + 4);
-				/* reserved word at offset 2, should be zero */
-				result = PbufNew(count, &Pbuf_No);
-				put_vm_word(p + ExtnDat_params + 0, Pbuf_No);
-			}
-			break;
-		case kCmndPbufDispose:
-			{
-				tPbuf Pbuf_No = get_vm_word(p + ExtnDat_params + 0);
-				/* reserved word at offset 2, should be zero */
-				result = CheckPbuf(Pbuf_No);
-				if (mnvm_noErr == result) {
-					PbufDispose(Pbuf_No);
-				}
-			}
-			break;
-		case kCmndPbufGetSize:
-			{
-				uint32_t Count;
-				tPbuf Pbuf_No = get_vm_word(p + ExtnDat_params + 0);
-				/* reserved word at offset 2, should be zero */
-
-				result = PbufGetSize(Pbuf_No, &Count);
-				if (mnvm_noErr == result) {
-					put_vm_long(p + ExtnDat_params + 4, Count);
-				}
-			}
-			break;
-		case kCmndPbufTransfer:
-			{
-				uint32_t PbufCount;
-				tPbuf Pbuf_No = get_vm_word(p + ExtnDat_params + 0);
-				/* reserved word at offset 2, should be zero */
-				uint32_t offset = get_vm_long(p + ExtnDat_params + 4);
-				uint32_t count = get_vm_long(p + ExtnDat_params + 8);
-				CPTR Buffera = get_vm_long(p + ExtnDat_params + 12);
-				bool IsWrite =
-					(get_vm_word(p + ExtnDat_params + 16) != 0);
-				result = PbufGetSize(Pbuf_No, &PbufCount);
-				if (mnvm_noErr == result) {
-					uint32_t endoff = offset + count;
-					if ((endoff < offset) /* overflow */
-						|| (endoff > PbufCount))
-					{
-						result = mnvm_eofErr;
-					} else {
-						result = PbufTransferVM(Buffera,
-							Pbuf_No, offset, count, IsWrite);
-					}
-				}
-			}
-			break;
-	}
-
-	put_vm_word(p + ExtnDat_result, result);
-}
 #endif
 
 #if IncludeExtnHostTextClipExchange

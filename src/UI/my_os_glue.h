@@ -54,57 +54,6 @@ extern void MoveBytes(anyp srcPtr, anyp destPtr, int32_t byteCount);
 
 extern uint8_t * ROM;
 
-#if IncludePbufs
-
-#define tPbuf uint16_t
-
-#define NotAPbuf ((tPbuf)0xFFFF)
-
-extern MacErr_t CheckPbuf(tPbuf Pbuf_No);
-extern MacErr_t PbufGetSize(tPbuf Pbuf_No, uint32_t *Count);
-
-extern MacErr_t PbufNew(uint32_t count, tPbuf *r);
-extern void PbufDispose(tPbuf i);
-extern void PbufTransfer(uint8_t * Buffer,
-	tPbuf i, uint32_t offset, uint32_t count, bool IsWrite);
-
-#endif
-
-#define tDrive uint16_t
-
-extern uint32_t vSonyWritableMask;
-extern uint32_t vSonyInsertedMask;
-
-#define vSonyIsInserted(Drive_No) \
-	((vSonyInsertedMask & ((uint32_t)1 << (Drive_No))) != 0)
-
-extern MacErr_t vSonyTransfer(bool IsWrite, uint8_t * Buffer,
-	tDrive Drive_No, uint32_t Sony_Start, uint32_t Sony_Count,
-	uint32_t *Sony_ActCount);
-extern MacErr_t vSonyEject(tDrive Drive_No);
-extern MacErr_t vSonyGetSize(tDrive Drive_No, uint32_t *Sony_Count);
-
-extern bool AnyDiskInserted(void);
-extern void DiskRevokeWritable(tDrive Drive_No);
-
-#if IncludeSonyRawMode
-extern bool vSonyRawMode;
-#endif
-
-#if IncludeSonyNew
-extern bool vSonyNewDiskWanted;
-extern uint32_t vSonyNewDiskSize;
-extern MacErr_t vSonyEjectDelete(tDrive Drive_No);
-#endif
-
-#if IncludeSonyNameNew
-extern tPbuf vSonyNewDiskName;
-#endif
-
-#if IncludeSonyGetName
-extern MacErr_t vSonyGetName(tDrive Drive_No, tPbuf *r);
-#endif
-
 #if IncludeHostTextClipExchange
 extern MacErr_t HTCEexport(tPbuf i);
 extern MacErr_t HTCEimport(tPbuf *r);

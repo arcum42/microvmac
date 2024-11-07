@@ -20,80 +20,38 @@
 
 #pragma once
 
+#include "sys_dependencies.h"
+#include "error_codes.h"
+
 #if IncludePbufs
-static void *PbufDat[NumPbufs];
 
-static MacErr_t PbufNewFromPtr(void *p, uint32_t count, tPbuf *r)
+typedef uint16_t tPbuf;
+
+const tPbuf NotAPbuf = ((tPbuf)0xFFFF);
+extern uint32_t PbufAllocatedMask;
+extern uint32_t PbufSize[NumPbufs];
+
+/* extension mechanism */
+enum kCmndPbuf
 {
-	tPbuf i;
-	MacErr_t err;
+	kCmndPbufFeatures = 1,
+	kCmndPbufNew = 2,
+	kCmndPbufDispose = 3,
+	kCmndPbufGetSize = 4,
+	kCmndPbufTransfer = 5
+};
 
-	if (! FirstFreePbuf(&i)) {
-		free(p);
-		err = mnvm_miscErr;
-	} else {
-		*r = i;
-		PbufDat[i] = p;
-		PbufNewNotify(i, count);
-		err = mnvm_noErr;
-	}
-
-	return err;
-}
-static void PbufKillToPtr(void **p, uint32_t *count, tPbuf r)
-{
-	*p = PbufDat[r];
-	*count = PbufSize[r];
-
-	PbufDisposeNotify(r);
-}
-MacErr_t PbufNew(uint32_t count, tPbuf *r)
-{
-	MacErr_t err = mnvm_miscErr;
-
-	void *p = calloc(1, count);
-	if (nullptr != p) {
-		err = PbufNewFromPtr(p, count, r);
-	}
-
-	return err;
-}
-void PbufDispose(tPbuf i)
-{
-	void *p;
-	uint32_t count;
-
-	PbufKillToPtr(&p, &count, i);
-
-	free(p);
-}
-static void UnInitPbufs(void)
-{
-	tPbuf i;
-
-	for (i = 0; i < NumPbufs; ++i) {
-		if (PbufIsAllocated(i)) {
-			PbufDispose(i);
-		}
-	}
-}
-#define PbufHaveLock 1
-
-static uint8_t * PbufLock(tPbuf i)
-{
-	return (uint8_t *)PbufDat[i];
-}
-
-#define PbufUnlock(i)
-
-void PbufTransfer(uint8_t * Buffer,
-	tPbuf i, uint32_t offset, uint32_t count, bool IsWrite)
-{
-	void *p = ((uint8_t *)PbufDat[i]) + offset;
-	if (IsWrite) {
-		(void) memcpy(p, Buffer, count);
-	} else {
-		(void) memcpy(Buffer, p, count);
-	}
-}
+extern bool FirstFreePbuf(tPbuf *r);
+extern void PbufNewNotify(tPbuf Pbuf_No, uint32_t count);
+extern void PbufDisposeNotify(tPbuf Pbuf_No);
+extern MacErr_t CheckPbuf(tPbuf Pbuf_No);
+extern MacErr_t PbufGetSize(tPbuf Pbuf_No, uint32_t *Count);
+extern MacErr_t PbufNewFromPtr(void *p, uint32_t count, tPbuf *r);
+extern void PbufKillToPtr(void **p, uint32_t *count, tPbuf r);
+extern MacErr_t PbufNew(uint32_t count, tPbuf *r);
+extern void PbufDispose(tPbuf i);
+extern void UnInitPbufs(void);
+extern uint8_t *PbufLock(tPbuf i);
+extern void PbufTransfer(uint8_t *Buffer, tPbuf i, uint32_t offset, uint32_t count, bool IsWrite);
+extern void ExtnParamBuffers_Access(CPTR p);
 #endif

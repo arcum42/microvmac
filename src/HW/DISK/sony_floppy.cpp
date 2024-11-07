@@ -42,11 +42,27 @@
 
 
 static uint32_t vSonyMountedMask = 0;
+uint32_t vSonyWritableMask = 0;
+uint32_t vSonyInsertedMask = 0;
+
+#if IncludeSonyRawMode
+ bool vSonyRawMode = false;
+#endif
+
+#if IncludeSonyNew
+ bool vSonyNewDiskWanted = false;
+ uint32_t vSonyNewDiskSize;
+#endif
+
+#if IncludeSonyNameNew
+ tPbuf vSonyNewDiskName = NotAPbuf;
+#endif
 
 #define vSonyIsLocked(Drive_No) \
 	((vSonyWritableMask & ((uint32_t)1 << (Drive_No))) == 0)
 #define vSonyIsMounted(Drive_No) \
 	((vSonyMountedMask & ((uint32_t)1 << (Drive_No))) != 0)
+
 
 static bool vSonyNextPendingInsert0(tDrive *Drive_No)
 {

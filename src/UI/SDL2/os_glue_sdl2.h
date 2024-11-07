@@ -8,6 +8,7 @@
 /* --- defines and macros and such --- */
 
 #include "sound_sdl2.h"
+#include "UTIL/param_buffers.h"
 
 /* --- globals --- */
 

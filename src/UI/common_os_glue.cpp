@@ -26,22 +26,6 @@
 #include "common_os_glue.h"
 #include "HW/SCREEN/screen.h"
 
- uint32_t vSonyWritableMask = 0;
- uint32_t vSonyInsertedMask = 0;
-
-#if IncludeSonyRawMode
- bool vSonyRawMode = false;
-#endif
-
-#if IncludeSonyNew
- bool vSonyNewDiskWanted = false;
- uint32_t vSonyNewDiskSize;
-#endif
-
-#if IncludeSonyNameNew
- tPbuf vSonyNewDiskName = NotAPbuf;
-#endif
-
  uint32_t CurMacDateInSeconds = 0;
 #if AutoLocation
  uint32_t CurMacLatitude = 0;
@@ -68,60 +52,6 @@
  uint8_t SpeedValue = WantInitSpeedValue;
  uint16_t CurMouseV = 0;
  uint16_t CurMouseH = 0;
-
-#if IncludePbufs
- uint32_t PbufAllocatedMask;
- uint32_t PbufSize[NumPbufs];
- bool FirstFreePbuf(tPbuf *r)
-{
-	tPbuf i;
-
-	for (i = 0; i < NumPbufs; ++i) {
-		if (! PbufIsAllocated(i)) {
-			*r = i;
-			return true;
-		}
-	}
-	return false;
-}
-
-void PbufNewNotify(tPbuf Pbuf_No, uint32_t count)
-{
-	PbufSize[Pbuf_No] = count;
-	PbufAllocatedMask |= ((uint32_t)1 << Pbuf_No);
-}
-
-void PbufDisposeNotify(tPbuf Pbuf_No)
-{
-	PbufAllocatedMask &= ~ ((uint32_t)1 << Pbuf_No);
-}
-
-MacErr_t CheckPbuf(tPbuf Pbuf_No)
-{
-	MacErr_t result;
-
-	if (Pbuf_No >= NumPbufs) {
-		result = mnvm_nsDrvErr;
-	} else if (! PbufIsAllocated(Pbuf_No)) {
-		result = mnvm_offLinErr;
-	} else {
-		result = mnvm_noErr;
-	}
-
-	return result;
-}
-
-MacErr_t PbufGetSize(tPbuf Pbuf_No, uint32_t *Count)
-{
-	MacErr_t result = CheckPbuf(Pbuf_No);
-
-	if (mnvm_noErr == result) {
-		*Count = PbufSize[Pbuf_No];
-	}
-
-	return result;
-}
-#endif
 
 #if WantColorTransValid
 static bool ColorTransValid = false;
