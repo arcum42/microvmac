@@ -476,27 +476,38 @@ static void UninitWhereAmI(void)
 
 bool InitOSGLU(void)
 {
-	if (Config_TryInit())
-		if (AllocMemory())
+	if (!Config_TryInit())
+		return false;
+	if (!AllocMemory())
+		return false;
 #if CanGetAppPath
-			if (InitWhereAmI())
+	if (!InitWhereAmI())
+		return false;
 #endif
 #if dbglog_HAVE
-				if (dbglog_open())
+	if (!dbglog_open())
+		return false;
 #endif
-					if (ScanCommandLine())
-						if (LoadMacRom())
-							if (LoadInitialImages())
-								if (InitLocationDat())
-									if (SDL_InitDisplay()) // Switched before initting sound because SDL is initialized in SDL_InitDisplay. Probably should be initialised earlier.
+	if (!ScanCommandLine())
+		return false;
+	if (!LoadMacRom())
+		return false;
+	if (!LoadInitialImages())
+		return false;
+	if (!InitLocationDat())
+		return false;
+	if (!SDL_InitDisplay())
+		return false; // Switched before initting sound because SDL is initialized in SDL_InitDisplay. Probably should be initialised earlier.
 #if SoundEnabled
-										if (Sound_Init())
+	if (!Sound_Init())
+		return false;
 #endif
-											if (CreateMainWindow())
-												if (WaitForRom())
-												{
-													return true;
-												}
+	if (!CreateMainWindow())
+		return false;
+	if (WaitForRom())
+	{
+		return true;
+	}
 	return false;
 }
 
