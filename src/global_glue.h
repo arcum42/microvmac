@@ -109,9 +109,6 @@ extern uint8_t * get_real_address0(uint32_t L, bool WritableMem, CPTR addr,
 extern bool AddrSpac_Init(void);
 extern void VIAorSCCinterruptChngNtfy(void);
 
-extern bool InterruptButton;
-extern void SetInterruptButton(bool v);
-
 constexpr uint32_t kLn2CycleScale = 6;
 constexpr uint32_t kNumSubTicks = 16;
 constexpr uint32_t kCycleScale = (1 << kLn2CycleScale);

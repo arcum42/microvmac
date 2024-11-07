@@ -32,8 +32,12 @@
 #include "UTIL/endian.h"
 
 #include "global_glue.h"
-#include "HW/RAM/ram.h"
 #include "UTIL/param_buffers.h"
+
+#include "HW/hardware.h"
+
+
+extern bool InterruptButton;
 
 /*
 	ReportAbnormalID unused 0x111D - 0x11FF
@@ -52,31 +56,14 @@ bool RequestInsertDisk = false;
 uint8_t RequestIthDisk = 0;
 bool ControlKeyPressed = false;
 
-extern void SCC_Reset(void);
-extern void ExtnDisk_Access(CPTR p);
-extern void ExtnSony_Access(CPTR p);
+uint32_t disk_icon_addr;
+
 #if EmVidCard
-extern void ExtnVideo_Access(CPTR p);
+uint8_t *VidROM = nullptr;
 #endif
 
-extern void Sony_SetQuitOnEject(void);
-
-extern void m68k_IPLchangeNtfy(void);
-extern void MINEM68K_Init(
-	uint8_t *fIPL);
-
-extern void SetHeadATTel(ATTep p);
-extern ATTep FindATTel(CPTR addr);
-
-extern uint32_t SCSI_Access(uint32_t Data, bool WriteMem, CPTR addr);
-extern uint32_t SCC_Access(uint32_t Data, bool WriteMem, CPTR addr);
-extern uint32_t IWM_Access(uint32_t Data, bool WriteMem, CPTR addr);
-extern uint32_t VIA1_Access(uint32_t Data, bool WriteMem, CPTR addr);
-#if EmVIA2
-extern uint32_t VIA2_Access(uint32_t Data, bool WriteMem, CPTR addr);
-#endif
-#if EmASC
-extern uint32_t ASC_Access(uint32_t Data, bool WriteMem, CPTR addr);
+#if IncludeVidMem
+uint8_t *VidMem = nullptr;
 #endif
 
 extern uint8_t get_vm_byte(CPTR addr);
@@ -86,18 +73,6 @@ extern uint32_t get_vm_long(CPTR addr);
 extern void put_vm_byte(CPTR addr, uint8_t b);
 extern void put_vm_word(CPTR addr, uint16_t w);
 extern void put_vm_long(CPTR addr, uint32_t l);
-
-uint32_t disk_icon_addr;
-
-uint8_t *RAM = nullptr;
-
-#if EmVidCard
-uint8_t *VidROM = nullptr;
-#endif
-
-#if IncludeVidMem
-uint8_t *VidMem = nullptr;
-#endif
 
 #ifndef ReportAbnormalInterrupt
 #define ReportAbnormalInterrupt 0
@@ -1395,17 +1370,6 @@ uint8_t *get_real_address0(uint32_t L, bool WritableMem, CPTR addr,
 	}
 
 	return p;
-}
-
-bool InterruptButton = false;
-
-void SetInterruptButton(bool v)
-{
-	if (InterruptButton != v)
-	{
-		InterruptButton = v;
-		VIAorSCCinterruptChngNtfy();
-	}
 }
 
 static uint8_t CurIPL = 0;

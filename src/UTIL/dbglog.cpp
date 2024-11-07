@@ -27,6 +27,7 @@
 #include "HW/SCREEN/screen.h"
 #include "dbglog.h"
 
+extern void SetInterruptButton(bool v);
 
 #if WantDisasm
 extern void m68k_WantDisasmContext(void);

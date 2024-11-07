@@ -157,6 +157,7 @@ MAC_SRC_COMMON = \
 		HW_SRC['SCC'] + \
 		HW_SRC['SCSI'] + \
 		HW_SRC['MOUSE'] + \
+		HW_SRC['RAM'] + \
 		HW_SRC['ROM'] + \
 		HW_SRC['HW']
 

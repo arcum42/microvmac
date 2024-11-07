@@ -47,6 +47,17 @@ void QuietEnds()
 	QuietSubTicks = 0;
 }
 
+bool InterruptButton = false;
+
+void SetInterruptButton(bool v)
+{
+	if (InterruptButton != v)
+	{
+		InterruptButton = v;
+		VIAorSCCinterruptChngNtfy();
+	}
+}
+
 void InterruptReset_Update(void)
 {
 	SetInterruptButton(false); // don't keep held over 1/60 sec

@@ -39,6 +39,7 @@
 #include "SOUND/apple_sound_chip.h"
 #include "SOUND/sound.h"
 #include "MOUSE/mouse.h"
+#include "RAM/ram.h"
 
 enum {
     DEV_RTC,
