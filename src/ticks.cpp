@@ -30,7 +30,7 @@ extern void InterruptReset_Update(void);
 uint32_t QuietTime = 0;
 uint32_t QuietSubTicks = 0;
 //int8_t EmLagTime = 0;
-static uint16_t SubTickCounter;
+static uint16_t SubTickCounter = 0;
 static uint32_t ExtraSubTicksToDo = 0;
 
 void SubTickTaskStart(void)
@@ -62,27 +62,12 @@ void SixtiethSecondNotify(void)
 	if (EmRTC) { RTC_Interrupt(); }
 	//if (EmVidCard) { Vid_Update(); }
 
-	SubTickTaskStart();
-}
-
-void ExtraTimeBeginNotify(void)
-{
-	devices_timebegin();
-}
-
-void ExtraTimeEndNotify(void)
-{
-	devices_timeend();
-}
-
-void SubTickNotify(int value)
-{
-	devices_subtick(value);
+	//SubTickTaskStart();
 }
 
 void SubTickTaskDo(void)
 {
-	SubTickNotify(SubTickCounter);
+	devices_subtick(SubTickCounter);
 	++SubTickCounter;
 	if (SubTickCounter < (kNumSubTicks - 1)) {
 		/*
@@ -97,12 +82,12 @@ void SubTickTaskDo(void)
 
 void SubTickTaskEnd(void)
 {
-	SubTickNotify(kNumSubTicks - 1);
+	devices_subtick(kNumSubTicks - 1);
 }
 
 void SixtiethEndNotify(void)
 {
-	SubTickTaskEnd();
+	//SubTickTaskEnd();
 
 	devices_endtick();
 	// End frame
@@ -116,7 +101,6 @@ void m68k_go_nCycles_1(uint32_t n)
 	do {
 		ICT::DoCurrentTasks();
 		n2 = ICT::DoGetNext(n);
-		ICT::NextiCount += n2;
 		m68k_go_nCycles(n2);
 		n = StopiCount - ICT::NextiCount;
 	} while (n != 0);
@@ -138,7 +122,9 @@ void DoEmulateOneTick(void)
 	}
 
 	SixtiethSecondNotify();
+	SubTickTaskStart();
 	m68k_go_nCycles_1(CyclesScaledPerTick);
+	SubTickTaskEnd();
 	SixtiethEndNotify();
 
 	if ((uint8_t) -1 == SpeedValue) {
@@ -177,7 +163,7 @@ bool MoreSubTicksToDo(void)
 void DoEmulateExtraTime(void)
 {
 	if (MoreSubTicksToDo()) {
-		ExtraTimeBeginNotify();
+		devices_timebegin();
 		do {
 			uint32_t NewQuietSubTicks = QuietSubTicks + 1;
 
@@ -188,7 +174,7 @@ void DoEmulateExtraTime(void)
 			m68k_go_nCycles_1(CyclesScaledPerSubTick);
 			--ExtraSubTicksToDo;
 		} while (MoreSubTicksToDo());
-		ExtraTimeEndNotify();
+		devices_timeend();
 	}
 }
 
@@ -380,6 +366,7 @@ namespace ICT
 				v = d;
 			}
 		}
+		NextiCount += v;
 
 		return v;
 	}
