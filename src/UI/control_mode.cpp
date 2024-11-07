@@ -20,8 +20,6 @@
 
 #include <SDL.h>
 
-#include "CNFGRAPI.h"
-#include "STRCONST.h"
 #include "error_codes.h"
 #include "sys_dependencies.h"
 

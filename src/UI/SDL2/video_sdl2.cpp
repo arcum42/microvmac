@@ -6,9 +6,8 @@
 #include <SDL.h>
 #include <SDL_pixels.h>
 
-#include "CNFGRAPI.h"
-#include "STRCONST.h"
 #include "sys_dependencies.h"
+
 #include "UTIL/endian.h"
 #include "HW/SCREEN/screen.h"
 

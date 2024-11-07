@@ -19,7 +19,6 @@
 #ifndef GLOBGLUE_H
 #define GLOBGLUE_H
 
-#include "CNFGRAPI.h"
 #include "sys_dependencies.h"
 #include "UTIL/dbglog.h"
 #include "ticks.h"

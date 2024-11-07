@@ -1,5 +1,4 @@
 #include "sys_dependencies.h"
-#include "STRCONST.h"
 
 #include "HW/SCREEN/screen.h"
 #include "UI/math.h"

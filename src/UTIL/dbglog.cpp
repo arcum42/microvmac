@@ -17,7 +17,7 @@
 */
 
 #include <stdlib.h>
-#include "CNFGRAPI.h"
+
 #include "sys_dependencies.h"
 
 #include "global_glue.h"

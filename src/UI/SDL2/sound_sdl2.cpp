@@ -4,9 +4,6 @@
 
 #include <SDL.h>
 
-#include "CNFGRAPI.h"
-#include "STRCONST.h" 
-
 #include "sys_dependencies.h"
 
 #include "UI/my_os_glue.h"

@@ -2,12 +2,13 @@
 #include <string.h>
 #include <stdio.h>
 #include <stdint.h>
+
 #include <SDL.h>
-#include "CNFGRAPI.h"
+
 #include "sys_dependencies.h"
+
 #include "UTIL/endian.h"
 #include "UI/my_os_glue.h"
-#include "STRCONST.h"
 
 /* --- time, date, location --- */
 

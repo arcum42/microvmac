@@ -5,11 +5,10 @@
 #include <string.h>
 #include <stdio.h>
 #include <SDL.h>
-#include "CNFGRAPI.h"
+
 #include "sys_dependencies.h"
 #include "UTIL/endian.h"
 #include "UI/my_os_glue.h"
-#include "STRCONST.h"
 #include "LANG/intl_chars.h"
 
 #ifndef CanGetAppPath

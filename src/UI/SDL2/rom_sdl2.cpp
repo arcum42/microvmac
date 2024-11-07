@@ -4,7 +4,6 @@
 
 #include "sys_dependencies.h" 
 #include "error_codes.h"
-#include "STRCONST.h"
 
 #include "UI/my_os_glue.h"
 #include "UI/control_mode.h"

@@ -4,8 +4,6 @@
 
 #include <SDL.h>
 
-#include "CNFGRAPI.h"
-#include "STRCONST.h"
 #include "sys_dependencies.h"
 
 #include "UTIL/endian.h"

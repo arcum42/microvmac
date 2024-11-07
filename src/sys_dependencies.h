@@ -137,5 +137,7 @@ typedef int32_t simr;
 #include "hw_config.h"
 #include "HW/wires.h"
 #include "global_glue.h"
+#include "CNFGRAPI.h"
+#include "STRCONST.h"
 
 #endif

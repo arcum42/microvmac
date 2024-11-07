@@ -1,6 +1,5 @@
 /* task management */
 
-#include "CNFGRAPI.h"
 #include "sys_dependencies.h"
 
 #include "UTIL/dbglog.h"
