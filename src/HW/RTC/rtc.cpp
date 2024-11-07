@@ -27,6 +27,15 @@
 #include "UTIL/endian.h"
 #include "global_glue.h"
 
+uint32_t CurMacDateInSeconds = 0;
+#if AutoLocation
+uint32_t CurMacLatitude = 0;
+uint32_t CurMacLongitude = 0;
+#endif
+#if AutoTimeZone
+uint32_t CurMacDelta = 0;
+#endif
+
 /* define _RTC_Debug */
 #ifdef _RTC_Debug
 #include <stdio.h>

@@ -33,6 +33,9 @@
 #include "HW/MOUSE/mouse.h"
 #include "UI/event_queue.h"
 
+uint16_t CurMouseV = 0;
+uint16_t CurMouseH = 0;
+
 void Mouse_Update(void)
 {
 #if HaveMasterEvtQLock

@@ -29,8 +29,8 @@
 #include "my_os_glue.h"
 #include "event_queue.h"
 #include "memory.h"
-
-#define EnableRecreateW 0
+#include "UI/SDL2/video_sdl2.h"
+#include "math.h"
 
 extern uint32_t CurMacDateInSeconds;
 #if AutoLocation
@@ -41,101 +41,10 @@ extern uint32_t CurMacLongitude;
 extern uint32_t CurMacDelta;
 #endif
 
-extern bool UseColorMode;
-extern bool ColorModeWorks;
-extern bool ColorMappingChanged;
-
-extern uint16_t CLUT_reds[CLUT_size];
-extern uint16_t CLUT_greens[CLUT_size];
-extern uint16_t CLUT_blues[CLUT_size];
-
 extern bool RequestMacOff;
 extern bool ForceMacOff;
 extern bool WantMacInterrupt;
 extern bool WantMacReset;
-extern uint8_t SpeedValue;
-extern uint16_t CurMouseV;
-extern uint16_t CurMouseH;
-
-extern uint32_t QuietTime;
-extern uint32_t QuietSubTicks;
-
-#ifndef GrabKeysFullScreen
-#define GrabKeysFullScreen 1
-#endif
-
-#ifndef GrabKeysMaxFullScreen
-#define GrabKeysMaxFullScreen 0
-#endif
-
-/*
-	block type - for operating on multiple uint8_t elements
-		at a time.
-*/
-
-#if LittleEndianUnaligned || BigEndianUnaligned
-
-#define uibb uint32_t
-#define uibr uint32_t
-#define ln2uiblockn 2
-
-#else
-
-#define uibb uint8_t
-#define uibr uint8_t
-#define ln2uiblockn 0
-
-#endif
-
-#define uiblockn (1 << ln2uiblockn)
-#define ln2uiblockbitsn (3 + ln2uiblockn)
-#define uiblockbitsn (8 * uiblockn)
-
-#if BigEndianUnaligned
-#define FlipCheckMonoBits (uiblockbitsn - 1)
-#else
-#define FlipCheckMonoBits 7
-#endif
-
-#define FlipCheckBits (FlipCheckMonoBits >> vMacScreenDepth)
-
-#ifndef WantColorTransValid
-#define WantColorTransValid 0
-#endif
-
-extern bool EmVideoDisable;
-// The time slice we are currently dealing with,
-// in the same units as TrueEmulatedTime.
-extern uint32_t OnTrueTime;
-
-void ScreenClearChanges(void);
-void ScreenChangedAll(void);
-
-extern int16_t ScreenChangedTop;
-extern int16_t ScreenChangedLeft;
-extern int16_t ScreenChangedBottom;
-extern int16_t ScreenChangedRight;
-
-void Screen_OutputFrame(uint8_t * screencurrentbuff);
-
-#if MayFullScreen
-extern uint16_t ViewHSize;
-extern uint16_t ViewVSize;
-extern uint16_t ViewHStart;
-extern uint16_t ViewVStart;
-#endif
-
-#ifndef WantAutoScrollBorder
-#define WantAutoScrollBorder 0
-#endif
-
-#define PowOf2(p) ((uimr)1 << (p))
-#define Pow2Mask(p) (PowOf2(p) - 1)
-#define ModPow2(i, p) ((i) & Pow2Mask(p))
-#define FloorDivPow2(i, p) ((i) >> (p))
-#define FloorPow2Mult(i, p) ((i) & (~ Pow2Mask(p)))
-#define CeilPow2Mult(i, p) FloorPow2Mult((i) + Pow2Mask(p), (p))
-	/* warning - CeilPow2Mult evaluates p twice */
 
 /* --- sending debugging info to file --- */
 
@@ -150,19 +59,8 @@ void dbglog_writeNum(uimr x);
 void dbglog_writeMacChar(uint8_t x);
 #endif
 
-/* MacMsg */
-
-extern char *SavedBriefMsg;
-extern char *SavedLongMsg;
 #if WantAbnormalReports
-extern uint16_t SavedIDMsg;
-#endif
-extern bool SavedFatalMsg;
-
-void MacMsg(char *briefMsg, char *longMsg, bool fatal);
-
-#if WantAbnormalReports
-void WarnMsgAbnormalID(uint16_t id);
+extern void WarnMsgAbnormalID(uint16_t id);
 #endif
 
 #endif

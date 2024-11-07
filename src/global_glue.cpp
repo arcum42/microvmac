@@ -22,7 +22,7 @@
 	Some code here adapted from "custom.c" in vMac by Philip Cummins,
 	in turn descended from code in the Un*x Amiga Emulator by
 	Bernd Schmidt.
-	
+
 	TODO: Try to yank as much out of this as we possibly can.
 */
 
@@ -87,16 +87,16 @@ extern void put_vm_byte(CPTR addr, uint8_t b);
 extern void put_vm_word(CPTR addr, uint16_t w);
 extern void put_vm_long(CPTR addr, uint32_t l);
 
- uint32_t disk_icon_addr;
+uint32_t disk_icon_addr;
 
- uint8_t * RAM = nullptr;
+uint8_t *RAM = nullptr;
 
 #if EmVidCard
- uint8_t * VidROM = nullptr;
+uint8_t *VidROM = nullptr;
 #endif
 
 #if IncludeVidMem
- uint8_t * VidMem = nullptr;
+uint8_t *VidMem = nullptr;
 #endif
 
 #ifndef ReportAbnormalInterrupt
@@ -104,7 +104,8 @@ extern void put_vm_long(CPTR addr, uint32_t l);
 #endif
 
 #if IncludeExtnHostTextClipExchange
-enum kCmndHTCE {
+enum kCmndHTCE
+{
 	kCmndHTCEFeatures = 1,
 	kCmndHTCEExport = 2,
 	kCmndHTCEImport = 3
@@ -116,32 +117,34 @@ static void ExtnHostTextClipExchange_Access(CPTR p)
 {
 	MacErr_t result = mnvm_controlErr;
 
-	switch (get_vm_word(p + ExtnDat_commnd)) {
-		case kCmndVersion:
-			put_vm_word(p + ExtnDat_version, 1);
-			result = mnvm_noErr;
-			break;
-		case kCmndHTCEFeatures:
-			put_vm_long(p + ExtnDat_params + 0, 0);
-			result = mnvm_noErr;
-			break;
-		case kCmndHTCEExport:
-			{
-				tPbuf Pbuf_No = get_vm_word(p + ExtnDat_params + 0);
+	switch (get_vm_word(p + ExtnDat_commnd))
+	{
+	case kCmndVersion:
+		put_vm_word(p + ExtnDat_version, 1);
+		result = mnvm_noErr;
+		break;
+	case kCmndHTCEFeatures:
+		put_vm_long(p + ExtnDat_params + 0, 0);
+		result = mnvm_noErr;
+		break;
+	case kCmndHTCEExport:
+	{
+		tPbuf Pbuf_No = get_vm_word(p + ExtnDat_params + 0);
 
-				result = CheckPbuf(Pbuf_No);
-				if (mnvm_noErr == result) {
-					result = HTCEexport(Pbuf_No);
-				}
-			}
-			break;
-		case kCmndHTCEImport:
-			{
-				tPbuf Pbuf_No;
-				result = HTCEimport(&Pbuf_No);
-				put_vm_word(p + ExtnDat_params + 0, Pbuf_No);
-			}
-			break;
+		result = CheckPbuf(Pbuf_No);
+		if (mnvm_noErr == result)
+		{
+			result = HTCEexport(Pbuf_No);
+		}
+	}
+	break;
+	case kCmndHTCEImport:
+	{
+		tPbuf Pbuf_No;
+		result = HTCEimport(&Pbuf_No);
+		put_vm_word(p + ExtnDat_params + 0, Pbuf_No);
+	}
+	break;
 	}
 
 	put_vm_word(p + ExtnDat_result, result);
@@ -157,7 +160,8 @@ constexpr uint32_t kHostParamBuffersExtension = 0x314C87BF;
 constexpr uint32_t kHostClipExchangeExtension = 0x27B130CA;
 #endif
 
-enum kCmndFindExtn {
+enum kCmndFindExtn
+{
 	kCmndFindExtnFind = 1,
 	kCmndFindExtnId2Code = 2,
 	kCmndFindExtnCount = 3
@@ -170,86 +174,104 @@ static void ExtnFind_Access(CPTR p)
 {
 	MacErr_t result = mnvm_controlErr;
 
-	switch (get_vm_word(p + ExtnDat_commnd)) {
-		case kCmndVersion:
-			put_vm_word(p + ExtnDat_version, 1);
-			result = mnvm_noErr;
-			break;
-		case kCmndFindExtnFind:
-			{
-				uint32_t extn = get_vm_long(p + kParamFindExtnTheExtn);
+	switch (get_vm_word(p + ExtnDat_commnd))
+	{
+	case kCmndVersion:
+		put_vm_word(p + ExtnDat_version, 1);
+		result = mnvm_noErr;
+		break;
+	case kCmndFindExtnFind:
+	{
+		uint32_t extn = get_vm_long(p + kParamFindExtnTheExtn);
 
-				if (extn == kDiskDriverExtension) {
-					put_vm_word(p + kParamFindExtnTheId, kExtnDisk);
-					result = mnvm_noErr;
-				} else
+		if (extn == kDiskDriverExtension)
+		{
+			put_vm_word(p + kParamFindExtnTheId, kExtnDisk);
+			result = mnvm_noErr;
+		}
+		else
 #if IncludeExtnPbufs
-				if (extn == kHostParamBuffersExtension) {
-					put_vm_word(p + kParamFindExtnTheId,
+			if (extn == kHostParamBuffersExtension)
+		{
+			put_vm_word(p + kParamFindExtnTheId,
 						kExtnParamBuffers);
-					result = mnvm_noErr;
-				} else
-#endif
-#if IncludeExtnHostTextClipExchange
-				if (extn == kHostClipExchangeExtension) {
-					put_vm_word(p + kParamFindExtnTheId,
-						kExtnHostTextClipExchange);
-					result = mnvm_noErr;
-				} else
-#endif
-				if (extn == kFindExtnExtension) {
-					put_vm_word(p + kParamFindExtnTheId,
-						kExtnFindExtn);
-					result = mnvm_noErr;
-				} else
-				{
-					/* not found */
-				}
-			}
-			break;
-		case kCmndFindExtnId2Code:
-			{
-				uint16_t extn = get_vm_word(p + kParamFindExtnTheId);
-
-				if (extn == kExtnDisk) {
-					put_vm_long(p + kParamFindExtnTheExtn,
-						kDiskDriverExtension);
-					result = mnvm_noErr;
-				} else
-#if IncludeExtnPbufs
-				if (extn == kExtnParamBuffers) {
-					put_vm_long(p + kParamFindExtnTheExtn,
-						kHostParamBuffersExtension);
-					result = mnvm_noErr;
-				} else
-#endif
-#if IncludeExtnHostTextClipExchange
-				if (extn == kExtnHostTextClipExchange) {
-					put_vm_long(p + kParamFindExtnTheExtn,
-						kHostClipExchangeExtension);
-					result = mnvm_noErr;
-				} else
-#endif
-				if (extn == kExtnFindExtn) {
-					put_vm_long(p + kParamFindExtnTheExtn,
-						kFindExtnExtension);
-					result = mnvm_noErr;
-				} else
-				{
-					/* not found */
-				}
-			}
-			break;
-		case kCmndFindExtnCount:
-			put_vm_word(p + kParamFindExtnTheId, kNumExtns);
 			result = mnvm_noErr;
-			break;
+		}
+		else
+#endif
+#if IncludeExtnHostTextClipExchange
+			if (extn == kHostClipExchangeExtension)
+		{
+			put_vm_word(p + kParamFindExtnTheId,
+						kExtnHostTextClipExchange);
+			result = mnvm_noErr;
+		}
+		else
+#endif
+			if (extn == kFindExtnExtension)
+		{
+			put_vm_word(p + kParamFindExtnTheId,
+						kExtnFindExtn);
+			result = mnvm_noErr;
+		}
+		else
+		{
+			/* not found */
+		}
+	}
+	break;
+	case kCmndFindExtnId2Code:
+	{
+		uint16_t extn = get_vm_word(p + kParamFindExtnTheId);
+
+		if (extn == kExtnDisk)
+		{
+			put_vm_long(p + kParamFindExtnTheExtn,
+						kDiskDriverExtension);
+			result = mnvm_noErr;
+		}
+		else
+#if IncludeExtnPbufs
+			if (extn == kExtnParamBuffers)
+		{
+			put_vm_long(p + kParamFindExtnTheExtn,
+						kHostParamBuffersExtension);
+			result = mnvm_noErr;
+		}
+		else
+#endif
+#if IncludeExtnHostTextClipExchange
+			if (extn == kExtnHostTextClipExchange)
+		{
+			put_vm_long(p + kParamFindExtnTheExtn,
+						kHostClipExchangeExtension);
+			result = mnvm_noErr;
+		}
+		else
+#endif
+			if (extn == kExtnFindExtn)
+		{
+			put_vm_long(p + kParamFindExtnTheExtn,
+						kFindExtnExtension);
+			result = mnvm_noErr;
+		}
+		else
+		{
+			/* not found */
+		}
+	}
+	break;
+	case kCmndFindExtnCount:
+		put_vm_word(p + kParamFindExtnTheId, kNumExtns);
+		result = mnvm_noErr;
+		break;
 	}
 
 	put_vm_word(p + ExtnDat_result, result);
 }
 
-enum kDSK {
+enum kDSK
+{
 	kDSK_Params_Hi = 0,
 	kDSK_Params_Lo = 1,
 	kDSK_QuitOnEject = 3 /* obsolete */
@@ -259,65 +281,68 @@ static uint16_t ParamAddrHi;
 
 static void Extn_Access(uint32_t Data, CPTR addr)
 {
-	switch (addr) {
-		case kDSK_Params_Hi:
-			ParamAddrHi = Data;
-			break;
-		case kDSK_Params_Lo:
+	switch (addr)
+	{
+	case kDSK_Params_Hi:
+		ParamAddrHi = Data;
+		break;
+	case kDSK_Params_Lo:
+	{
+		CPTR p = ParamAddrHi << 16 | Data;
+
+		ParamAddrHi = (uint16_t)-1;
+		if (kcom_callcheck == get_vm_word(p + ExtnDat_checkval))
+		{
+			put_vm_word(p + ExtnDat_checkval, 0);
+
+			switch (get_vm_word(p + ExtnDat_extension))
 			{
-				CPTR p = ParamAddrHi << 16 | Data;
-
-				ParamAddrHi = (uint16_t) - 1;
-				if (kcom_callcheck == get_vm_word(p + ExtnDat_checkval))
-				{
-					put_vm_word(p + ExtnDat_checkval, 0);
-
-					switch (get_vm_word(p + ExtnDat_extension)) {
-						case kExtnFindExtn:
-							ExtnFind_Access(p);
-							break;
+			case kExtnFindExtn:
+				ExtnFind_Access(p);
+				break;
 #if EmVidCard
-						case kExtnVideo:
-							ExtnVideo_Access(p);
-							break;
+			case kExtnVideo:
+				ExtnVideo_Access(p);
+				break;
 #endif
 #if IncludeExtnPbufs
-						case kExtnParamBuffers:
-							ExtnParamBuffers_Access(p);
-							break;
+			case kExtnParamBuffers:
+				ExtnParamBuffers_Access(p);
+				break;
 #endif
 #if IncludeExtnHostTextClipExchange
-						case kExtnHostTextClipExchange:
-							ExtnHostTextClipExchange_Access(p);
-							break;
+			case kExtnHostTextClipExchange:
+				ExtnHostTextClipExchange_Access(p);
+				break;
 #endif
-						case kExtnDisk:
-							ExtnDisk_Access(p);
-							break;
-						case kExtnSony:
-							ExtnSony_Access(p);
-							break;
-						default:
-							put_vm_word(p + ExtnDat_result,
-								mnvm_controlErr);
-							break;
-					}
-				}
+			case kExtnDisk:
+				ExtnDisk_Access(p);
+				break;
+			case kExtnSony:
+				ExtnSony_Access(p);
+				break;
+			default:
+				put_vm_word(p + ExtnDat_result,
+							mnvm_controlErr);
+				break;
 			}
-			break;
-		case kDSK_QuitOnEject:
-			/* obsolete, kept for compatibility */
-			Sony_SetQuitOnEject();
-			break;
+		}
+	}
+	break;
+	case kDSK_QuitOnEject:
+		/* obsolete, kept for compatibility */
+		Sony_SetQuitOnEject();
+		break;
 	}
 }
 
 void Extn_Reset(void)
 {
-	ParamAddrHi = (uint16_t) - 1;
+	ParamAddrHi = (uint16_t)-1;
 }
 
-enum {
+enum
+{
 	kMMDV_VIA1,
 #if EmVIA2
 	kMMDV_VIA2,
@@ -333,7 +358,8 @@ enum {
 	kNumMMDVs
 };
 
-enum {
+enum
+{
 #if CurEmMd >= kEmMd_SE
 	kMAN_OverlayOff,
 #endif
@@ -341,17 +367,18 @@ enum {
 	kNumMANs
 };
 
-
 static ATTer ATTListA[MaxATTListN];
 static uint16_t LastATTel;
-
 
 static void AddToATTList(ATTep p)
 {
 	uint16_t NewLast = LastATTel + 1;
-	if (NewLast >= MaxATTListN) {
+	if (NewLast >= MaxATTListN)
+	{
 		ReportAbnormalID(0x1101, "MaxATTListN not big enough");
-	} else {
+	}
+	else
+	{
 		ATTListA[LastATTel] = *p;
 		LastATTel = NewLast;
 	}
@@ -381,7 +408,8 @@ static void FinishATTList(void)
 		ATTep p = &ATTListA[LastATTel];
 		ATTep h = nullptr;
 
-		while (0 != i) {
+		while (0 != i)
+		{
 			--i;
 			--p;
 			p->Next = h;
@@ -419,23 +447,25 @@ static void SetUp_RAM24(void)
 	uint32_t bankbit = 0x00100000 << (((VIA2_iA7 << 1) | VIA2_iA6) << 1);
 
 #if kRAMa_Size == kRAMb_Size
-	if (kRAMa_Size == bankbit) {
+	if (kRAMa_Size == bankbit)
+	{
 		/* properly set up balanced RAM */
-		r.cmpmask = 0x00FFFFFF & ~ ((1 << kRAM_ln2Spc) - 1);
+		r.cmpmask = 0x00FFFFFF & ~((1 << kRAM_ln2Spc) - 1);
 		r.cmpvalu = 0;
 		r.usemask = ((1 << kRAM_ln2Spc) - 1) & (kRAM_Size - 1);
 		r.usebase = RAM;
 		r.Access = kATTA_readwritereadymask;
 		AddToATTList(&r);
-	} else
+	}
+	else
 #endif
 	{
 		bankbit &= 0x00FFFFFF; /* if too large, always use RAMa */
 
-		if (0 != bankbit) {
+		if (0 != bankbit)
+		{
 #if kRAMb_Size != 0
-			r.cmpmask = bankbit
-				| (0x00FFFFFF & ~ ((1 << kRAM_ln2Spc) - 1));
+			r.cmpmask = bankbit | (0x00FFFFFF & ~((1 << kRAM_ln2Spc) - 1));
 			r.cmpvalu = bankbit;
 			r.usemask = ((1 << kRAM_ln2Spc) - 1) & (kRAMb_Size - 1);
 			r.usebase = kRAMa_Size + RAM;
@@ -445,8 +475,7 @@ static void SetUp_RAM24(void)
 		}
 
 		{
-			r.cmpmask = bankbit
-				| (0x00FFFFFF & ~ ((1 << kRAM_ln2Spc) - 1));
+			r.cmpmask = bankbit | (0x00FFFFFF & ~((1 << kRAM_ln2Spc) - 1));
 			r.cmpvalu = 0;
 			r.usemask = ((1 << kRAM_ln2Spc) - 1) & (kRAMa_Size - 1);
 			r.usebase = RAM;
@@ -462,10 +491,13 @@ static void SetUp_io(void)
 {
 	ATTer r;
 
-	if (Addr32) {
+	if (Addr32)
+	{
 		r.cmpmask = 0xFF01E000;
 		r.cmpvalu = 0x50000000;
-	} else {
+	}
+	else
+	{
 		r.cmpmask = 0x00F1E000;
 		r.cmpvalu = 0x00F00000;
 	}
@@ -474,10 +506,13 @@ static void SetUp_io(void)
 	r.MMDV = kMMDV_VIA1;
 	AddToATTList(&r);
 
-	if (Addr32) {
+	if (Addr32)
+	{
 		r.cmpmask = 0xFF01E000;
 		r.cmpvalu = 0x50000000 | 0x2000;
-	} else {
+	}
+	else
+	{
 		r.cmpmask = 0x00F1E000;
 		r.cmpvalu = 0x00F00000 | 0x2000;
 	}
@@ -486,10 +521,13 @@ static void SetUp_io(void)
 	r.MMDV = kMMDV_VIA2;
 	AddToATTList(&r);
 
-	if (Addr32) {
+	if (Addr32)
+	{
 		r.cmpmask = 0xFF01E000;
 		r.cmpvalu = 0x50000000 | 0x4000;
-	} else {
+	}
+	else
+	{
 		r.cmpmask = 0x00F1E000;
 		r.cmpvalu = 0x00F00000 | 0x4000;
 	}
@@ -498,10 +536,13 @@ static void SetUp_io(void)
 	r.MMDV = kMMDV_SCC;
 	AddToATTList(&r);
 
-	if (Addr32) {
+	if (Addr32)
+	{
 		r.cmpmask = 0xFF01E000;
 		r.cmpvalu = 0x50000000 | 0x0C000;
-	} else {
+	}
+	else
+	{
 		r.cmpmask = 0x00F1E000;
 		r.cmpvalu = 0x00F00000 | 0x0C000;
 	}
@@ -510,10 +551,13 @@ static void SetUp_io(void)
 	r.MMDV = kMMDV_Extn;
 	AddToATTList(&r);
 
-	if (Addr32) {
+	if (Addr32)
+	{
 		r.cmpmask = 0xFF01E000;
 		r.cmpvalu = 0x50000000 | 0x10000;
-	} else {
+	}
+	else
+	{
 		r.cmpmask = 0x00F1E000;
 		r.cmpvalu = 0x00F00000 | 0x10000;
 	}
@@ -522,10 +566,13 @@ static void SetUp_io(void)
 	r.MMDV = kMMDV_SCSI;
 	AddToATTList(&r);
 
-	if (Addr32) {
+	if (Addr32)
+	{
 		r.cmpmask = 0xFF01E000;
 		r.cmpvalu = 0x50000000 | 0x14000;
-	} else {
+	}
+	else
+	{
 		r.cmpmask = 0x00F1E000;
 		r.cmpvalu = 0x00F00000 | 0x14000;
 	}
@@ -534,10 +581,13 @@ static void SetUp_io(void)
 	r.MMDV = kMMDV_ASC;
 	AddToATTList(&r);
 
-	if (Addr32) {
+	if (Addr32)
+	{
 		r.cmpmask = 0xFF01E000;
 		r.cmpvalu = 0x50000000 | 0x16000;
-	} else {
+	}
+	else
+	{
 		r.cmpmask = 0x00F1E000;
 		r.cmpvalu = 0x00F00000 | 0x16000;
 	}
@@ -576,15 +626,18 @@ static void SetUp_address24(void)
 	}
 #endif
 
-	if (MemOverlay) {
+	if (MemOverlay)
+	{
 		r.cmpmask = Overlay_ROM_CmpZeroMask |
-			(0x00FFFFFF & ~ ((1 << kRAM_ln2Spc) - 1));
+					(0x00FFFFFF & ~((1 << kRAM_ln2Spc) - 1));
 		r.cmpvalu = kRAM_Base;
 		r.usemask = kROM_Size - 1;
 		r.usebase = ROM;
 		r.Access = kATTA_readreadymask;
 		AddToATTList(&r);
-	} else {
+	}
+	else
+	{
 		SetUp_RAM24();
 	}
 
@@ -595,14 +648,14 @@ static void SetUp_address24(void)
 	r.Access = kATTA_readreadymask;
 	AddToATTList(&r);
 
-	r.cmpmask = 0x00FFFFFF & ~ (0x100000 - 1);
+	r.cmpmask = 0x00FFFFFF & ~(0x100000 - 1);
 	r.cmpvalu = 0x900000;
 	r.usemask = (kVidMemRAM_Size - 1) & (0x100000 - 1);
 	r.usebase = VidMem;
 	r.Access = kATTA_readwritereadymask;
 	AddToATTList(&r);
 #if kVidMemRAM_Size >= 0x00200000
-	r.cmpmask = 0x00FFFFFF & ~ (0x100000 - 1);
+	r.cmpmask = 0x00FFFFFF & ~(0x100000 - 1);
 	r.cmpvalu = 0xA00000;
 	r.usemask = (0x100000 - 1);
 	r.usebase = VidMem + (1 << 20);
@@ -610,13 +663,13 @@ static void SetUp_address24(void)
 	AddToATTList(&r);
 #endif
 #if kVidMemRAM_Size >= 0x00400000
-	r.cmpmask = 0x00FFFFFF & ~ (0x100000 - 1);
+	r.cmpmask = 0x00FFFFFF & ~(0x100000 - 1);
 	r.cmpvalu = 0xB00000;
 	r.usemask = (0x100000 - 1);
 	r.usebase = VidMem + (2 << 20);
 	r.Access = kATTA_readwritereadymask;
 	AddToATTList(&r);
-	r.cmpmask = 0x00FFFFFF & ~ (0x100000 - 1);
+	r.cmpmask = 0x00FFFFFF & ~(0x100000 - 1);
 	r.cmpvalu = 0xC00000;
 	r.usemask = (0x100000 - 1);
 	r.usebase = VidMem + (3 << 20);
@@ -633,30 +686,35 @@ static void SetUp_address32(void)
 {
 	ATTer r;
 
-	if (MemOverlay) {
-		r.cmpmask = ~ ((1 << 30) - 1);
+	if (MemOverlay)
+	{
+		r.cmpmask = ~((1 << 30) - 1);
 		r.cmpvalu = 0;
 		r.usemask = kROM_Size - 1;
 		r.usebase = ROM;
 		r.Access = kATTA_readreadymask;
 		AddToATTList(&r);
-	} else {
+	}
+	else
+	{
 		uint32_t bankbit =
 			0x00100000 << (((VIA2_iA7 << 1) | VIA2_iA6) << 1);
 #if kRAMa_Size == kRAMb_Size
-		if (kRAMa_Size == bankbit) {
+		if (kRAMa_Size == bankbit)
+		{
 			/* properly set up balanced RAM */
-			r.cmpmask = ~ ((1 << 30) - 1);
+			r.cmpmask = ~((1 << 30) - 1);
 			r.cmpvalu = 0;
 			r.usemask = kRAM_Size - 1;
 			r.usebase = RAM;
 			r.Access = kATTA_readwritereadymask;
 			AddToATTList(&r);
-		} else
+		}
+		else
 #endif
 		{
 #if kRAMb_Size != 0
-			r.cmpmask = bankbit | ~ ((1 << 30) - 1);
+			r.cmpmask = bankbit | ~((1 << 30) - 1);
 			r.cmpvalu = bankbit;
 			r.usemask = kRAMb_Size - 1;
 			r.usebase = kRAMa_Size + RAM;
@@ -664,7 +722,7 @@ static void SetUp_address32(void)
 			AddToATTList(&r);
 #endif
 
-			r.cmpmask = bankbit | ~ ((1 << 30) - 1);
+			r.cmpmask = bankbit | ~((1 << 30) - 1);
 			r.cmpvalu = 0;
 			r.usemask = kRAMa_Size - 1;
 			r.usebase = RAM;
@@ -673,7 +731,7 @@ static void SetUp_address32(void)
 		}
 	}
 
-	r.cmpmask = ~ ((1 << 28) - 1);
+	r.cmpmask = ~((1 << 28) - 1);
 	r.cmpvalu = 0x40000000;
 	r.usemask = kROM_Size - 1;
 	r.usebase = ROM;
@@ -692,7 +750,7 @@ static void SetUp_address32(void)
 #endif
 
 	/* Standard NuBus space */
-	r.cmpmask = ~ ((1 << 20) - 1);
+	r.cmpmask = ~((1 << 20) - 1);
 	r.cmpvalu = 0xF9F00000;
 	r.usemask = kVidROM_Size - 1;
 	r.usebase = VidROM;
@@ -707,7 +765,7 @@ static void SetUp_address32(void)
 	AddToATTList(&r);
 #endif
 
-	r.cmpmask = ~ 0x000FFFFF;
+	r.cmpmask = ~0x000FFFFF;
 	r.cmpvalu = 0xF9900000;
 	r.usemask = 0x000FFFFF & (kVidMemRAM_Size - 1);
 	r.usebase = VidMem;
@@ -715,7 +773,7 @@ static void SetUp_address32(void)
 	AddToATTList(&r);
 /* kludge to allow more than 1M of Video Memory */
 #if kVidMemRAM_Size >= 0x00200000
-	r.cmpmask = ~ 0x000FFFFF;
+	r.cmpmask = ~0x000FFFFF;
 	r.cmpvalu = 0xF9A00000;
 	r.usemask = 0x000FFFFF & (kVidMemRAM_Size - 1);
 	r.usebase = VidMem + (1 << 20);
@@ -723,13 +781,13 @@ static void SetUp_address32(void)
 	AddToATTList(&r);
 #endif
 #if kVidMemRAM_Size >= 0x00400000
-	r.cmpmask = ~ 0x000FFFFF;
+	r.cmpmask = ~0x000FFFFF;
 	r.cmpvalu = 0xF9B00000;
 	r.usemask = 0x000FFFFF & (kVidMemRAM_Size - 1);
 	r.usebase = VidMem + (2 << 20);
 	r.Access = kATTA_readwritereadymask;
 	AddToATTList(&r);
-	r.cmpmask = ~ 0x000FFFFF;
+	r.cmpmask = ~0x000FFFFF;
 	r.cmpvalu = 0xF9C00000;
 	r.usemask = 0x000FFFFF & (kVidMemRAM_Size - 1);
 	r.usebase = VidMem + (3 << 20);
@@ -750,9 +808,12 @@ static void SetUp_address32(void)
 #if (CurEmMd == kEmMd_II) || (CurEmMd == kEmMd_IIx)
 static void SetUp_address(void)
 {
-	if (Addr32) {
+	if (Addr32)
+	{
 		SetUp_address32();
-	} else {
+	}
+	else
+	{
 		SetUp_address24();
 	}
 }
@@ -778,7 +839,7 @@ static void AddToATTListWithMTB(ATTep p)
 
 	r.Access = p->Access;
 	r.cmpmask = p->cmpmask | (1 << ln2mtb);
-	r.usemask = p->usemask & ~ (1 << ln2mtb);
+	r.usemask = p->usemask & ~(1 << ln2mtb);
 
 	r.cmpvalu = p->cmpvalu + (1 << ln2mtb);
 	r.usebase = p->usebase;
@@ -796,7 +857,7 @@ static void SetUp_RAM24(void)
 	ATTer r;
 
 #if (0 == kRAMb_Size) || (kRAMa_Size == kRAMb_Size)
-	r.cmpmask = 0x00FFFFFF & ~ ((1 << kRAM_ln2Spc) - 1);
+	r.cmpmask = 0x00FFFFFF & ~((1 << kRAM_ln2Spc) - 1);
 	r.cmpvalu = kRAM_Base;
 	r.usemask = kRAM_Size - 1;
 	r.usebase = RAM;
@@ -815,7 +876,7 @@ static void SetUp_RAM24(void)
 	AddToATTListWithMTB(&r);
 #endif
 
-	r.cmpmask = 0x00FFFFFF & (kRAMa_Size | ~ ((1 << kRAM_ln2Spc) - 1));
+	r.cmpmask = 0x00FFFFFF & (kRAMa_Size | ~((1 << kRAM_ln2Spc) - 1));
 	r.cmpvalu = kRAM_Base;
 	r.usemask = kRAMa_Size - 1;
 	r.usebase = RAM;
@@ -830,27 +891,32 @@ static void SetUp_address(void)
 {
 	ATTer r;
 
-	if (MemOverlay) {
+	if (MemOverlay)
+	{
 		r.cmpmask = Overlay_ROM_CmpZeroMask |
-			(0x00FFFFFF & ~ ((1 << kRAM_ln2Spc) - 1));
+					(0x00FFFFFF & ~((1 << kRAM_ln2Spc) - 1));
 		r.cmpvalu = kRAM_Base;
 		r.usemask = kROM_Size - 1;
 		r.usebase = ROM;
 		r.Access = kATTA_readreadymask;
 		AddToATTListWithMTB(&r);
-	} else {
+	}
+	else
+	{
 		SetUp_RAM24();
 	}
 
 	r.cmpmask = kROM_cmpmask;
 	r.cmpvalu = kROM_Base;
 #if (CurEmMd >= kEmMd_SE)
-	if (MemOverlay) {
+	if (MemOverlay)
+	{
 		r.usebase = nullptr;
 		r.Access = kATTA_ntfymask;
 		r.Ntfy = kMAN_OverlayOff;
 		AddToATTList(&r);
-	} else
+	}
+	else
 #endif
 	{
 		r.usemask = kROM_Size - 1;
@@ -859,12 +925,13 @@ static void SetUp_address(void)
 		AddToATTListWithMTB(&r);
 	}
 
-	if (MemOverlay) {
+	if (MemOverlay)
+	{
 		r.cmpmask = 0x00E00000;
 		r.cmpvalu = kRAM_Overlay_Base;
 #if (0 == kRAMb_Size) || (kRAMa_Size == kRAMb_Size)
 		r.usemask = kRAM_Size - 1;
-			/* note that cmpmask and usemask overlap for 4M */
+		/* note that cmpmask and usemask overlap for 4M */
 		r.usebase = RAM;
 		r.Access = kATTA_readwritereadymask;
 #else
@@ -877,7 +944,7 @@ static void SetUp_address(void)
 	}
 
 #if IncludeVidMem
-	r.cmpmask = 0x00FFFFFF & ~ ((1 << kVidMem_ln2Spc) - 1);
+	r.cmpmask = 0x00FFFFFF & ~((1 << kVidMem_ln2Spc) - 1);
 	r.cmpvalu = kVidMem_Base;
 	r.usemask = kVidMemRAM_Size - 1;
 	r.usebase = VidMem;
@@ -885,21 +952,21 @@ static void SetUp_address(void)
 	AddToATTList(&r);
 #endif
 
-	r.cmpmask = 0x00FFFFFF & ~ ((1 << kVIA1_ln2Spc) - 1);
+	r.cmpmask = 0x00FFFFFF & ~((1 << kVIA1_ln2Spc) - 1);
 	r.cmpvalu = kVIA1_Block_Base;
 	r.usebase = nullptr;
 	r.Access = kATTA_mmdvmask;
 	r.MMDV = kMMDV_VIA1;
 	AddToATTList(&r);
 
-	r.cmpmask = 0x00FFFFFF & ~ ((1 << kSCC_ln2Spc) - 1);
+	r.cmpmask = 0x00FFFFFF & ~((1 << kSCC_ln2Spc) - 1);
 	r.cmpvalu = kSCCRd_Block_Base;
 	r.usebase = nullptr;
 	r.Access = kATTA_mmdvmask;
 	r.MMDV = kMMDV_SCC;
 	AddToATTList(&r);
 
-	r.cmpmask = 0x00FFFFFF & ~ ((1 << kExtn_ln2Spc) - 1);
+	r.cmpmask = 0x00FFFFFF & ~((1 << kExtn_ln2Spc) - 1);
 	r.cmpvalu = kExtn_Block_Base;
 	r.usebase = nullptr;
 	r.Access = kATTA_mmdvmask;
@@ -907,7 +974,7 @@ static void SetUp_address(void)
 	AddToATTList(&r);
 
 #if CurEmMd == kEmMd_PB100
-	r.cmpmask = 0x00FFFFFF & ~ ((1 << kASC_ln2Spc) - 1);
+	r.cmpmask = 0x00FFFFFF & ~((1 << kASC_ln2Spc) - 1);
 	r.cmpvalu = kASC_Block_Base;
 	r.usebase = nullptr;
 	r.Access = kATTA_mmdvmask;
@@ -915,14 +982,14 @@ static void SetUp_address(void)
 	AddToATTList(&r);
 #endif
 
-	r.cmpmask = 0x00FFFFFF & ~ ((1 << kSCSI_ln2Spc) - 1);
+	r.cmpmask = 0x00FFFFFF & ~((1 << kSCSI_ln2Spc) - 1);
 	r.cmpvalu = kSCSI_Block_Base;
 	r.usebase = nullptr;
 	r.Access = kATTA_mmdvmask;
 	r.MMDV = kMMDV_SCSI;
 	AddToATTList(&r);
 
-	r.cmpmask = 0x00FFFFFF & ~ ((1 << kIWM_ln2Spc) - 1);
+	r.cmpmask = 0x00FFFFFF & ~((1 << kIWM_ln2Spc) - 1);
 	r.cmpvalu = kIWM_Block_Base;
 	r.usebase = nullptr;
 	r.Access = kATTA_mmdvmask;
@@ -951,251 +1018,304 @@ static void get_fail_realblock(ATTep p)
 }
 #endif
 
- uint32_t MMDV_Access(ATTep p, uint32_t Data,
-	bool WriteMem, bool ByteSize, CPTR addr)
+uint32_t MMDV_Access(ATTep p, uint32_t Data,
+					 bool WriteMem, bool ByteSize, CPTR addr)
 {
-	switch (p->MMDV) {
-		case kMMDV_VIA1:
-			if (! ByteSize) {
+	switch (p->MMDV)
+	{
+	case kMMDV_VIA1:
+		if (!ByteSize)
+		{
 #if (CurEmMd == kEmMd_II) || (CurEmMd == kEmMd_IIx)
-				if (WriteMem && (addr == 0xF40006)) {
-					/* for weirdness on shutdown in System 6 */
+			if (WriteMem && (addr == 0xF40006))
+			{
+				/* for weirdness on shutdown in System 6 */
 #if 0
 					VIA1_Access((Data >> 8) & 0x00FF, WriteMem,
 							(addr >> 9) & kVIA1_Mask);
 					VIA1_Access((Data) & 0x00FF, WriteMem,
 							(addr >> 9) & kVIA1_Mask);
 #endif
-				} else
+			}
+			else
 #endif
-				{
-					ReportAbnormalID(0x1106, "access VIA1 word");
-				}
-			} else if ((addr & 1) != 0) {
-				ReportAbnormalID(0x1107, "access VIA1 odd");
-			} else {
+			{
+				ReportAbnormalID(0x1106, "access VIA1 word");
+			}
+		}
+		else if ((addr & 1) != 0)
+		{
+			ReportAbnormalID(0x1107, "access VIA1 odd");
+		}
+		else
+		{
 #if CurEmMd != kEmMd_PB100
 #if (CurEmMd == kEmMd_II) || (CurEmMd == kEmMd_IIx)
-				if ((addr & 0x000001FE) != 0x00000000)
+			if ((addr & 0x000001FE) != 0x00000000)
 #else
-				if ((addr & 0x000FE1FE) != 0x000FE1FE)
+			if ((addr & 0x000FE1FE) != 0x000FE1FE)
 #endif
-				{
-					ReportAbnormalID(0x1108,
-						"access VIA1 nonstandard address");
-				}
-#endif
-				Data = VIA1_Access(Data, WriteMem,
-					(addr >> 9) & kVIA1_Mask);
+			{
+				ReportAbnormalID(0x1108,
+								 "access VIA1 nonstandard address");
 			}
+#endif
+			Data = VIA1_Access(Data, WriteMem,
+							   (addr >> 9) & kVIA1_Mask);
+		}
 
-			break;
+		break;
 #if EmVIA2
-		case kMMDV_VIA2:
-			if (! ByteSize) {
-				if ((! WriteMem)
-					&& ((0x3e00 == (addr & 0x1FFFF))
-						|| (0x3e02 == (addr & 0x1FFFF))))
-				{
-					/* for weirdness at offset 0x71E in ROM */
-					Data =
-						(VIA2_Access(Data, WriteMem,
-							(addr >> 9) & kVIA2_Mask) << 8)
-						| VIA2_Access(Data, WriteMem,
-							(addr >> 9) & kVIA2_Mask);
-
-				} else {
-					ReportAbnormalID(0x1109, "access VIA2 word");
-				}
-			} else if ((addr & 1) != 0) {
-				if (0x3FFF == (addr & 0x1FFFF)) {
-					/*
-						for weirdness at offset 0x7C4 in ROM.
-						looks like bug.
-					*/
-					Data = VIA2_Access(Data, WriteMem,
-						(addr >> 9) & kVIA2_Mask);
-				} else {
-					ReportAbnormalID(0x110A, "access VIA2 odd");
-				}
-			} else {
-				if ((addr & 0x000001FE) != 0x00000000) {
-					ReportAbnormalID(0x110B,
-						"access VIA2 nonstandard address");
-				}
-				Data = VIA2_Access(Data, WriteMem,
-					(addr >> 9) & kVIA2_Mask);
+	case kMMDV_VIA2:
+		if (!ByteSize)
+		{
+			if ((!WriteMem) && ((0x3e00 == (addr & 0x1FFFF)) || (0x3e02 == (addr & 0x1FFFF))))
+			{
+				/* for weirdness at offset 0x71E in ROM */
+				Data =
+					(VIA2_Access(Data, WriteMem,
+								 (addr >> 9) & kVIA2_Mask)
+					 << 8) |
+					VIA2_Access(Data, WriteMem,
+								(addr >> 9) & kVIA2_Mask);
 			}
-			break;
+			else
+			{
+				ReportAbnormalID(0x1109, "access VIA2 word");
+			}
+		}
+		else if ((addr & 1) != 0)
+		{
+			if (0x3FFF == (addr & 0x1FFFF))
+			{
+				/*
+					for weirdness at offset 0x7C4 in ROM.
+					looks like bug.
+				*/
+				Data = VIA2_Access(Data, WriteMem,
+								   (addr >> 9) & kVIA2_Mask);
+			}
+			else
+			{
+				ReportAbnormalID(0x110A, "access VIA2 odd");
+			}
+		}
+		else
+		{
+			if ((addr & 0x000001FE) != 0x00000000)
+			{
+				ReportAbnormalID(0x110B,
+								 "access VIA2 nonstandard address");
+			}
+			Data = VIA2_Access(Data, WriteMem,
+							   (addr >> 9) & kVIA2_Mask);
+		}
+		break;
 #endif
-		case kMMDV_SCC:
+	case kMMDV_SCC:
 
-#if (CurEmMd >= kEmMd_SE) \
-	&& ! ((CurEmMd == kEmMd_II) || (CurEmMd == kEmMd_IIx))
+#if (CurEmMd >= kEmMd_SE) && !((CurEmMd == kEmMd_II) || (CurEmMd == kEmMd_IIx))
 
-			if ((addr & 0x00100000) == 0) {
-				ReportAbnormalID(0x110C,
-					"access SCC unassigned address");
-			} else
+		if ((addr & 0x00100000) == 0)
+		{
+			ReportAbnormalID(0x110C,
+							 "access SCC unassigned address");
+		}
+		else
 #endif
-			if (! ByteSize) {
-				ReportAbnormalID(0x110D, "Attemped Phase Adjust");
-			} else
-#if ! ((CurEmMd == kEmMd_II) || (CurEmMd == kEmMd_IIx))
-			if (WriteMem != ((addr & 1) != 0)) {
-				if (WriteMem) {
+			if (!ByteSize)
+		{
+			ReportAbnormalID(0x110D, "Attemped Phase Adjust");
+		}
+		else
+#if !((CurEmMd == kEmMd_II) || (CurEmMd == kEmMd_IIx))
+			if (WriteMem != ((addr & 1) != 0))
+		{
+			if (WriteMem)
+			{
 #if CurEmMd >= kEmMd_512Ke
 #if CurEmMd != kEmMd_PB100
-					ReportAbnormalID(0x110E, "access SCC even/odd");
-					/*
-						This happens on boot with 64k ROM.
-					*/
-#endif
-#endif
-				} else {
-					SCC_Reset();
-				}
-			} else
-#endif
-#if (CurEmMd != kEmMd_PB100) \
-	&& ! ((CurEmMd == kEmMd_II) || (CurEmMd == kEmMd_IIx))
-
-			if (WriteMem != (addr >= kSCCWr_Block_Base)) {
-				ReportAbnormalID(0x110F, "access SCC wr/rd base wrong");
-			} else
-#endif
-			{
-#if CurEmMd != kEmMd_PB100
-#if (CurEmMd == kEmMd_II) || (CurEmMd == kEmMd_IIx)
-				if ((addr & 0x1FF9) != 0x00000000)
-#else
-				if ((addr & 0x001FFFF8) != 0x001FFFF8)
-#endif
-				{
-					ReportAbnormalID(0x1110,
-						"access SCC nonstandard address");
-				}
-#endif
-				Data = SCC_Access(Data, WriteMem,
-					(addr >> 1) & kSCC_Mask);
-			}
-			break;
-		case kMMDV_Extn:
-			if (ByteSize) {
-				ReportAbnormalID(0x1111, "access Sony byte");
-			} else if ((addr & 1) != 0) {
-				ReportAbnormalID(0x1112, "access Sony odd");
-			} else if (! WriteMem) {
-				ReportAbnormalID(0x1113, "access Sony read");
-			} else {
-				Extn_Access(Data, (addr >> 1) & 0x0F);
-			}
-			break;
-#if EmASC
-		case kMMDV_ASC:
-			if (! ByteSize) {
-#if (CurEmMd == kEmMd_II) || (CurEmMd == kEmMd_IIx)
-				if (WriteMem) {
-					(void) ASC_Access((Data >> 8) & 0x00FF,
-						WriteMem, addr & kASC_Mask);
-					Data = ASC_Access((Data) & 0x00FF,
-						WriteMem, (addr + 1) & kASC_Mask);
-				} else {
-					Data =
-						(ASC_Access((Data >> 8) & 0x00FF,
-							WriteMem, addr & kASC_Mask) << 8)
-						| ASC_Access((Data) & 0x00FF,
-							WriteMem, (addr + 1) & kASC_Mask);
-				}
-#else
-				ReportAbnormalID(0x1114, "access ASC word");
-#endif
-			} else {
-				Data = ASC_Access(Data, WriteMem, addr & kASC_Mask);
-			}
-			break;
-#endif
-		case kMMDV_SCSI:
-			if (! ByteSize) {
-				ReportAbnormalID(0x1115, "access SCSI word");
-			} else
-#if ! ((CurEmMd == kEmMd_II) || (CurEmMd == kEmMd_IIx))
-			if (WriteMem != ((addr & 1) != 0)) {
-				ReportAbnormalID(0x1116, "access SCSI even/odd");
-			} else
-#endif
-			{
-#if (CurEmMd == kEmMd_II) || (CurEmMd == kEmMd_IIx)
-				if ((addr & 0x1F8F) != 0x00000000) {
-					ReportAbnormalID(0x1117,
-						"access SCSI nonstandard address");
-				}
-#endif
-				Data = SCSI_Access(Data, WriteMem, (addr >> 4) & 0x07);
-			}
-
-			break;
-		case kMMDV_IWM:
-#if (CurEmMd >= kEmMd_SE) \
-	&& ! ((CurEmMd == kEmMd_II) || (CurEmMd == kEmMd_IIx))
-
-			if ((addr & 0x00100000) == 0) {
-				ReportAbnormalID(0x1118,
-					"access IWM unassigned address");
-			} else
-#endif
-			if (! ByteSize) {
-#if ExtraAbnormalReports
-				ReportAbnormalID(0x1119, "access IWM word");
+				ReportAbnormalID(0x110E, "access SCC even/odd");
 				/*
-					This happens when quitting 'Glider 3.1.2'.
-					perhaps a bad handle is being disposed of.
+					This happens on boot with 64k ROM.
 				*/
 #endif
-			} else
+#endif
+			}
+			else
+			{
+				SCC_Reset();
+			}
+		}
+		else
+#endif
+#if (CurEmMd != kEmMd_PB100) && !((CurEmMd == kEmMd_II) || (CurEmMd == kEmMd_IIx))
+
+			if (WriteMem != (addr >= kSCCWr_Block_Base))
+		{
+			ReportAbnormalID(0x110F, "access SCC wr/rd base wrong");
+		}
+		else
+#endif
+		{
+#if CurEmMd != kEmMd_PB100
 #if (CurEmMd == kEmMd_II) || (CurEmMd == kEmMd_IIx)
-			if ((addr & 1) != 0) {
-				ReportAbnormalID(0x111A, "access IWM odd");
-			} else
+			if ((addr & 0x1FF9) != 0x00000000)
 #else
-			if ((addr & 1) == 0) {
-				ReportAbnormalID(0x111B, "access IWM even");
-			} else
+			if ((addr & 0x001FFFF8) != 0x001FFFF8)
 #endif
 			{
-#if (CurEmMd != kEmMd_PB100) \
-	&& ! ((CurEmMd == kEmMd_II) || (CurEmMd == kEmMd_IIx))
-
-				if ((addr & 0x001FE1FF) != 0x001FE1FF) {
-					ReportAbnormalID(0x111C,
-						"access IWM nonstandard address");
-				}
-#endif
-				Data = IWM_Access(Data, WriteMem,
-					(addr >> 9) & kIWM_Mask);
+				ReportAbnormalID(0x1110,
+								 "access SCC nonstandard address");
 			}
+#endif
+			Data = SCC_Access(Data, WriteMem,
+							  (addr >> 1) & kSCC_Mask);
+		}
+		break;
+	case kMMDV_Extn:
+		if (ByteSize)
+		{
+			ReportAbnormalID(0x1111, "access Sony byte");
+		}
+		else if ((addr & 1) != 0)
+		{
+			ReportAbnormalID(0x1112, "access Sony odd");
+		}
+		else if (!WriteMem)
+		{
+			ReportAbnormalID(0x1113, "access Sony read");
+		}
+		else
+		{
+			Extn_Access(Data, (addr >> 1) & 0x0F);
+		}
+		break;
+#if EmASC
+	case kMMDV_ASC:
+		if (!ByteSize)
+		{
+#if (CurEmMd == kEmMd_II) || (CurEmMd == kEmMd_IIx)
+			if (WriteMem)
+			{
+				(void)ASC_Access((Data >> 8) & 0x00FF,
+								 WriteMem, addr & kASC_Mask);
+				Data = ASC_Access((Data) & 0x00FF,
+								  WriteMem, (addr + 1) & kASC_Mask);
+			}
+			else
+			{
+				Data =
+					(ASC_Access((Data >> 8) & 0x00FF,
+								WriteMem, addr & kASC_Mask)
+					 << 8) |
+					ASC_Access((Data) & 0x00FF,
+							   WriteMem, (addr + 1) & kASC_Mask);
+			}
+#else
+			ReportAbnormalID(0x1114, "access ASC word");
+#endif
+		}
+		else
+		{
+			Data = ASC_Access(Data, WriteMem, addr & kASC_Mask);
+		}
+		break;
+#endif
+	case kMMDV_SCSI:
+		if (!ByteSize)
+		{
+			ReportAbnormalID(0x1115, "access SCSI word");
+		}
+		else
+#if !((CurEmMd == kEmMd_II) || (CurEmMd == kEmMd_IIx))
+			if (WriteMem != ((addr & 1) != 0))
+		{
+			ReportAbnormalID(0x1116, "access SCSI even/odd");
+		}
+		else
+#endif
+		{
+#if (CurEmMd == kEmMd_II) || (CurEmMd == kEmMd_IIx)
+			if ((addr & 0x1F8F) != 0x00000000)
+			{
+				ReportAbnormalID(0x1117,
+								 "access SCSI nonstandard address");
+			}
+#endif
+			Data = SCSI_Access(Data, WriteMem, (addr >> 4) & 0x07);
+		}
 
-			break;
+		break;
+	case kMMDV_IWM:
+#if (CurEmMd >= kEmMd_SE) && !((CurEmMd == kEmMd_II) || (CurEmMd == kEmMd_IIx))
+
+		if ((addr & 0x00100000) == 0)
+		{
+			ReportAbnormalID(0x1118,
+							 "access IWM unassigned address");
+		}
+		else
+#endif
+			if (!ByteSize)
+		{
+#if ExtraAbnormalReports
+			ReportAbnormalID(0x1119, "access IWM word");
+			/*
+				This happens when quitting 'Glider 3.1.2'.
+				perhaps a bad handle is being disposed of.
+			*/
+#endif
+		}
+		else
+#if (CurEmMd == kEmMd_II) || (CurEmMd == kEmMd_IIx)
+			if ((addr & 1) != 0)
+		{
+			ReportAbnormalID(0x111A, "access IWM odd");
+		}
+		else
+#else
+			if ((addr & 1) == 0)
+		{
+			ReportAbnormalID(0x111B, "access IWM even");
+		}
+		else
+#endif
+		{
+#if (CurEmMd != kEmMd_PB100) && !((CurEmMd == kEmMd_II) || (CurEmMd == kEmMd_IIx))
+
+			if ((addr & 0x001FE1FF) != 0x001FE1FF)
+			{
+				ReportAbnormalID(0x111C,
+								 "access IWM nonstandard address");
+			}
+#endif
+			Data = IWM_Access(Data, WriteMem,
+							  (addr >> 9) & kIWM_Mask);
+		}
+
+		break;
 	}
 
 	return Data;
 }
 
- bool MemAccessNtfy(ATTep pT)
+bool MemAccessNtfy(ATTep pT)
 {
 	bool v = false;
 
-	switch (pT->Ntfy) {
+	switch (pT->Ntfy)
+	{
 #if CurEmMd >= kEmMd_SE
-		case kMAN_OverlayOff:
-			pT->Access = kATTA_readreadymask;
+	case kMAN_OverlayOff:
+		pT->Access = kATTA_readreadymask;
 
-			MemOverlay = 0;
-			SetUpMemBanks();
+		MemOverlay = 0;
+		SetUpMemBanks();
 
-			v = true;
+		v = true;
 
-			break;
+		break;
 #endif
 	}
 
@@ -1225,12 +1345,16 @@ static ATTep get_address_realblock1(bool WriteMem, CPTR addr)
 Label_Retry:
 	p = FindATTel(addr);
 	if (0 != (p->Access &
-		(WriteMem ? kATTA_writereadymask : kATTA_readreadymask)))
+			  (WriteMem ? kATTA_writereadymask : kATTA_readreadymask)))
 	{
 		/* ok */
-	} else {
-		if (0 != (p->Access & kATTA_ntfymask)) {
-			if (MemAccessNtfy(p)) {
+	}
+	else
+	{
+		if (0 != (p->Access & kATTA_ntfymask))
+		{
+			if (MemAccessNtfy(p))
+			{
 				goto Label_Retry;
 			}
 		}
@@ -1240,26 +1364,32 @@ Label_Retry:
 	return p;
 }
 
- uint8_t * get_real_address0(uint32_t L, bool WritableMem, CPTR addr,
-	uint32_t *actL)
+uint8_t *get_real_address0(uint32_t L, bool WritableMem, CPTR addr,
+						   uint32_t *actL)
 {
 	uint32_t bankleft;
-	uint8_t * p;
+	uint8_t *p;
 	ATTep q;
 
 	q = get_address_realblock1(WritableMem, addr);
-	if (nullptr == q) {
+	if (nullptr == q)
+	{
 		*actL = 0;
 		p = nullptr;
-	} else {
-		uint32_t m2 = q->usemask & ~ q->cmpmask;
-		uint32_t m3 = m2 & ~ (m2 + 1);
+	}
+	else
+	{
+		uint32_t m2 = q->usemask & ~q->cmpmask;
+		uint32_t m3 = m2 & ~(m2 + 1);
 		p = q->usebase + (addr & q->usemask);
 		bankleft = (m3 + 1) - (addr & m3);
-		if (bankleft >= L) {
+		if (bankleft >= L)
+		{
 			/* this block is big enough (by far the most common case) */
 			*actL = L;
-		} else {
+		}
+		else
+		{
 			*actL = bankleft;
 		}
 	}
@@ -1267,11 +1397,12 @@ Label_Retry:
 	return p;
 }
 
- bool InterruptButton = false;
+bool InterruptButton = false;
 
 void SetInterruptButton(bool v)
 {
-	if (InterruptButton != v) {
+	if (InterruptButton != v)
+	{
 		InterruptButton = v;
 		VIAorSCCinterruptChngNtfy();
 	}
@@ -1284,35 +1415,43 @@ void VIAorSCCinterruptChngNtfy(void)
 #if (CurEmMd == kEmMd_II) || (CurEmMd == kEmMd_IIx)
 	uint8_t NewIPL;
 
-	if (InterruptButton) {
+	if (InterruptButton)
+	{
 		NewIPL = 7;
-	} else if (SCCInterruptRequest) {
+	}
+	else if (SCCInterruptRequest)
+	{
 		NewIPL = 4;
-	} else if (VIA2_InterruptRequest) {
+	}
+	else if (VIA2_InterruptRequest)
+	{
 		NewIPL = 2;
-	} else if (VIA1_InterruptRequest) {
+	}
+	else if (VIA1_InterruptRequest)
+	{
 		NewIPL = 1;
-	} else {
+	}
+	else
+	{
 		NewIPL = 0;
 	}
 #else
-	uint8_t VIAandNotSCC = VIA1_InterruptRequest
-		& ~ SCCInterruptRequest;
-	uint8_t NewIPL = VIAandNotSCC
-		| (SCCInterruptRequest << 1)
-		| (InterruptButton << 2);
+	uint8_t VIAandNotSCC = VIA1_InterruptRequest & ~SCCInterruptRequest;
+	uint8_t NewIPL = VIAandNotSCC | (SCCInterruptRequest << 1) | (InterruptButton << 2);
 #endif
-	if (NewIPL != CurIPL) {
+	if (NewIPL != CurIPL)
+	{
 		CurIPL = NewIPL;
 		m68k_IPLchangeNtfy();
 	}
 }
 
- bool AddrSpac_Init(void)
+bool AddrSpac_Init(void)
 {
 	int i;
 
-	for (i = 0; i < kNumWires; i++) {
+	for (i = 0; i < kNumWires; i++)
+	{
 		Wires[i] = 1;
 	}
 
@@ -1331,7 +1470,8 @@ void Memory_Reset(void)
 extern void PowerOff_ChangeNtfy(void);
 void PowerOff_ChangeNtfy(void)
 {
-	if (! VIA2_iB2) {
+	if (!VIA2_iB2)
+	{
 		ForceMacOff = true;
 	}
 }

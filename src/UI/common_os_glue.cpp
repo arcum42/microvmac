@@ -26,61 +26,10 @@
 #include "common_os_glue.h"
 #include "HW/SCREEN/screen.h"
 
- uint32_t CurMacDateInSeconds = 0;
-#if AutoLocation
- uint32_t CurMacLatitude = 0;
- uint32_t CurMacLongitude = 0;
-#endif
-#if AutoTimeZone
- uint32_t CurMacDelta = 0;
-#endif
-
- bool UseColorMode = false;
- bool ColorModeWorks = false;
-
- bool ColorMappingChanged = false;
-
- uint16_t CLUT_reds[CLUT_size];
- uint16_t CLUT_greens[CLUT_size];
- uint16_t CLUT_blues[CLUT_size];
-
- bool RequestMacOff = false;
- bool ForceMacOff = false;
- bool WantMacInterrupt = false;
- bool WantMacReset = false;
-
- uint8_t SpeedValue = WantInitSpeedValue;
- uint16_t CurMouseV = 0;
- uint16_t CurMouseH = 0;
-
-#if WantColorTransValid
-static bool ColorTransValid = false;
-#endif
-
- bool EmVideoDisable = false;
- uint32_t OnTrueTime = 0;
- 
- int16_t ScreenChangedTop, ScreenChangedLeft, ScreenChangedBottom, ScreenChangedRight;
-
-void ScreenClearChanges(void)
-{
-	ScreenChangedTop = vMacScreenHeight;
-	ScreenChangedBottom = 0;
-	ScreenChangedLeft = vMacScreenWidth;
-	ScreenChangedRight = 0;
-}
-
-void ScreenChangedAll(void)
-{
-	ScreenChangedTop = 0;
-	ScreenChangedBottom = vMacScreenHeight;
-	ScreenChangedLeft = 0;
-	ScreenChangedRight = vMacScreenWidth;
-}
-
-#if MayFullScreen
- uint16_t ViewHSize, ViewVSize, ViewHStart = 0, ViewVStart = 0;
-#endif
+bool RequestMacOff = false;
+bool ForceMacOff = false;
+bool WantMacInterrupt = false;
+bool WantMacReset = false;
 
 /* --- sending debugging info to file --- */
 
@@ -91,14 +40,15 @@ static char *dbglog_bufp = nullptr;
 
 static void dbglog_ReserveAlloc(void)
 {
-	ReserveAllocOneBlock((uint8_t * *)&dbglog_bufp, dbglog_bufsz,
-		5, false);
+	ReserveAllocOneBlock((uint8_t **)&dbglog_bufp, dbglog_bufsz,
+						 5, false);
 }
 
 static void dbglog_close(void)
 {
 	uimr n = ModPow2(dbglog_bufpos, dbglog_buflnsz);
-	if (n != 0) {
+	if (n != 0)
+	{
 		dbglog_write0(dbglog_bufp, n);
 	}
 
@@ -116,7 +66,8 @@ static void dbglog_write(char *p, uimr L)
 label_retry:
 	curbufdiv = FloorDivPow2(dbglog_bufpos, dbglog_buflnsz);
 	bufposmod = ModPow2(dbglog_bufpos, dbglog_buflnsz);
-	if (newbufdiv != curbufdiv) {
+	if (newbufdiv != curbufdiv)
+	{
 		r = dbglog_bufsz - bufposmod;
 		MoveBytes((anyp)p, (anyp)(dbglog_bufp + bufposmod), r);
 		dbglog_write0(dbglog_bufp, dbglog_bufsz);
@@ -133,7 +84,8 @@ static uimr CStrLength(char *s)
 {
 	char *p = s;
 
-	while (*p++ != 0) {
+	while (*p++ != 0)
+	{
 	}
 	return p - s - 1;
 }
@@ -157,11 +109,15 @@ void dbglog_writeHex(uimr x)
 	char *p = s + 16;
 	uimr n = 0;
 
-	do {
+	do
+	{
 		v = x & 0x0F;
-		if (v < 10) {
+		if (v < 10)
+		{
 			*--p = '0' + v;
-		} else {
+		}
+		else
+		{
 			*--p = 'A' + v - 10;
 		}
 		x >>= 4;
@@ -179,7 +135,8 @@ void dbglog_writeNum(uimr x)
 	char *p = s + 16;
 	uimr n = 0;
 
-	do {
+	do
+	{
 		newx = x / (uimr)10;
 		*--p = '0' + (x - newx * 10);
 		x = newx;
@@ -194,9 +151,12 @@ void dbglog_writeMacChar(uint8_t x)
 {
 	char s;
 
-	if ((x > 32) && (x < 127)) {
+	if ((x > 32) && (x < 127))
+	{
 		s = x;
-	} else {
+	}
+	else
+	{
 		s = '?';
 	}
 
@@ -208,46 +168,4 @@ static void dbglog_writeSpace(void)
 	dbglog_writeCStr(" ");
 }
 
-#endif
-
-/* MacMsg */
-
- char *SavedBriefMsg = nullptr;
- char *SavedLongMsg = nullptr;
-
-#if WantAbnormalReports
- uint16_t SavedIDMsg = 0;
-#endif
-
- bool SavedFatalMsg = false;
-
-void MacMsg(char *briefMsg, char *longMsg, bool fatal)
-{
-	if (nullptr != SavedBriefMsg) {
-		/*
-			ignore the new message, only display the
-			first error.
-		*/
-	} else {
-		SavedBriefMsg = briefMsg;
-		SavedLongMsg = longMsg;
-		SavedFatalMsg = fatal;
-	}
-}
-
-#if WantAbnormalReports
-void WarnMsgAbnormalID(uint16_t id)
-{
-	MacMsg(kStrReportAbnormalTitle,
-		kStrReportAbnormalMessage, false);
-
-	if (0 != SavedIDMsg) {
-		/*
-			ignore the new message, only display the
-			first error.
-		*/
-	} else {
-		SavedIDMsg = id;
-	}
-}
 #endif

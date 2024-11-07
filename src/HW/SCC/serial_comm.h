@@ -16,8 +16,25 @@
 
 #pragma once
 
+#include "sys_dependencies.h"
+
 #ifndef SCCEMDEV_H
 #define SCCEMDEV_H
+
+#if EmLocalTalk
+
+#define LT_TxBfMxSz 1024
+extern uint8_t * LT_TxBuffer;
+extern uint16_t LT_TxBuffSz;
+
+extern void LT_TransmitPacket(void);
+
+extern uint8_t * LT_RxBuffer;
+extern uint32_t LT_RxBuffSz;
+
+extern void LT_ReceivePacket(void);
+
+#endif
 
 extern void SCC_Reset(void);
 

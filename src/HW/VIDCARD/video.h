@@ -25,4 +25,11 @@ extern void Vid_Update(void);
 
 extern void ExtnVideo_Access(CPTR p);
 
+//#define CLUT_size (1 << (1 << vMacScreenDepth))
+#define CLUT_size 256 // total guesstimate
+
+extern uint16_t CLUT_reds[CLUT_size];
+extern uint16_t CLUT_greens[CLUT_size];
+extern uint16_t CLUT_blues[CLUT_size];
+
 #endif

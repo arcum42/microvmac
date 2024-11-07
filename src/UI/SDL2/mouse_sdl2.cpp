@@ -12,6 +12,11 @@
  
 /* --- mouse --- */
 
+#if MayFullScreen
+extern int hOffset;
+extern int vOffset;
+#endif
+
 /* cursor hiding */
 
 bool HaveCursorHidden = false;

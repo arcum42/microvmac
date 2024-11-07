@@ -12,7 +12,7 @@ extern void put_vm_long(CPTR addr, uint32_t l);
 #if IncludePbufs
 uint32_t PbufAllocatedMask;
 uint32_t PbufSize[NumPbufs];
-static void* PbufDat[NumPbufs];
+static void *PbufDat[NumPbufs];
 
 bool PbufIsAllocated(tPbuf i)
 {

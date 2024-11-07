@@ -60,29 +60,12 @@ extern MacErr_t HTCEimport(tPbuf *r);
 #endif
 
 extern uint32_t OnTrueTime;
-
 extern uint32_t CurMacDateInSeconds;
-#if AutoLocation
-extern uint32_t CurMacLatitude;
-extern uint32_t CurMacLongitude;
-#endif
-#if AutoTimeZone
-extern uint32_t CurMacDelta;
-	/* (dlsDelta << 24) | (gmtDelta & 0x00FFFFFF) */
-#endif
-
 
 extern bool UseColorMode;
 extern bool ColorModeWorks;
 
 extern bool ColorMappingChanged;
-
-//#define CLUT_size (1 << (1 << vMacScreenDepth))
-#define CLUT_size 256 // total guesstimate
-
-extern uint16_t CLUT_reds[CLUT_size];
-extern uint16_t CLUT_greens[CLUT_size];
-extern uint16_t CLUT_blues[CLUT_size];
 
 extern void Screen_OutputFrame(uint8_t * screencurrentbuff);
 extern void DoneWithDrawingForTick(void);
@@ -94,27 +77,6 @@ extern bool WantMacInterrupt;
 extern bool WantMacReset;
 
 extern bool ExtraTimeNotOver(void);
-
-extern uint8_t SpeedValue;
-
-/* where emulated machine thinks mouse is */
-extern uint16_t CurMouseV;
-extern uint16_t CurMouseH;
-
-#if EmLocalTalk
-
-#define LT_TxBfMxSz 1024
-extern uint8_t * LT_TxBuffer;
-extern uint16_t LT_TxBuffSz;
-
-extern void LT_TransmitPacket(void);
-
-extern uint8_t * LT_RxBuffer;
-extern uint32_t LT_RxBuffSz;
-
-extern void LT_ReceivePacket(void);
-
-#endif
 
 /*** Might be SDL2-specific? ***/
 // INTL.c

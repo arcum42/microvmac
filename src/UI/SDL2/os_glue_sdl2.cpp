@@ -25,19 +25,19 @@
 #include <string.h>
 #include <stdio.h>
 #include <SDL.h>
+
 #include "CNFGRAPI.h"
-#include "sys_dependencies.h"
-#include "UTIL/endian.h"
-#include "UI/my_os_glue.h"
 #include "STRCONST.h"
+#include "sys_dependencies.h"
+#include "config_manage.h"
+
+#include "UI/my_os_glue.h"
 #include "os_glue_sdl2.h"
+
+#include "UTIL/endian.h"
 #include "LANG/intl_chars.h"
 #include "HW/SCREEN/screen.h"
 #include "HW/ROM/rom.h"
-#include "config_manage.h"
-#include "imgui_impl_sdl2.h"
-#include "imgui_impl_sdlrenderer2.h"
-#include "imgui.h"
 
 extern bool ReCreateMainWindow();
 extern void ZapWinStateVars();
@@ -45,11 +45,6 @@ extern bool CreateMainWindow();
 extern void CloseMainWindow();
 extern bool SDL_InitDisplay();
 
-#if MayFullScreen
-extern bool GrabMachine;
-extern void GrabTheMachine();
-extern void UngrabMachine();
-#endif
 /* --- some simple utilities --- */
 
 void MoveBytes(anyp srcPtr, anyp destPtr, int32_t byteCount)
@@ -59,13 +54,59 @@ void MoveBytes(anyp srcPtr, anyp destPtr, int32_t byteCount)
 
 /* --- information about the environment --- */
 
-#define WantColorTransValid 0
-
 #include "UI/common_os_glue.h"
 #include "UTIL/param_buffers.h"
 #include "UI/control_mode.h"
 
 /* --- basic dialogs --- */
+
+/* MacMsg */
+
+char *SavedBriefMsg = nullptr;
+char *SavedLongMsg = nullptr;
+
+#if WantAbnormalReports
+uint16_t SavedIDMsg = 0;
+#endif
+
+bool SavedFatalMsg = false;
+
+void MacMsg(char *briefMsg, char *longMsg, bool fatal)
+{
+	if (nullptr != SavedBriefMsg)
+	{
+		/*
+			ignore the new message, only display the
+			first error.
+		*/
+	}
+	else
+	{
+		SavedBriefMsg = briefMsg;
+		SavedLongMsg = longMsg;
+		SavedFatalMsg = fatal;
+	}
+}
+
+#if WantAbnormalReports
+void WarnMsgAbnormalID(uint16_t id)
+{
+	MacMsg(kStrReportAbnormalTitle,
+		   kStrReportAbnormalMessage, false);
+
+	if (0 != SavedIDMsg)
+	{
+		/*
+			ignore the new message, only display the
+			first error.
+		*/
+	}
+	else
+	{
+		SavedIDMsg = id;
+	}
+}
+#endif
 
 static void CheckSavedMacMsg(void)
 {

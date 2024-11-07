@@ -14,8 +14,6 @@
 #endif
 
 // common os glue
-extern uint32_t OnTrueTime;
-extern uint8_t SpeedValue;
 extern void DoneWithDrawingForTick(void);
 
 extern bool WantMacInterrupt;
@@ -34,6 +32,11 @@ extern void InterruptReset_Update(void);
 static uint16_t SubTickCounter = 0;
 static uint32_t ExtraSubTicksToDo = 0;
 
+uint8_t SpeedValue = WantInitSpeedValue;
+
+// The time slice we are currently dealing with,
+// in the same units as TrueEmulatedTime.
+uint32_t OnTrueTime = 0;
 uint32_t QuietTime = 0;
 uint32_t QuietSubTicks = 0;
 

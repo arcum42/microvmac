@@ -12,6 +12,7 @@
 #include "STRCONST.h"
 #include "os_glue_sdl2.h"
 #include "HW/SCREEN/screen.h"
+#include "video_sdl2.h"
 
 /* --- video out --- */
 
@@ -35,6 +36,7 @@ uint8_t *ScalingBuff = nullptr;
 
 SDL_Color bwpalette[2];
 bool bwpalette_loaded = false;
+bool EmVideoDisable = false;
 
 /* --- main window creation and disposal --- */
 

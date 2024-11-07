@@ -36,7 +36,39 @@
 #include "video.h"
 #include "HW/SCREEN/screen.h"
 
+
+int16_t ScreenChangedTop, ScreenChangedLeft, ScreenChangedBottom, ScreenChangedRight;
+
+void ScreenClearChanges(void)
+{
+	ScreenChangedTop = vMacScreenHeight;
+	ScreenChangedBottom = 0;
+	ScreenChangedLeft = vMacScreenWidth;
+	ScreenChangedRight = 0;
+}
+
+void ScreenChangedAll(void)
+{
+	ScreenChangedTop = 0;
+	ScreenChangedBottom = vMacScreenHeight;
+	ScreenChangedLeft = 0;
+	ScreenChangedRight = vMacScreenWidth;
+}
+
+#if MayFullScreen
+uint16_t ViewHSize, ViewVSize, ViewHStart = 0, ViewVStart = 0;
+#endif
+
 #if EmVidCard
+
+bool UseColorMode = false;
+bool ColorModeWorks = false;
+
+bool ColorMappingChanged = false;
+
+uint16_t CLUT_reds[CLUT_size];
+uint16_t CLUT_greens[CLUT_size];
+uint16_t CLUT_blues[CLUT_size];
 
 /*
 	ReportAbnormalID unused 0x0A08 - 0x0AFF

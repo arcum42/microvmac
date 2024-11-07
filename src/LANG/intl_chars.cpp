@@ -37,6 +37,8 @@
 #include "LANG/intl_chars.h"
 #include "STRCONST.h"
 
+extern uint8_t SpeedValue;
+
 const uint8_t CellData[] = {
 	/* kCellUpA 101 0x41 0x0041 'A' 'A' A */
 	0x00, 0x00, 0x00, 0x3C, 0x42, 0x42, 0x42, 0x7E,
