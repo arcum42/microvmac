@@ -177,7 +177,7 @@ void Kybd_DataLineChngNtfy(void)
 #ifdef _VIA_Debug
 				fprintf(stderr, "posting kICT_Kybd_ReceiveCommand\n");
 #endif
-				ICT_add(kICT_Kybd_ReceiveCommand,
+				ICT::add(kICT_Kybd_ReceiveCommand,
 					6800UL * kCycleScale / 64 * ClockMult);
 
 				if (InquiryCommandTimer != 0) {
@@ -192,7 +192,7 @@ void Kybd_DataLineChngNtfy(void)
 				fprintf(stderr,
 					"posting kICT_Kybd_ReceiveEndCommand\n");
 #endif
-				ICT_add(kICT_Kybd_ReceiveEndCommand,
+				ICT::add(kICT_Kybd_ReceiveEndCommand,
 					6800UL * kCycleScale / 64 * ClockMult);
 			}
 			break;

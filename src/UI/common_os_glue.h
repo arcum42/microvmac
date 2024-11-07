@@ -137,7 +137,6 @@ extern uint8_t * screencomparebuff;
 #endif
 
 extern bool EmVideoDisable;
-extern int8_t EmLagTime;
 // The time slice we are currently dealing with,
 // in the same units as TrueEmulatedTime.
 extern uint32_t OnTrueTime;

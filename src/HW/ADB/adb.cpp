@@ -160,9 +160,9 @@ void ADBstate_ChangeNtfy(void)
 {
 #ifdef _VIA_Debug
 	fprintf(stderr, "ADBstate_ChangeNtfy: %d, %d, %d\n",
-		ADB_st1, ADB_st0, GetCuriCount());
+		ADB_st1, ADB_st0, ICT::GetCuriCount());
 #endif
-	ICT_add(kICT_ADB_NewState,
+	ICT::add(kICT_ADB_NewState,
 		348160UL * kCycleScale / 64 * ClockMult);
 		/*
 			Macintosh Family Hardware Reference say device "must respond

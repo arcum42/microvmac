@@ -327,7 +327,7 @@ static void PmuCheckCommandCompletion(void)
 			}
 			PMU_i = 0;
 			PMU_Sending = true;
-			ICT_add(kICT_PMU_Task,
+			ICT::add(kICT_PMU_Task,
 				20400UL * kCycleScale / 64 * ClockMult);
 		}
 	}
@@ -396,7 +396,7 @@ void PmuToReady_ChangeNtfy(void)
 				PMU_SendNext = PMU_BuffL;
 				PMUState = kPMUStateSendBuffer;
 				PMU_Sending = true;
-				ICT_add(kICT_PMU_Task,
+				ICT::add(kICT_PMU_Task,
 					20400UL * kCycleScale / 64 * ClockMult);
 			}
 			break;
@@ -421,7 +421,7 @@ void PmuToReady_ChangeNtfy(void)
 					--PMU_rem;
 					++PMU_i;
 					PMU_Sending = true;
-					ICT_add(kICT_PMU_Task,
+					ICT::add(kICT_PMU_Task,
 						20400UL * kCycleScale / 64 * ClockMult);
 				}
 			}

@@ -623,7 +623,7 @@ void VIA1_DoTimer1Check(void)
 {
 	if (VIA1_T1Running)
 	{
-		iCountt NewTime = GetCuriCount();
+		iCountt NewTime = ICT::GetCuriCount();
 		iCountt deltaTime = (NewTime - VIA1_T1LastTime);
 		if (deltaTime != 0)
 		{
@@ -685,7 +685,7 @@ void VIA1_DoTimer1Check(void)
 				uint32_t NewTimer;
 #ifdef _VIA_Debug
 				fprintf(stderr, "posting Timer1Check, %d, %d\n",
-						Temp, GetCuriCount());
+						Temp, ICT::GetCuriCount());
 #endif
 				if (NewTemp == 0)
 				{
@@ -696,7 +696,7 @@ void VIA1_DoTimer1Check(void)
 					NewTimer =
 						(1 + (NewTemp >> (16 - kLn2CycleScale))) * CyclesPerViaTime;
 				}
-				ICT_add(kICT_VIA1_Timer1Check, NewTimer);
+				ICT::add(kICT_VIA1_Timer1Check, NewTimer);
 				VIA1_D.T1IntReady = true;
 			}
 		}
@@ -751,7 +751,7 @@ void VIA1_DoTimer2Check(void)
 {
 	if (VIA1_T2Running)
 	{
-		iCountt NewTime = GetCuriCount();
+		iCountt NewTime = ICT::GetCuriCount();
 		uint32_t Temp = VIA1_D.Ty.T2C_F; /* Get Timer 2 Counter */
 		iCountt deltaTime = (NewTime - VIA1_T2LastTime);
 		uint32_t deltaTemp = (deltaTime / CyclesPerViaTime)
@@ -773,7 +773,7 @@ void VIA1_DoTimer2Check(void)
 				uint32_t NewTimer;
 #ifdef _VIA_Debug
 				fprintf(stderr, "posting Timer2Check, %d, %d\n",
-						Temp, GetCuriCount());
+						Temp, ICT::GetCuriCount());
 #endif
 				if (NewTemp == 0)
 				{
@@ -783,7 +783,7 @@ void VIA1_DoTimer2Check(void)
 				{
 					NewTimer = (1 + (NewTemp >> (16 - kLn2CycleScale))) * CyclesPerViaTime;
 				}
-				ICT_add(kICT_VIA1_Timer2Check, NewTimer);
+				ICT::add(kICT_VIA1_Timer2Check, NewTimer);
 			}
 		}
 		VIA1_D.Ty.T2C_F = NewTemp;
@@ -867,7 +867,7 @@ uint32_t VIA1_Access(uint32_t Data, bool WriteMem, CPTR addr)
 			{
 				VIA1_D.T1_Active = 1;
 			}
-			VIA1_T1LastTime = GetCuriCount();
+			VIA1_T1LastTime = ICT::GetCuriCount();
 			VIA1_DoTimer1Check();
 		}
 		else
@@ -938,7 +938,7 @@ uint32_t VIA1_Access(uint32_t Data, bool WriteMem, CPTR addr)
 					in this case don't let timer pause.
 				*/
 			}
-			VIA1_T2LastTime = GetCuriCount();
+			VIA1_T2LastTime = ICT::GetCuriCount();
 			VIA1_DoTimer2Check();
 		}
 		else
@@ -1200,13 +1200,13 @@ void VIA1_ExtraTimeEnd(void)
 	if (!VIA1_T1Running)
 	{
 		VIA1_T1Running = true;
-		VIA1_T1LastTime = GetCuriCount();
+		VIA1_T1LastTime = ICT::GetCuriCount();
 		VIA1_DoTimer1Check();
 	}
 	if (!VIA1_T2Running)
 	{
 		VIA1_T2Running = true;
-		VIA1_T2LastTime = GetCuriCount();
+		VIA1_T2LastTime = ICT::GetCuriCount();
 		VIA1_DoTimer2Check();
 	}
 }

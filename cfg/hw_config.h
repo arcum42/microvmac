@@ -63,7 +63,7 @@
 #define IncludeVidMem 0
 #define EmVidCard 0
 
-#define ClockMult 1
+constexpr uint32_t ClockMult = 1;
 
 #define WantCycByPriOp 1
 #define WantCloserCyc 0

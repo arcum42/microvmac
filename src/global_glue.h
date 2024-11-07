@@ -22,6 +22,7 @@
 #include "CNFGRAPI.h"
 #include "sys_dependencies.h"
 #include "UTIL/dbglog.h"
+#include "ticks.h"
 
 // various globals
 extern bool SpeedStopped;
@@ -112,47 +113,17 @@ extern void VIAorSCCinterruptChngNtfy(void);
 extern bool InterruptButton;
 extern void SetInterruptButton(bool v);
 
-enum {
-	kICT_SubTick,
-#if EmClassicKbrd
-	kICT_Kybd_ReceiveCommand,
-	kICT_Kybd_ReceiveEndCommand,
-#endif
-#if EmADB
-	kICT_ADB_NewState,
-#endif
-#if EmPMU
-	kICT_PMU_Task,
-#endif
-	kICT_VIA1_Timer1Check,
-	kICT_VIA1_Timer2Check,
-#if EmVIA2
-	kICT_VIA2_Timer1Check,
-	kICT_VIA2_Timer2Check,
-#endif
-
-	kNumICTs
-};
-
-extern void ICT_add(int taskid, uint32_t n);
-
-#define iCountt uint32_t
-extern iCountt GetCuriCount(void);
-extern void ICT_Zap(void);
-
-extern uimr ICTactive;
-extern iCountt ICTwhen[kNumICTs];
-extern iCountt NextiCount;
-
 constexpr uint32_t kLn2CycleScale = 6;
+constexpr uint32_t kNumSubTicks = 16;
 constexpr uint32_t kCycleScale = (1 << kLn2CycleScale);
+
+constexpr uint32_t CyclesScaledPerTick = (130240UL * ClockMult * kCycleScale);
+constexpr uint32_t CyclesScaledPerSubTick = (CyclesScaledPerTick / kNumSubTicks);
 
 #if WantCycByPriOp
 constexpr uint32_t RdAvgXtraCyc = /* 0 */ (kCycleScale + kCycleScale / 4);
 constexpr uint32_t WrAvgXtraCyc = /* 0 */ (kCycleScale + kCycleScale / 4);
 #endif
-
-constexpr uint32_t kNumSubTicks = 16;
 
 
 #define HaveMasterEvtQLock EmClassicKbrd

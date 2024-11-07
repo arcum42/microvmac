@@ -69,9 +69,6 @@
  uint16_t CurMouseV = 0;
  uint16_t CurMouseH = 0;
 
- uint32_t QuietTime = 0;
- uint32_t QuietSubTicks = 0;
-
 #if IncludePbufs
  uint32_t PbufAllocatedMask;
  uint32_t PbufSize[NumPbufs];
@@ -174,7 +171,6 @@ static bool ColorTransValid = false;
 #endif
 
  bool EmVideoDisable = false;
- int8_t EmLagTime = 0;
  uint32_t OnTrueTime = 0;
  
  int16_t ScreenChangedTop, ScreenChangedLeft, ScreenChangedBottom, ScreenChangedRight;

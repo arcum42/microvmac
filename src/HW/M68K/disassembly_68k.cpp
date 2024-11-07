@@ -2838,7 +2838,7 @@ static uint32_t SavedPCsOut = 0;
 static void DisasmOneAndBack(uint32_t pc)
 {
 #if DisasmIncludeCycles
-	dbglog_writeHex(GetCuriCount());
+	dbglog_writeHex(ICT::GetCuriCount());
 	dbglog_writeCStr(" ");
 #endif
 	dbglog_writeHex(pc);
@@ -2869,7 +2869,7 @@ static void DisasmSavedPCs(void)
 			*/
 
 #if DisasmIncludeCycles
-		i = GetCuriCount();
+		i = ICT::GetCuriCount();
 #endif
 
 		if (n > NumSavedPCs) {

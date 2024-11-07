@@ -134,9 +134,6 @@ extern uint16_t CLUT_reds[CLUT_size];
 extern uint16_t CLUT_greens[CLUT_size];
 extern uint16_t CLUT_blues[CLUT_size];
 
-extern bool EmVideoDisable;
-extern int8_t EmLagTime;
-
 extern void Screen_OutputFrame(uint8_t * screencurrentbuff);
 extern void DoneWithDrawingForTick(void);
 

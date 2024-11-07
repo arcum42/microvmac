@@ -74,9 +74,6 @@ extern void m68k_IPLchangeNtfy(void);
 extern void MINEM68K_Init(
 	uint8_t *fIPL);
 
-extern uint32_t GetCyclesRemaining(void);
-extern void SetCyclesRemaining(int32_t n);
-
 extern void SetHeadATTel(ATTep p);
 extern ATTep FindATTel(CPTR addr);
 
@@ -1516,48 +1513,4 @@ void PowerOff_ChangeNtfy(void)
 	}
 
 	return false;
-}
-
-/* task management */
-
-#ifdef _VIA_Debug
-#include <stdio.h>
-#endif
-
- uimr ICTactive;
- iCountt ICTwhen[kNumICTs];
-
-void ICT_Zap(void)
-{
-	ICTactive = 0;
-}
-
-static void InsertICT(int taskid, iCountt when)
-{
-	ICTwhen[taskid] = when;
-	ICTactive |= (1 << taskid);
-}
-
- iCountt NextiCount = 0;
-
- iCountt GetCuriCount(void)
-{
-	return NextiCount - GetCyclesRemaining();
-}
-
-void ICT_add(int taskid, uint32_t n)
-{
-	/* n must be > 0 */
-	int32_t x = GetCyclesRemaining();
-	uint32_t when = NextiCount - x + n;
-
-#ifdef _VIA_Debug
-	fprintf(stderr, "ICT_add: %d, %d, %d\n", when, taskid, n);
-#endif
-	InsertICT(taskid, when);
-
-	if (x > (int32_t)n) {
-		SetCyclesRemaining((int32_t)n);
-		NextiCount = when;
-	}
 }

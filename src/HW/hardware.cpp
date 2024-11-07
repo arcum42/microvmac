@@ -93,7 +93,7 @@ const DevMethods_t memory_device =
 const DevMethods_t ict_device = 
 {
 	.init = nullptr,
-	.reset = ICT_Zap,
+	.reset = ICT::zap,
 	.starttick = nullptr,
 	.endtick = nullptr,
 	.subtick = nullptr,
