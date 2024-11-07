@@ -15,74 +15,31 @@
 */
 
 /*
-	PROGram MAIN.
+	The main program.
 */
 
-#include <string.h>
-#include <assert.h>
 #include "sys_dependencies.h"
-
-#include "UI/my_os_glue.h"
-#include "global_glue.h"
 #include "HW/hardware.h"
 
-#include "mac_main.h"
-
-static void EmulatedHardwareZap(void)
-{
-	devices_reset();
-}
-
-static void DoMacReset(void)
-{
-	Sony_EjectAllDisks();
-	EmulatedHardwareZap();
-}
-
-void InterruptReset_Update(void)
-{
-	SetInterruptButton(false); // don't keep held over 1/60 sec
-
-	if (WantMacInterrupt) {
-		SetInterruptButton(true);
-		WantMacInterrupt = false;
-	}
-	if (WantMacReset) {
-		DoMacReset();
-		WantMacReset = false;
-	}
-}
-
-void EmulationReserveAlloc(void)
-{
-	ReserveAllocOneBlock(&RAM, kRAM_Size + RAMSafetyMarginFudge, 5, false);
-#if EmVidCard
-		ReserveAllocOneBlock(&VidROM, kVidROM_Size, 5, false);
-#endif
-#if IncludeVidMem
-	ReserveAllocOneBlock(&VidMem, kVidMemRAM_Size + RAMSafetyMarginFudge, 5, true);
-#endif
-#if SmallGlobals
-	MINEM68K_ReserveAlloc();
-#endif
-}
-
-static bool InitEmulation(void)
-{
-	devices_init();
-
-	EmulatedHardwareZap();
-	return true;
-}
-
+// os glue sdl2
 extern void MainEventLoop(void);
+extern void ZapOSGLUVars(void);
+extern bool InitOSGLU(void);
+extern void UnInitOSGLU(void);
 
-void ProgramMain(void)
+int main(int argc, char **argv)
 {
-	/* Let's get ready to start */
-	devices_setup();
-	spdlog::debug("Welcome to spdlog!");
-	
-	if (InitEmulation() == false) {return;}
-	MainEventLoop();
+	ZapOSGLUVars();
+	if (InitOSGLU())
+	{
+		/* Let's get ready to start */
+		devices_setup();
+		spdlog::debug("Spdlog initialized.");
+
+		devices_init();
+		MainEventLoop();
+	}
+	UnInitOSGLU();
+
+	return 0;
 }

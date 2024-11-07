@@ -172,8 +172,8 @@ extern uint16_t ViewVStart;
 
 extern uimr ReserveAllocOffset;
 extern uint8_t * ReserveAllocBigBlock;
-void ReserveAllocOneBlock(uint8_t * *p, uimr n,
-	uint8_t align, bool FillOnes);
+extern void ReserveAllocOneBlock(uint8_t * *p, uimr n, uint8_t align, bool FillOnes);
+extern void EmulationReserveAlloc(void);
 
 /* --- sending debugging info to file --- */
 

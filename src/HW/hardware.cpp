@@ -341,7 +341,8 @@ void devices_init(void)
 {
 	for(auto &device : DEVICES) {
 		if (device.init != nullptr) { device.init(); }
-	} 
+	}
+	devices_reset();
 }
 
 void devices_reset(void) 

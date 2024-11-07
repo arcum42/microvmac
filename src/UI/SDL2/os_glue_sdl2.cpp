@@ -420,9 +420,7 @@ label_retry:
 
 /* --- platform independent code can be thought of as going here --- */
 
-#include "mac_main.h"
-
-static void ZapOSGLUVars(void)
+void ZapOSGLUVars(void)
 {
 	InitDrives();
 	ZapWinStateVars();
@@ -503,7 +501,7 @@ static void UninitWhereAmI(void)
 }
 #endif
 
-static bool InitOSGLU(void)
+bool InitOSGLU(void)
 {
 	if (Config_TryInit())
 	if (AllocMemory())
@@ -529,7 +527,7 @@ static bool InitOSGLU(void)
 	return false;
 }
 
-static void UnInitOSGLU(void)
+void UnInitOSGLU(void)
 {
 	RestoreKeyRepeat();
 #if MayFullScreen
@@ -562,18 +560,4 @@ static void UnInitOSGLU(void)
 	CloseMainWindow();
 
 	SDL_Quit();
-}
-
-int main(int argc, char **argv)
-{
-	argc = argc;
-	argv = argv;
-
-	ZapOSGLUVars();
-	if (InitOSGLU()) {
-		ProgramMain();
-	}
-	UnInitOSGLU();
-
-	return 0;
 }

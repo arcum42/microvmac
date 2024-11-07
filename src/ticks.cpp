@@ -14,11 +14,14 @@
 #endif
 
 // common os glue
-extern bool ForceMacOff;
 extern uint32_t OnTrueTime;
-extern bool EmVideoDisable;
 extern uint8_t SpeedValue;
 extern void DoneWithDrawingForTick(void);
+
+extern bool WantMacInterrupt;
+extern bool WantMacReset;
+extern bool ForceMacOff;
+extern bool EmVideoDisable;
 
 // my os glue
 extern bool ExtraTimeNotOver(void);
@@ -32,6 +35,23 @@ uint32_t QuietSubTicks = 0;
 //int8_t EmLagTime = 0;
 static uint16_t SubTickCounter = 0;
 static uint32_t ExtraSubTicksToDo = 0;
+
+void InterruptReset_Update(void)
+{
+	SetInterruptButton(false); // don't keep held over 1/60 sec
+
+	if (WantMacInterrupt)
+	{
+		SetInterruptButton(true);
+		WantMacInterrupt = false;
+	}
+	if (WantMacReset)
+	{
+		Sony_EjectAllDisks();
+		devices_reset();
+		WantMacReset = false;
+	}
+}
 
 void SubTickTaskStart(void)
 {
