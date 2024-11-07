@@ -47,8 +47,8 @@ uint8_t * CntrlDisplayBuff = nullptr;
 
 typedef void (*SpclModeBody) (void);
 
-#define Keyboard_UpdateKeyMap1 Keyboard_UpdateKeyMap
-#define DisconnectKeyCodes1 DisconnectKeyCodes
+//#define Keyboard_UpdateKeyMap1 Keyboard_UpdateKeyMap
+//#define DisconnectKeyCodes1 DisconnectKeyCodes
 
 void MacMsgOverride(const char *title, const char *msg)
 {

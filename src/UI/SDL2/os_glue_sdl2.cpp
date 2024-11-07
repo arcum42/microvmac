@@ -54,7 +54,7 @@ extern void UngrabMachine();
 
 void MoveBytes(anyp srcPtr, anyp destPtr, int32_t byteCount)
 {
-	(void) memcpy((char *)destPtr, (char *)srcPtr, byteCount);
+	(void)memcpy((char *)destPtr, (char *)srcPtr, byteCount);
 }
 
 /* --- information about the environment --- */
@@ -71,7 +71,8 @@ static void CheckSavedMacMsg(void)
 {
 	/* called only on quit, if error saved but not yet reported */
 
-	if (nullptr != SavedBriefMsg) {
+	if (nullptr != SavedBriefMsg)
+	{
 		char briefMsg0[ClStrMaxLength + 1];
 		char longMsg0[ClStrMaxLength + 1];
 
@@ -79,11 +80,10 @@ static void CheckSavedMacMsg(void)
 		NativeStrFromCStr(longMsg0, SavedLongMsg);
 
 		if (0 != SDL_ShowSimpleMessageBox(
-			SDL_MESSAGEBOX_ERROR,
-			SavedBriefMsg,
-			SavedLongMsg,
-			main_wind
-			))
+					 SDL_MESSAGEBOX_ERROR,
+					 SavedBriefMsg,
+					 SavedLongMsg,
+					 main_wind))
 		{
 			fprintf(stderr, "%s\n", briefMsg0);
 			fprintf(stderr, "%s\n", longMsg0);
@@ -103,94 +103,108 @@ static bool CaughtMouse = false;
 
 static void HandleTheEvent(SDL_Event *event)
 {
-	switch (event->type) {
-		case SDL_QUIT:
-			RequestMacOff = true;
+	switch (event->type)
+	{
+	case SDL_QUIT:
+		RequestMacOff = true;
+		break;
+	case SDL_WINDOWEVENT:
+		switch (event->window.event)
+		{
+		case SDL_WINDOWEVENT_FOCUS_GAINED:
+			gTrueBackgroundFlag = 0;
 			break;
-		case SDL_WINDOWEVENT:
-			switch (event->window.event) {
-				case SDL_WINDOWEVENT_FOCUS_GAINED:
-					gTrueBackgroundFlag = 0;
-					break;
-				case SDL_WINDOWEVENT_FOCUS_LOST:
-					gTrueBackgroundFlag = 1;
-					break;
-				case SDL_WINDOWEVENT_ENTER:
-					CaughtMouse = 1;
-					break;
-				case SDL_WINDOWEVENT_LEAVE:
-					CaughtMouse = 0;
-					break;
-			}
+		case SDL_WINDOWEVENT_FOCUS_LOST:
+			gTrueBackgroundFlag = 1;
 			break;
-		case SDL_MOUSEMOTION:
-#if EnableFSMouseMotion && ! HaveWorkingWarp
-			if (HaveMouseMotion) {
-				MousePositionNotifyRelative(
-					event->motion.xrel, event->motion.yrel);
-			} else
+		case SDL_WINDOWEVENT_ENTER:
+			CaughtMouse = 1;
+			break;
+		case SDL_WINDOWEVENT_LEAVE:
+			CaughtMouse = 0;
+			break;
+		}
+		break;
+	case SDL_MOUSEMOTION:
+#if EnableFSMouseMotion && !HaveWorkingWarp
+		if (HaveMouseMotion)
+		{
+			MousePositionNotifyRelative(
+				event->motion.xrel, event->motion.yrel);
+		}
+		else
 #endif
-			{
-				MousePositionNotify(
-					event->motion.x, event->motion.y);
-			}
-			break;
-		case SDL_MOUSEBUTTONDOWN:
-			/* any mouse button, we don't care which */
-#if EnableFSMouseMotion && ! HaveWorkingWarp
-			if (HaveMouseMotion) {
-				/* ignore position */
-			} else
+		{
+			MousePositionNotify(
+				event->motion.x, event->motion.y);
+		}
+		break;
+	case SDL_MOUSEBUTTONDOWN:
+		/* any mouse button, we don't care which */
+#if EnableFSMouseMotion && !HaveWorkingWarp
+		if (HaveMouseMotion)
+		{
+			/* ignore position */
+		}
+		else
 #endif
-			{
-				MousePositionNotify(
-					event->button.x, event->button.y);
-			}
-			MouseButtonSet(true);
-			break;
-		case SDL_MOUSEBUTTONUP:
-#if EnableFSMouseMotion && ! HaveWorkingWarp
-			if (HaveMouseMotion) {
-				/* ignore position */
-			} else
+		{
+			MousePositionNotify(
+				event->button.x, event->button.y);
+		}
+		MouseButtonSet(true);
+		break;
+	case SDL_MOUSEBUTTONUP:
+#if EnableFSMouseMotion && !HaveWorkingWarp
+		if (HaveMouseMotion)
+		{
+			/* ignore position */
+		}
+		else
 #endif
-			{
-				MousePositionNotify(
-					event->button.x, event->button.y);
-			}
-			MouseButtonSet(false);
-			break;
-		case SDL_KEYDOWN:
-			DoKeyCode(&event->key.keysym, true);
-			break;
-		case SDL_KEYUP:
-			DoKeyCode(&event->key.keysym, false);
-			break;
-		/*case SDL_MOUSEWHEEL:
-			if (event->wheel.x < 0) {
-				Keyboard_UpdateKeyMap2(MKC_Left, true);
-				Keyboard_UpdateKeyMap2(MKC_Left, false);
-			} else if (event->wheel.x > 0) {
-				Keyboard_UpdateKeyMap2(MKC_Right, true);
-				Keyboard_UpdateKeyMap2(MKC_Right, false);
-			}
-			if (event->wheel.y < 0) {
-				Keyboard_UpdateKeyMap2(MKC_Down, true);
-				Keyboard_UpdateKeyMap2(MKC_Down, false);
-			} else if(event->wheel.y > 0) {
-				Keyboard_UpdateKeyMap2(MKC_Up, true);
-				Keyboard_UpdateKeyMap2(MKC_Up, false);
-			}
-			break;*/
-		case SDL_DROPFILE:
-			{
-				char *s = event->drop.file;
+		{
+			MousePositionNotify(
+				event->button.x, event->button.y);
+		}
+		MouseButtonSet(false);
+		break;
+	case SDL_KEYDOWN:
+		DoKeyCode(&event->key.keysym, true);
+		break;
+	case SDL_KEYUP:
+		DoKeyCode(&event->key.keysym, false);
+		break;
+	case SDL_MOUSEWHEEL:
+		if (event->wheel.x < 0)
+		{
+			Keyboard_UpdateKeyMap(MKC_Left, true);
+			Keyboard_UpdateKeyMap(MKC_Left, false);
+		}
+		else if (event->wheel.x > 0)
+		{
+			Keyboard_UpdateKeyMap(MKC_Right, true);
+			Keyboard_UpdateKeyMap(MKC_Right, false);
+		}
+		if (event->wheel.y < 0)
+		{
+			Keyboard_UpdateKeyMap(MKC_Down, true);
+			Keyboard_UpdateKeyMap(MKC_Down, false);
+		}
+		else if (event->wheel.y > 0)
+		{
+			Keyboard_UpdateKeyMap(MKC_Up, true);
+			Keyboard_UpdateKeyMap(MKC_Up, false);
+		}
+		break;
+	case SDL_DROPFILE:
+	{
+		char *s = event->drop.file;
 
-				(void) Sony_Insert1a(s, false);
-				SDL_RaiseWindow(main_wind);
-				SDL_free(s);
-			}
-			break;
+		(void)Sony_Insert1a(s, false);
+		SDL_RaiseWindow(main_wind);
+		SDL_free(s);
+	}
+	break;
 #if 0
 		case Expose: /* SDL doesn't have an expose event */
 			int x0 = event->expose.x;
@@ -252,7 +266,8 @@ void EnterSpeedStopped(void)
 
 static void CheckForSavedTasks(void)
 {
-	if (EvtQ.NeedRecover) {
+	if (EvtQ.NeedRecover)
+	{
 		EvtQ.NeedRecover = false;
 
 		/* Attempt cleanup, EvtQ.NeedRecover may get set again */
@@ -260,30 +275,37 @@ static void CheckForSavedTasks(void)
 	}
 
 #if EnableFSMouseMotion && HaveWorkingWarp
-	if (HaveMouseMotion) {
+	if (HaveMouseMotion)
+	{
 		MouseConstrain();
 	}
 #endif
 
-	if (RequestMacOff) {
+	if (RequestMacOff)
+	{
 		RequestMacOff = false;
 		/*if (AnyDiskInserted()) {
 			MacMsgOverride(kStrQuitWarningTitle,
 				kStrQuitWarningMessage);
 		} else {*/
-			ForceMacOff = true;
+		ForceMacOff = true;
 		//}
 	}
 
-	if (ForceMacOff) {
+	if (ForceMacOff)
+	{
 		return;
 	}
 
-	if (gTrueBackgroundFlag != gBackgroundFlag) {
+	if (gTrueBackgroundFlag != gBackgroundFlag)
+	{
 		gBackgroundFlag = gTrueBackgroundFlag;
-		if (gTrueBackgroundFlag) {
+		if (gTrueBackgroundFlag)
+		{
 			EnterBackground();
-		} else {
+		}
+		else
+		{
 			LeaveBackground();
 		}
 	}
@@ -296,46 +318,46 @@ static void CheckForSavedTasks(void)
 		}*/
 
 #if EnableRecreateW
-	if (0
-		|| (UseMagnify != WantMagnify)
-		|| (UseFullScreen != WantFullScreen)
-		)
+	if (0 || (UseMagnify != WantMagnify) || (UseFullScreen != WantFullScreen))
 	{
-		(void) ReCreateMainWindow();
+		(void)ReCreateMainWindow();
 	}
 #endif
 
 #if MayFullScreen
-	if (GrabMachine != (
-		UseFullScreen &&
-		! (gTrueBackgroundFlag || CurSpeedStopped)))
+	if (GrabMachine != (UseFullScreen &&
+						!(gTrueBackgroundFlag || CurSpeedStopped)))
 	{
-		GrabMachine = ! GrabMachine;
-		if (GrabMachine) {
+		GrabMachine = !GrabMachine;
+		if (GrabMachine)
+		{
 			GrabTheMachine();
-		} else {
+		}
+		else
+		{
 			UngrabMachine();
 		}
 	}
 #endif
 
-	if (NeedWholeScreenDraw) {
+	if (NeedWholeScreenDraw)
+	{
 		NeedWholeScreenDraw = false;
 		ScreenChangedAll();
 	}
 
 #if NeedRequestIthDisk
-	if (0 != RequestIthDisk) {
+	if (0 != RequestIthDisk)
+	{
 		Sony_InsertIth(RequestIthDisk);
 		RequestIthDisk = 0;
 	}
 #endif
 
-	if (HaveCursorHidden != (WantCursorHidden
-		&& ! (gTrueBackgroundFlag || CurSpeedStopped)))
+	if (HaveCursorHidden != (WantCursorHidden && !(gTrueBackgroundFlag || CurSpeedStopped)))
 	{
-		HaveCursorHidden = ! HaveCursorHidden;
-		(void) SDL_ShowCursor(
+		HaveCursorHidden = !HaveCursorHidden;
+		(void)SDL_ShowCursor(
 			HaveCursorHidden ? SDL_DISABLE : SDL_ENABLE);
 	}
 }
@@ -360,7 +382,8 @@ static void WaitForTheNextEvent(void)
 {
 	SDL_Event event;
 
-	if (SDL_WaitEvent(&event)) {
+	if (SDL_WaitEvent(&event))
+	{
 		HandleTheEvent(&event);
 	}
 }
@@ -370,7 +393,8 @@ static void CheckForSystemEvents(void)
 	SDL_Event event;
 	int i = 10;
 
-	while ((--i >= 0) && SDL_PollEvent(&event)) {
+	while ((--i >= 0) && SDL_PollEvent(&event))
+	{
 		HandleTheEvent(&event);
 	}
 }
@@ -381,32 +405,36 @@ label_retry:
 	CheckForSystemEvents();
 	CheckForSavedTasks();
 
-	if (ForceMacOff) {
+	if (ForceMacOff)
+	{
 		return;
 	}
 
-	if (CurSpeedStopped) {
+	if (CurSpeedStopped)
+	{
 		DoneWithDrawingForTick();
 		WaitForTheNextEvent();
 		goto label_retry;
 	}
 
-	if (ExtraTimeNotOver()) {
-		(void) SDL_Delay(NextIntTime - LastTime);
+	if (ExtraTimeNotOver())
+	{
+		(void)SDL_Delay(NextIntTime - LastTime);
 		goto label_retry;
 	}
 
-	if (CheckDateTime()) {
+	if (CheckDateTime())
+	{
 #if SoundEnabled
 		Sound_SecondNotify();
 #endif
 	}
 
-	if ((! gBackgroundFlag)
+	if ((!gBackgroundFlag)
 #if UseMotionEvents
-		&& (! CaughtMouse)
+		&& (!CaughtMouse)
 #endif
-		)
+	)
 	{
 		CheckMouseState();
 	}
@@ -434,16 +462,16 @@ static void ReserveAllocAll(void)
 	ReserveAllocOneBlock(&ROM, kROM_Size, 5, false);
 
 	ReserveAllocOneBlock(&screencomparebuff,
-		vMacScreenNumBytes, 5, true);
+						 vMacScreenNumBytes, 5, true);
 #if UseControlKeys
 	ReserveAllocOneBlock(&CntrlDisplayBuff,
-		vMacScreenNumBytes, 5, false);
+						 vMacScreenNumBytes, 5, false);
 #endif
 
 	ReserveAllocOneBlock(&CLUT_final, CLUT_finalsz, 5, false);
 #if SoundEnabled
-	ReserveAllocOneBlock((uint8_t * *)&TheSoundBuffer,
-		dbhBufferSize, 5, false);
+	ReserveAllocOneBlock((uint8_t **)&TheSoundBuffer,
+						 dbhBufferSize, 5, false);
 #endif
 
 	EmulationReserveAlloc();
@@ -459,14 +487,20 @@ static bool AllocMemory(void)
 	ReserveAllocAll();
 	n = ReserveAllocOffset;
 	ReserveAllocBigBlock = (uint8_t *)calloc(1, n);
-	if (nullptr == ReserveAllocBigBlock) {
+	if (nullptr == ReserveAllocBigBlock)
+	{
 		MacMsg(kStrOutOfMemTitle, kStrOutOfMemMessage, true);
-	} else {
+	}
+	else
+	{
 		ReserveAllocOffset = 0;
 		ReserveAllocAll();
-		if (n != ReserveAllocOffset) {
+		if (n != ReserveAllocOffset)
+		{
 			/* oops, program error */
-		} else {
+		}
+		else
+		{
 			IsOk = true;
 		}
 	}
@@ -476,7 +510,8 @@ static bool AllocMemory(void)
 
 static void UnallocMemory(void)
 {
-	if (nullptr != ReserveAllocBigBlock) {
+	if (nullptr != ReserveAllocBigBlock)
+	{
 		free((char *)ReserveAllocBigBlock);
 	}
 }
@@ -504,26 +539,26 @@ static void UninitWhereAmI(void)
 bool InitOSGLU(void)
 {
 	if (Config_TryInit())
-	if (AllocMemory())
+		if (AllocMemory())
 #if CanGetAppPath
-	if (InitWhereAmI())
+			if (InitWhereAmI())
 #endif
 #if dbglog_HAVE
-	if (dbglog_open())
+				if (dbglog_open())
 #endif
-	if (ScanCommandLine())
-	if (LoadMacRom())
-	if (LoadInitialImages())
-	if (InitLocationDat())
-	if (SDL_InitDisplay()) // Switched before initting sound because SDL is initialized in SDL_InitDisplay. Probably should be initialised earlier.
+					if (ScanCommandLine())
+						if (LoadMacRom())
+							if (LoadInitialImages())
+								if (InitLocationDat())
+									if (SDL_InitDisplay()) // Switched before initting sound because SDL is initialized in SDL_InitDisplay. Probably should be initialised earlier.
 #if SoundEnabled
-	if (Sound_Init())
+										if (Sound_Init())
 #endif
-	if (CreateMainWindow())
-	if (WaitForRom())
-	{
-		return true;
-	}
+											if (CreateMainWindow())
+												if (WaitForRom())
+												{
+													return true;
+												}
 	return false;
 }
 

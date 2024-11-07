@@ -163,8 +163,7 @@ void DoKeyCode(SDL_Keysym *r, bool down)
 {
 	uint8_t v = SDLScan2MacKeyCode(r->scancode);
 	if (MKC_None != v) {
-		// this probably breaks keyboard support
-		//Keyboard_UpdateKeyMap2(v, down);
+		Keyboard_UpdateKeyMap(v, down);
 	}
 }
 

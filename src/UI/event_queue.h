@@ -3,6 +3,7 @@
 
 #include "sys_dependencies.h"
 #include "HW/KBRD/keycodes.h"
+#include <array>
 
 #define HaveMasterEvtQLock EmClassicKbrd
 #if HaveMasterEvtQLock
@@ -46,11 +47,11 @@ class EventQueue
 private:
     uint16_t In = 0;
     uint16_t Out = 0;
+    const uint32_t Size = EvtQSize;
     const uint32_t IMask = (EvtQSize - 1);
-    EvtQEl EvtQA[EvtQSize];
+    std::array<EvtQEl, EvtQSize> EvtQA;
 
 public:
-
     bool NeedRecover = false;
 
     void OutDone(void);

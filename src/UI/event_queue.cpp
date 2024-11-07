@@ -50,7 +50,7 @@ EvtQEl *EventQueue::PreviousIn(void)
 EvtQEl *EventQueue::Alloc(void)
 {
     EvtQEl *p = nullptr;
-    if (In - Out >= EvtQSize)
+    if (In - Out >= Size)
     {
         NeedRecover = true;
     }
@@ -144,10 +144,7 @@ void MousePositionSet(uint16_t h, uint16_t v)
 
 void InitKeyCodes(void)
 {
-    theKeys[0] = 0;
-    theKeys[1] = 0;
-    theKeys[2] = 0;
-    theKeys[3] = 0;
+    theKeys[0] = theKeys[1] = theKeys[2] = theKeys[3] = 0;
 }
 
 void DisconnectKeyCodes(uint32_t KeepMask)
@@ -159,22 +156,19 @@ void DisconnectKeyCodes(uint32_t KeepMask)
         option and shift.
     */
 
-    int j;
-    int b;
-    int key;
-    uint32_t m;
-
-    for (j = 0; j < 16; ++j)
+    for (int j = 0; j < 16; ++j)
     {
         uint8_t k1 = ((uint8_t *)theKeys)[j];
         if (0 != k1)
         {
             uint8_t bit = 1;
-            for (b = 0; b < 8; ++b)
+            for (int b = 0; b < 8; ++b)
             {
                 if (0 != (k1 & bit))
                 {
-                    key = j * 8 + b;
+                    int key = j * 8 + b;
+                    uint32_t m;
+
                     switch (key)
                     {
                     case MKC_Control:
