@@ -30,7 +30,7 @@
 #include "sys_dependencies.h"
 #include "UTIL/endian.h"
 
-#include "UI/my_os_glue.h"
+#include "UI/os_glue.h"
 #include "global_glue.h"
 
 #include "video.h"

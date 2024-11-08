@@ -31,7 +31,7 @@
 
 #include "sys_dependencies.h"
 
-#include "UI/my_os_glue.h"
+#include "UI/os_glue.h"
 #include "global_glue.h"
 
 #include "int_woz_machine.h"

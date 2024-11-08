@@ -24,11 +24,10 @@
 #include "sys_dependencies.h"
 
 #include "LANG/intl_chars.h"
-#include "UI/my_os_glue.h"
+#include "UI/os_glue.h"
 #include "UTIL/endian.h"
 
 #include "UI/control_mode.h"
-#include "UI/os_glue_sdl2.h"
 #include "UI/video_sdl2.h"
 
 /* Constants and globals */

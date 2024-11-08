@@ -8,8 +8,7 @@
 
 #include "UTIL/endian.h"
 
-#include "UI/my_os_glue.h"
-#include "os_glue_sdl2.h"
+#include "UI/os_glue.h"
 
 #include "UI/event_queue.h"
 #include "UI/video_sdl2.h"

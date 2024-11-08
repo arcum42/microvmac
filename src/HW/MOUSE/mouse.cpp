@@ -27,7 +27,7 @@
 #include "UTIL/endian.h"
 
 #include "global_glue.h"
-#include "UI/my_os_glue.h"
+#include "UI/os_glue.h"
 #include "UI/event_queue.h"
 
 #include "HW/SCC/serial_comm.h"

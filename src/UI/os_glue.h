@@ -33,6 +33,7 @@
 #include "UTIL/date_to_seconds.h"
 #include "HW/KBRD/keycodes.h"
 #include "error_codes.h"
+#include <SDL.h>
 #include "UI/sound_sdl2.h"
 
 #if WantAbnormalReports
@@ -71,12 +72,22 @@ extern void Screen_OutputFrame(uint8_t * screencurrentbuff);
 extern void DoneWithDrawingForTick(void);
 
 extern bool ForceMacOff;
-
 extern bool WantMacInterrupt;
-
 extern bool WantMacReset;
-
 extern bool ExtraTimeNotOver(void);
+
+extern uint32_t TrueEmulatedTime;
+extern uint32_t LastTime;
+extern uint32_t NextIntTime;
+extern uint32_t NextFracTime;
+
+extern bool gBackgroundFlag;
+extern bool gTrueBackgroundFlag;
+extern bool CurSpeedStopped;
+
+// Functions
+
+extern void DoKeyCode(SDL_Keysym *r, bool down);
 
 /*** Might be SDL2-specific? ***/
 // INTL.c

@@ -4,7 +4,7 @@
 #include <string.h>
 #include <stdio.h>
 #include "sys_dependencies.h"
-#include "UI/my_os_glue.h"
+#include "UI/os_glue.h"
 
 #if dbglog_HAVE
 

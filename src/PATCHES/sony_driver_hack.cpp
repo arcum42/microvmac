@@ -12,7 +12,7 @@
 
 #include "global_glue.h"
 #include "UTIL/endian.h"
-#include "UI/my_os_glue.h"
+#include "UI/os_glue.h"
 #include "PATCHES/sony_driver_hack.h"
 #include "PATCHES/rom.h"
 //#include "PATCHES/screen_hack.h"

@@ -7,7 +7,7 @@
 #include "sys_dependencies.h"
 
 #include "UTIL/endian.h"
-#include "UI/my_os_glue.h"
+#include "UI/os_glue.h"
 #include "UI/event_queue.h"
 
 bool ControlKeyPressed = false;

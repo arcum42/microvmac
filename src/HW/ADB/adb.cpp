@@ -20,7 +20,7 @@
 
 #include "sys_dependencies.h"
 #include "global_glue.h"
-#include "UI/my_os_glue.h"
+#include "UI/os_glue.h"
 
 #if EmADB
 

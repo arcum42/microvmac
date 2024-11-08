@@ -29,8 +29,7 @@
 #include "sys_dependencies.h"
 #include "config_manage.h"
 
-#include "UI/my_os_glue.h"
-#include "os_glue_sdl2.h"
+#include "UI/os_glue.h"
 
 #include "UTIL/endian.h"
 #include "LANG/intl_chars.h"
