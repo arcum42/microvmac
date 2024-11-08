@@ -35,18 +35,20 @@ MacErr_t ChildPath(char *x, char *y, char **r)
 	int nx = strlen(x);
 	int ny = strlen(y);
 	{
-		if ((nx > 0) && (PathSep == x[nx - 1])) {
+		if ((nx > 0) && (PathSep == x[nx - 1]))
+		{
 			--nx;
 		}
 		{
 			int nr = nx + 1 + ny;
-			char *p = (char*)malloc(nr + 1);
-			if (p != nullptr) {
+			char *p = (char *)malloc(nr + 1);
+			if (p != nullptr)
+			{
 				char *p2 = p;
-				(void) memcpy(p2, x, nx);
+				(void)memcpy(p2, x, nx);
 				p2 += nx;
 				*p2++ = PathSep;
-				(void) memcpy(p2, y, ny);
+				(void)memcpy(p2, y, ny);
 				p2 += ny;
 				*p2 = 0;
 				*r = p;
@@ -60,11 +62,11 @@ MacErr_t ChildPath(char *x, char *y, char **r)
 
 void MayFree(char *p)
 {
-	if (nullptr != p) {
+	if (nullptr != p)
+	{
 		free(p);
 	}
 }
- 
 
 /* --- text translation --- */
 
@@ -76,7 +78,8 @@ void NativeStrFromCStr(char *r, char *s)
 
 	ClStrFromSubstCStr(&L, ps, s);
 
-	for (i = 0; i < L; ++i) {
+	for (i = 0; i < L; ++i)
+	{
 		r[i] = Cell2PlainAsciiMap[ps[i]];
 	}
 

@@ -14,14 +14,35 @@
 
 #if SoundEnabled
 
+typedef uint16_t trSoundTemp;
+
+const trSoundTemp kCenterTempSound = 0x8000;
+const trSoundTemp AudioStepVal = 0x0040;
+
+struct SoundR
+{
+	tpSoundSamp fTheSoundBuffer;
+	volatile uint16_t *fPlayOffset;
+	volatile uint16_t *fFillOffset;
+	volatile uint16_t *fMinFilledSoundBuffs;
+
+	volatile trSoundTemp lastv;
+
+	bool wantplaying;
+	bool HaveStartedPlaying;
+};
+typedef struct SoundR SoundR;
+
 SDL_AudioDeviceID audio_device = 0;
 tpSoundSamp TheSoundBuffer = nullptr;
 volatile static uint16_t ThePlayOffset;
 volatile static uint16_t TheFillOffset;
 volatile static uint16_t MinFilledSoundBuffs;
+
 #if dbglog_SoundBuffStats
 static uint16_t MaxFilledSoundBuffs;
 #endif
+
 static uint16_t TheWriteOffset;
 
 void Sound_Init0(void)
@@ -46,14 +67,14 @@ tpSoundSamp Sound_BeginWrite(uint16_t n, uint16_t *actL)
 	uint16_t WriteBuffContig =
 		kOneBuffLen - (TheWriteOffset & kOneBuffMask);
 
-	if (WriteBuffContig < n) {
+	if (WriteBuffContig < n)
+	{
 		n = WriteBuffContig;
 	}
-	if (ToFillLen < n) {
+	if (ToFillLen < n)
+	{
 		/* overwrite previous buffer */
-#if dbglog_SoundStuff
 		spdlog::debug("Sound buffer overflow.");
-#endif
 		TheWriteOffset -= kOneBuffLen;
 	}
 
@@ -64,9 +85,8 @@ tpSoundSamp Sound_BeginWrite(uint16_t n, uint16_t *actL)
 #if 4 == kLn2SoundSampSz
 void ConvertSoundBlockToNative(tpSoundSamp p)
 {
-	int i;
-
-	for (i = kOneBuffLen; --i >= 0; ) {
+	for (int i = kOneBuffLen; --i >= 0;)
+	{
 		*p++ -= 0x8000;
 	}
 }
@@ -81,9 +101,7 @@ void Sound_WroteABlock(void)
 	tpSoundSamp p = TheSoundBuffer + (PrevWriteOffset & kAllBuffMask);
 #endif
 
-#if dbglog_SoundStuff
 	spdlog::debug("Enter Sound_WroteABlock");
-#endif
 
 	ConvertSoundBlockToNative(p);
 
@@ -91,11 +109,11 @@ void Sound_WroteABlock(void)
 
 #if dbglog_SoundBuffStats
 	{
-		uint16_t ToPlayLen = TheFillOffset
-			- ThePlayOffset;
+		uint16_t ToPlayLen = TheFillOffset - ThePlayOffset;
 		uint16_t ToPlayBuffs = ToPlayLen >> kLnOneBuffLen;
 
-		if (ToPlayBuffs > MaxFilledSoundBuffs) {
+		if (ToPlayBuffs > MaxFilledSoundBuffs)
+		{
 			MaxFilledSoundBuffs = ToPlayBuffs;
 		}
 	}
@@ -108,9 +126,12 @@ bool Sound_EndWrite0(uint16_t actL)
 
 	TheWriteOffset += actL;
 
-	if (0 != (TheWriteOffset & kOneBuffMask)) {
+	if (0 != (TheWriteOffset & kOneBuffMask))
+	{
 		v = false;
-	} else {
+	}
+	else
+	{
 		/* just finished a block */
 
 		Sound_WroteABlock();
@@ -123,33 +144,28 @@ bool Sound_EndWrite0(uint16_t actL)
 
 void Sound_SecondNotify0(void)
 {
-	if (MinFilledSoundBuffs <= kSoundBuffers) {
-		if (MinFilledSoundBuffs > DesiredMinFilledSoundBuffs) {
-#if dbglog_SoundStuff
+	if (MinFilledSoundBuffs <= kSoundBuffers)
+	{
+		if (MinFilledSoundBuffs > DesiredMinFilledSoundBuffs)
+		{
 			spdlog::debug("MinFilledSoundBuffs too high.");
-#endif
 			IncrNextTime();
-		} else if (MinFilledSoundBuffs < DesiredMinFilledSoundBuffs) {
-#if dbglog_SoundStuff
+		}
+		else if (MinFilledSoundBuffs < DesiredMinFilledSoundBuffs)
+		{
 			spdlog::debug("MinFilledSoundBuffs too low");
-#endif
 			++TrueEmulatedTime;
 		}
 #if dbglog_SoundBuffStats
 		spdlog::debug("MinFilledSoundBuffs = {}",
-			MinFilledSoundBuffs);
+					  MinFilledSoundBuffs);
 		spdlog::debug("MaxFilledSoundBuffs = {}",
-			MaxFilledSoundBuffs);
+					  MaxFilledSoundBuffs);
 		MaxFilledSoundBuffs = 0;
 #endif
 		MinFilledSoundBuffs = kSoundBuffers + 1;
 	}
 }
-
-typedef uint16_t trSoundTemp;
-
-const trSoundTemp kCenterTempSound = 0x8000;
-const trSoundTemp AudioStepVal = 0x0040;
 
 #if 3 == kLn2SoundSampSz
 #define ConvertTempSoundSampleFromNative(v) ((v) << 8)
@@ -168,26 +184,36 @@ const trSoundTemp AudioStepVal = 0x0040;
 #endif
 
 void SoundRampTo(trSoundTemp *last_val, trSoundTemp dst_val,
-	tpSoundSamp *stream, int *len)
+				 tpSoundSamp *stream, int *len)
 {
 	trSoundTemp diff;
 	tpSoundSamp p = *stream;
 	int n = *len;
 	trSoundTemp v1 = *last_val;
 
-	while ((v1 != dst_val) && (0 != n)) {
-		if (v1 > dst_val) {
+	while ((v1 != dst_val) && (0 != n))
+	{
+		if (v1 > dst_val)
+		{
 			diff = v1 - dst_val;
-			if (diff > AudioStepVal) {
+			if (diff > AudioStepVal)
+			{
 				v1 -= AudioStepVal;
-			} else {
+			}
+			else
+			{
 				v1 = dst_val;
 			}
-		} else {
+		}
+		else
+		{
 			diff = dst_val - v1;
-			if (diff > AudioStepVal) {
+			if (diff > AudioStepVal)
+			{
 				v1 += AudioStepVal;
-			} else {
+			}
+			else
+			{
 				v1 = dst_val;
 			}
 		}
@@ -201,24 +227,10 @@ void SoundRampTo(trSoundTemp *last_val, trSoundTemp dst_val,
 	*last_val = v1;
 }
 
-struct SoundR {
-	tpSoundSamp fTheSoundBuffer;
-	volatile uint16_t *fPlayOffset;
-	volatile uint16_t *fFillOffset;
-	volatile uint16_t *fMinFilledSoundBuffs;
-
-	volatile trSoundTemp lastv;
-
-	bool wantplaying;
-	bool HaveStartedPlaying;
-};
-typedef struct SoundR SoundR;
-
 static void audio_callback(void *udata, Uint8 *stream, int len)
 {
 	uint16_t ToPlayLen;
 	uint16_t FilledSoundBuffs;
-	int i;
 	SoundR *datp = (SoundR *)udata;
 	tpSoundSamp CurSoundBuffer = datp->fTheSoundBuffer;
 	uint16_t CurPlayOffset = *datp->fPlayOffset;
@@ -230,80 +242,74 @@ static void audio_callback(void *udata, Uint8 *stream, int len)
 	len >>= (kLn2SoundSampSz - 3);
 #endif
 
-#if dbglog_SoundStuff
 	spdlog::debug("Enter audio_callback: len = {}", len);
-#endif
 
 label_retry:
 	ToPlayLen = *datp->fFillOffset - CurPlayOffset;
 	FilledSoundBuffs = ToPlayLen >> kLnOneBuffLen;
 
-	if (! datp->wantplaying) {
-#if dbglog_SoundStuff
+	if (!datp->wantplaying)
+	{
 		spdlog::debug("playing end transistion");
-#endif
-
 		SoundRampTo(&v1, kCenterTempSound, &dst, &len);
 
 		ToPlayLen = 0;
-	} else if (! datp->HaveStartedPlaying) {
-#if dbglog_SoundStuff
+	}
+	else if (!datp->HaveStartedPlaying)
+	{
 		spdlog::debug("playing start block");
-#endif
-
-		if ((ToPlayLen >> kLnOneBuffLen) < 8) {
+		if ((ToPlayLen >> kLnOneBuffLen) < 8)
+		{
 			ToPlayLen = 0;
-		} else {
-			tpSoundSamp p = datp->fTheSoundBuffer
-				+ (CurPlayOffset & kAllBuffMask);
+		}
+		else
+		{
+			tpSoundSamp p = datp->fTheSoundBuffer + (CurPlayOffset & kAllBuffMask);
 			trSoundTemp v2 = ConvertTempSoundSampleFromNative(*p);
 
-#if dbglog_SoundStuff
 			spdlog::debug("have enough samples to start");
-#endif
-
 			SoundRampTo(&v1, v2, &dst, &len);
 
-			if (v1 == v2) {
-#if dbglog_SoundStuff
+			if (v1 == v2)
+			{
 				spdlog::debug("finished start transition");
-#endif
-
 				datp->HaveStartedPlaying = true;
 			}
 		}
 	}
 
-	if (0 == len) {
-		/* done */
-
-		if (FilledSoundBuffs < *datp->fMinFilledSoundBuffs) {
+	if (0 == len) /* done */
+	{
+		if (FilledSoundBuffs < *datp->fMinFilledSoundBuffs)
+		{
 			*datp->fMinFilledSoundBuffs = FilledSoundBuffs;
 		}
-	} else if (0 == ToPlayLen) {
-
-#if dbglog_SoundStuff
+	}
+	else if (0 == ToPlayLen)
+	{
 		spdlog::debug("under run");
-#endif
-
-		for (i = 0; i < len; ++i) {
+		for (int i = 0; i < len; ++i)
+		{
 			*dst++ = ConvertTempSoundSampleToNative(v1);
 		}
 		*datp->fMinFilledSoundBuffs = 0;
-	} else {
-		uint16_t PlayBuffContig = kAllBuffLen
-			- (CurPlayOffset & kAllBuffMask);
-		tpSoundSamp p = CurSoundBuffer
-			+ (CurPlayOffset & kAllBuffMask);
+	}
+	else
+	{
+		uint16_t PlayBuffContig = kAllBuffLen - (CurPlayOffset & kAllBuffMask);
+		tpSoundSamp p = CurSoundBuffer + (CurPlayOffset & kAllBuffMask);
 
-		if (ToPlayLen > PlayBuffContig) {
+		if (ToPlayLen > PlayBuffContig)
+		{
 			ToPlayLen = PlayBuffContig;
 		}
-		if (ToPlayLen > len) {
+		if (ToPlayLen > len)
+		{
 			ToPlayLen = len;
 		}
 
-		for (i = 0; i < ToPlayLen; ++i) {
+		for (int i = 0; i < ToPlayLen; ++i)
+		{
 			*dst++ = *p++;
 		}
 		v1 = ConvertTempSoundSampleFromNative(p[-1]);
@@ -325,39 +331,36 @@ static bool HaveSoundOut = false;
 
 void Sound_Stop(void)
 {
-#if dbglog_SoundStuff
 	spdlog::debug("enter Sound_Stop");
-#endif
 
-	if (cur_audio.wantplaying && HaveSoundOut) {
+	if (cur_audio.wantplaying && HaveSoundOut)
+	{
 		uint16_t retry_limit = 50; /* half of a second */
 
 		cur_audio.wantplaying = false;
 
-label_retry:
-		if (kCenterTempSound == cur_audio.lastv) {
-#if dbglog_SoundStuff
+	label_retry:
+		if (kCenterTempSound == cur_audio.lastv)
+		{
 			spdlog::debug("reached kCenterTempSound");
-#endif
 
 			/* done */
-		} else if (0 == --retry_limit) {
-#if dbglog_SoundStuff
+		}
+		else if (0 == --retry_limit)
+		{
 			spdlog::debug("retry limit reached");
-#endif
 			/* done */
-		} else
+		}
+		else
 		{
 			/*
 				give time back, particularly important
 				if got here on a suspend event.
 			*/
 
-#if dbglog_SoundStuff
 			spdlog::debug("busy, so sleep");
-#endif
 
-			(void) SDL_Delay(10);
+			(void)SDL_Delay(10);
 
 			goto label_retry;
 		}
@@ -365,14 +368,13 @@ label_retry:
 		SDL_PauseAudioDevice(audio_device, 1);
 	}
 
-#if dbglog_SoundStuff
 	spdlog::debug("leave Sound_Stop");
-#endif
 }
 
 void Sound_Start(void)
 {
-	if ((! cur_audio.wantplaying) && HaveSoundOut) {
+	if ((!cur_audio.wantplaying) && HaveSoundOut)
+	{
 		Sound_Start0();
 		cur_audio.lastv = kCenterTempSound;
 		cur_audio.HaveStartedPlaying = false;
@@ -384,12 +386,13 @@ void Sound_Start(void)
 
 void Sound_UnInit(void)
 {
-	if (HaveSoundOut) {
+	if (HaveSoundOut)
+	{
 		SDL_CloseAudioDevice(audio_device);
 	}
 }
 
-#define SOUND_SAMPLERATE 22255 /* = round(7833600 * 2 / 704) */
+const uint32_t SOUND_SAMPLERATE = 22255; /* = round(7833600 * 2 / 704) */
 
 bool Sound_Init(void)
 {
@@ -420,18 +423,21 @@ bool Sound_Init(void)
 
 	/* Open the audio device */
 	audio_device = SDL_OpenAudioDevice(nullptr, 0, &desired, nullptr, SDL_AUDIO_ALLOW_ANY_CHANGE);
-	
-	if (audio_device == 0) {
-		fprintf(stderr, "Couldn't open audio: %s\n", SDL_GetError());
-	} else {
+
+	if (audio_device == 0)
+	{
+		spdlog::error("Couldn't open audio: {}\n", SDL_GetError());
+	}
+	else
+	{
 		HaveSoundOut = true;
 
 		Sound_Start();
-			/*
-				This should be taken care of by LeaveSpeedStopped,
-				but since takes a while to get going properly,
-				start early.
-			*/
+		/*
+			This should be taken care of by LeaveSpeedStopped,
+			but since takes a while to get going properly,
+			start early.
+		*/
 	}
 
 	return true; /* keep going, even if no sound */
@@ -439,13 +445,15 @@ bool Sound_Init(void)
 
 void Sound_EndWrite(uint16_t actL)
 {
-	if (Sound_EndWrite0(actL)) {
+	if (Sound_EndWrite0(actL))
+	{
 	}
 }
 
 void Sound_SecondNotify(void)
 {
-	if (HaveSoundOut) {
+	if (HaveSoundOut)
+	{
 		Sound_SecondNotify0();
 	}
 }

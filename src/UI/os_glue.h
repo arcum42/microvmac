@@ -49,11 +49,10 @@ extern void dbglog_writeMacChar(uint8_t x);
 #endif
 
 extern void ReserveAllocOneBlock(
-	uint8_t * *p, uimr n, uint8_t align, bool FillOnes
-);
+	uint8_t **p, uimr n, uint8_t align, bool FillOnes);
 extern void MoveBytes(anyp srcPtr, anyp destPtr, int32_t byteCount);
 
-extern uint8_t * ROM;
+extern uint8_t *ROM;
 
 #if IncludeHostTextClipExchange
 extern MacErr_t HTCEexport(tPbuf i);
@@ -68,7 +67,7 @@ extern bool ColorModeWorks;
 
 extern bool ColorMappingChanged;
 
-extern void Screen_OutputFrame(uint8_t * screencurrentbuff);
+extern void Screen_OutputFrame(uint8_t *screencurrentbuff);
 extern void DoneWithDrawingForTick(void);
 
 extern bool ForceMacOff;

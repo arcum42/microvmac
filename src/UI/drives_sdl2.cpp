@@ -18,7 +18,7 @@ extern void MacMsg(char *briefMsg, char *longMsg, bool fatal);
 
 /* --- drives --- */
 
-SDL_RWops* Drives[NumDrives]; /* open disk image files */
+SDL_RWops *Drives[NumDrives]; /* open disk image files */
 
 bool FirstFreeDisk(tDrive *Drive_No)
 {

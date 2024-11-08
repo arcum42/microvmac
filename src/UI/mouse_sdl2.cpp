@@ -27,9 +27,10 @@ bool WantCursorHidden = false;
 
 void ForceShowCursor(void)
 {
-	if (HaveCursorHidden) {
+	if (HaveCursorHidden)
+	{
 		HaveCursorHidden = false;
-		(void) SDL_ShowCursor(SDL_ENABLE);
+		(void)SDL_ShowCursor(SDL_ENABLE);
 	}
 }
 
@@ -50,7 +51,8 @@ bool MoveMouse(int16_t h, int16_t v)
 	}
 #endif
 
-	if (UseMagnify) {
+	if (UseMagnify)
+	{
 		h *= WindowScale;
 		v *= WindowScale;
 	}
@@ -83,7 +85,8 @@ void MousePositionNotify(int NewMousePosh, int NewMousePosv)
 	}
 #endif
 
-	if (UseMagnify) {
+	if (UseMagnify)
+	{
 		NewMousePosh /= WindowScale;
 		NewMousePosv /= WindowScale;
 	}
@@ -97,25 +100,33 @@ void MousePositionNotify(int NewMousePosh, int NewMousePosv)
 #endif
 
 #if EnableFSMouseMotion
-	if (HaveMouseMotion) {
+	if (HaveMouseMotion)
+	{
 		MousePositionSetDelta(NewMousePosh - SavedMouseH,
-			NewMousePosv - SavedMouseV);
+							  NewMousePosv - SavedMouseV);
 		SavedMouseH = NewMousePosh;
 		SavedMouseV = NewMousePosv;
-	} else
+	}
+	else
 #endif
 	{
-		if (NewMousePosh < 0) {
+		if (NewMousePosh < 0)
+		{
 			NewMousePosh = 0;
 			ShouldHaveCursorHidden = false;
-		} else if (NewMousePosh >= vMacScreenWidth) {
+		}
+		else if (NewMousePosh >= vMacScreenWidth)
+		{
 			NewMousePosh = vMacScreenWidth - 1;
 			ShouldHaveCursorHidden = false;
 		}
-		if (NewMousePosv < 0) {
+		if (NewMousePosv < 0)
+		{
 			NewMousePosv = 0;
 			ShouldHaveCursorHidden = false;
-		} else if (NewMousePosv >= vMacScreenHeight) {
+		}
+		else if (NewMousePosv >= vMacScreenHeight)
+		{
 			NewMousePosv = vMacScreenHeight - 1;
 			ShouldHaveCursorHidden = false;
 		}
@@ -138,12 +149,13 @@ void MousePositionNotify(int NewMousePosh, int NewMousePosv)
 	WantCursorHidden = ShouldHaveCursorHidden;
 }
 
-#if EnableFSMouseMotion && ! HaveWorkingWarp
+#if EnableFSMouseMotion && !HaveWorkingWarp
 void MousePositionNotifyRelative(int deltah, int deltav)
 {
 	bool ShouldHaveCursorHidden = true;
 
-	if (UseMagnify) {
+	if (UseMagnify)
+	{
 		/*
 			This is not really right. If only move one pixel
 			each time, emulated mouse doesn't move at all.
@@ -153,7 +165,7 @@ void MousePositionNotifyRelative(int deltah, int deltav)
 	}
 
 	MousePositionSetDelta(deltah,
-		deltav);
+						  deltav);
 
 	WantCursorHidden = ShouldHaveCursorHidden;
 }
@@ -168,6 +180,6 @@ void CheckMouseState(void)
 	int x;
 	int y;
 
-	(void) SDL_GetMouseState(&x, &y);
+	(void)SDL_GetMouseState(&x, &y);
 	MousePositionNotify(x, y);
 }

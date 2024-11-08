@@ -7,10 +7,10 @@
 #define kSoundBuffMask (kSoundBuffers - 1)
 
 #define DesiredMinFilledSoundBuffs 3
-	/*
-		if too big then sound lags behind emulation.
-		if too small then sound will have pauses.
-	*/
+/*
+	if too big then sound lags behind emulation.
+	if too small then sound will have pauses.
+*/
 
 #define kLnOneBuffLen 9
 #define kLnAllBuffLen (kLn2SoundBuffers + kLnOneBuffLen)
@@ -30,12 +30,12 @@
 #if 3 == kLn2SoundSampSz
 typedef uint8_t trSoundSamp;
 typedef uint8_t tbSoundSamp;
-typedef uint8_t* tpSoundSamp;
+typedef uint8_t *tpSoundSamp;
 constexpr uint32_t kCenterSound = 0x80;
 #elif 4 == kLn2SoundSampSz
 typedef uint16_t trSoundSamp;
 typedef uint16_t tbSoundSamp;
-typedef uint16_t* tpSoundSamp;
+typedef uint16_t *tpSoundSamp;
 constexpr uint32_t kCenterSound = 0x8000;
 #else
 #error "unsupported kLn2SoundSampSz"

@@ -2,7 +2,7 @@
 #include <string.h>
 #include <stdio.h>
 
-#include "sys_dependencies.h" 
+#include "sys_dependencies.h"
 #include "error_codes.h"
 
 #include "UI/os_glue.h"
@@ -20,19 +20,21 @@ static MacErr_t LoadMacRomFromPrefDir(void)
 	char *t = nullptr;
 	char *t2 = nullptr;
 
-	if (nullptr == pref_dir) {
+	if (nullptr == pref_dir)
+	{
 		err = mnvm_fnfErr;
-	} else
-	if (mnvm_noErr != (err =
-		ChildPath(pref_dir, "mnvm_rom", &t)))
+	}
+	else if (mnvm_noErr != (err =
+								ChildPath(pref_dir, "mnvm_rom", &t)))
 	{
 		/* fail */
-	} else
-	if (mnvm_noErr != (err =
-		ChildPath(t, RomFileName, &t2)))
+	}
+	else if (mnvm_noErr != (err =
+								ChildPath(t, RomFileName, &t2)))
 	{
 		/* fail */
-	} else
+	}
+	else
 	{
 		err = LoadMacRomFrom(t2);
 	}
@@ -51,14 +53,16 @@ static MacErr_t LoadMacRomFromAppPar(void)
 	char *d = (nullptr == d_arg) ? app_parent : d_arg;
 	char *t = nullptr;
 
-	if (nullptr == d) {
+	if (nullptr == d)
+	{
 		err = mnvm_fnfErr;
-	} else
-	if (mnvm_noErr != (err =
-		ChildPath(d, RomFileName, &t)))
+	}
+	else if (mnvm_noErr != (err =
+								ChildPath(d, RomFileName, &t)))
 	{
 		/* fail */
-	} else
+	}
+	else
 	{
 		err = LoadMacRomFrom(t);
 	}
@@ -73,16 +77,15 @@ bool LoadMacRom(void)
 {
 	MacErr_t err;
 
-	if ((nullptr == rom_path)
-		|| (mnvm_fnfErr == (err = LoadMacRomFrom(rom_path))))
+	if ((nullptr == rom_path) || (mnvm_fnfErr == (err = LoadMacRomFrom(rom_path))))
 #if CanGetAppPath
-	if (mnvm_fnfErr == (err = LoadMacRomFromAppPar()))
-	if (mnvm_fnfErr == (err = LoadMacRomFromPrefDir()))
+		if (mnvm_fnfErr == (err = LoadMacRomFromAppPar()))
+			if (mnvm_fnfErr == (err = LoadMacRomFromPrefDir()))
 #endif
-	if (mnvm_fnfErr == (err = LoadMacRomFrom(RomFileName)))
-	{
-		printf("Cannot load ROM '%s'\n", RomFileName);
-	}
+				if (mnvm_fnfErr == (err = LoadMacRomFrom(RomFileName)))
+				{
+					printf("Cannot load ROM '%s'\n", RomFileName);
+				}
 
 	return true; /* keep launching Mini vMac, regardless */
 }
@@ -90,15 +93,19 @@ bool LoadMacRom(void)
 MacErr_t LoadMacRomFrom(const char *path)
 {
 	MacErr_t err;
-	SDL_RWops* ROM_File;
+	SDL_RWops *ROM_File;
 	int File_Size;
 
 	ROM_File = SDL_RWFromFile(path, "rb");
-	if (nullptr == ROM_File) {
+	if (nullptr == ROM_File)
+	{
 		err = mnvm_fnfErr;
-	} else {
+	}
+	else
+	{
 		File_Size = SDL_RWread(ROM_File, ROM, 1, kROM_Size);
-		if (File_Size != kROM_Size) {
+		if (File_Size != kROM_Size)
+		{
 #ifdef FileEof
 			if (FileEof(ROM_File))
 #else
@@ -106,24 +113,27 @@ MacErr_t LoadMacRomFrom(const char *path)
 #endif
 			{
 				MacMsgOverride(kStrShortROMTitle,
-					kStrShortROMMessage);
+							   kStrShortROMMessage);
 				err = mnvm_eofErr;
-			} else {
+			}
+			else
+			{
 				MacMsgOverride(kStrNoReadROMTitle,
-					kStrNoReadROMMessage);
+							   kStrNoReadROMMessage);
 				err = mnvm_miscErr;
 			}
-		} else {
+		}
+		else
+		{
 			bool valid = ROM_IsValid();
 			if (valid)
 				err = mnvm_noErr;
 			else
 				// Throw a misc error. Why not? FIXME.
-				err= mnvm_miscErr;
+				err = mnvm_miscErr;
 		}
 		SDL_RWclose(ROM_File);
 	}
 
 	return err;
 }
-
