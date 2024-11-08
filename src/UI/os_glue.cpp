@@ -29,16 +29,18 @@
 #include "sys_dependencies.h"
 #include "config_manage.h"
 
-#include "UI/os_glue.h"
-
 #include "UTIL/endian.h"
+#include "UTIL/param_buffers.h"
+
 #include "LANG/intl_chars.h"
 #include "HW/SCREEN/screen.h"
 #include "HW/ROM/rom.h"
 
+#include "UI/os_glue.h"
 #include "UI/event_queue.h"
 #include "UI/memory.h"
 #include "UI/video_sdl2.h"
+#include "UI/control_mode.h"
 
 bool RequestMacOff = false;
 bool ForceMacOff = false;
@@ -63,8 +65,6 @@ void MoveBytes(anyp srcPtr, anyp destPtr, int32_t byteCount)
 }
 
 /* --- information about the environment --- */
-#include "UTIL/param_buffers.h"
-#include "UI/control_mode.h"
 
 /* --- basic dialogs --- */
 
