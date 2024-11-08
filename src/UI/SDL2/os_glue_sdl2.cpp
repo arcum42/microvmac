@@ -45,6 +45,10 @@ bool RequestMacOff = false;
 bool ForceMacOff = false;
 bool WantMacInterrupt = false;
 bool WantMacReset = false;
+bool RunInBackground = (WantInitRunInBackground != 0);
+
+bool RequestInsertDisk = false;
+uint8_t RequestIthDisk = 0;
 
 extern bool ReCreateMainWindow();
 extern void ZapWinStateVars();

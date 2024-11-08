@@ -45,15 +45,6 @@
 */
 
 // Global variables (temporary location?)
-bool SpeedStopped = false;
-bool RunInBackground = (WantInitRunInBackground != 0);
-bool WantFullScreen = (WantInitFullScreen != 0);
-bool WantMagnify = (WantInitMagnify != 0);
-bool RequestInsertDisk = false;
-uint8_t RequestIthDisk = 0;
-bool ControlKeyPressed = false;
-
-uint32_t disk_icon_addr;
 
 extern uint8_t get_vm_byte(CPTR addr);
 extern uint16_t get_vm_word(CPTR addr);
@@ -62,10 +53,6 @@ extern uint32_t get_vm_long(CPTR addr);
 extern void put_vm_byte(CPTR addr, uint8_t b);
 extern void put_vm_word(CPTR addr, uint16_t w);
 extern void put_vm_long(CPTR addr, uint32_t l);
-
-#ifndef ReportAbnormalInterrupt
-#define ReportAbnormalInterrupt 0
-#endif
 
 #if IncludeExtnHostTextClipExchange
 enum kCmndHTCE

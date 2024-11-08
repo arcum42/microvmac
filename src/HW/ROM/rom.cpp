@@ -5,6 +5,7 @@
 
 uint8_t * ROM = nullptr;
 bool ROM_loaded = false;
+bool SpeedStopped = false;
 
 // Commented out for now, since it's not used yet. Rework later.
 /*uint32_t Calc_Checksum(uint8_t *rom, uint32_t len)

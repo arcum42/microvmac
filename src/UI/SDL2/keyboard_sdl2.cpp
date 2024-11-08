@@ -10,6 +10,8 @@
 #include "UI/my_os_glue.h"
 #include "UI/event_queue.h"
 
+bool ControlKeyPressed = false;
+
 /* --- keyboard input --- */
 
 uint8_t SDLScan2MacKeyCode(SDL_Scancode i)

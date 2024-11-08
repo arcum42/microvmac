@@ -36,6 +36,8 @@
 
 #include "HW/DISK/sony_floppy.h"
 
+uint32_t disk_icon_addr;
+
 /*
 	ReportAbnormalID unused 0x090B - 0x09FF
 */

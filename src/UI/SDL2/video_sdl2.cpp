@@ -23,8 +23,11 @@ int hOffset;
 int vOffset;
 #endif
 
+// Eh?
 bool UseFullScreen = (WantInitFullScreen != 0);
 bool UseMagnify = (WantInitMagnify != 0);
+bool WantFullScreen = (WantInitFullScreen != 0);
+bool WantMagnify = (WantInitMagnify != 0);
 
 bool gBackgroundFlag = false;
 bool gTrueBackgroundFlag = false;
@@ -250,20 +253,14 @@ void Screen_OutputFrame(uint8_t *src_ptr)
 
 	// Blit src to dst
 	SDL_BlitSurface(src, nullptr, dst, nullptr);
-	// For teh lulz, try a crappy blur
-	// blur(dst, 1);
 
 	// Free surfaces
 	SDL_FreeSurface(src);
 	SDL_FreeSurface(dst);
 
-	// ImGui::Render();
-
 	// Render the texture
 	SDL_RenderCopy(renderer, texture, nullptr, nullptr);
 	SDL_UnlockTexture(texture);
-
-	// ImGui_ImplSDLRenderer2_RenderDrawData(ImGui::GetDrawData());
 
 	SDL_RenderPresent(renderer);
 }

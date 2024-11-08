@@ -29,6 +29,10 @@
 
 extern void SetInterruptButton(bool v);
 
+#ifndef ReportAbnormalInterrupt
+#define ReportAbnormalInterrupt 0
+#endif
+
 #if WantDisasm
 extern void m68k_WantDisasmContext(void);
 
