@@ -39,6 +39,8 @@
 #define kAlternate_Buffer (kRAM_Size - kAlternate_Offset)
 #endif
 
+#define get_ram_address(addr) ((addr) + RAM)
+
 // Configuration variables
 uint16_t vMacScreenHeight;
 uint16_t vMacScreenWidth;

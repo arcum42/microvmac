@@ -34,7 +34,7 @@
 
 uimr SpecialModes = 0;
 bool NeedWholeScreenDraw = false;
-uint8_t * CntrlDisplayBuff = nullptr;
+uint8_t *CntrlDisplayBuff = nullptr;
 
 #define ControlBoxh0 0
 #define ControlBoxw 62
@@ -43,10 +43,10 @@ uint8_t * CntrlDisplayBuff = nullptr;
 #define hLimit (ControlBoxh0 + ControlBoxw - 1)
 #define hStart (ControlBoxh0 + 1)
 
-typedef void (*SpclModeBody) (void);
+typedef void (*SpclModeBody)(void);
 
-//#define Keyboard_UpdateKeyMap1 Keyboard_UpdateKeyMap
-//#define DisconnectKeyCodes1 DisconnectKeyCodes
+// #define Keyboard_UpdateKeyMap1 Keyboard_UpdateKeyMap
+// #define DisconnectKeyCodes1 DisconnectKeyCodes
 
 void MacMsgOverride(const char *title, const char *msg)
 {
@@ -61,6 +61,5 @@ void MacMsgOverride(const char *title, const char *msg)
 [[maybe_unused]] static void WarnMsgUnsupportedROM(void)
 {
 	MacMsgOverride(kStrUnsupportedROMTitle,
-		kStrUnsupportedROMMessage);
+				   kStrUnsupportedROMMessage);
 }
-

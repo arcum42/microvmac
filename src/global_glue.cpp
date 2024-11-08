@@ -44,16 +44,6 @@
 	ReportAbnormalID ranges unused 0x12xx - 0xFFxx
 */
 
-// Global variables (temporary location?)
-
-extern uint8_t get_vm_byte(CPTR addr);
-extern uint16_t get_vm_word(CPTR addr);
-extern uint32_t get_vm_long(CPTR addr);
-
-extern void put_vm_byte(CPTR addr, uint8_t b);
-extern void put_vm_word(CPTR addr, uint16_t w);
-extern void put_vm_long(CPTR addr, uint32_t l);
-
 #if IncludeExtnHostTextClipExchange
 enum kCmndHTCE
 {

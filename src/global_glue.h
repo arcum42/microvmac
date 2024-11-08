@@ -71,37 +71,6 @@ extern uint8_t * get_real_address0(uint32_t L, bool WritableMem, CPTR addr,
 	uint32_t *actL);
 
 /*
-	memory access routines that can use when have address
-	that is known to be in RAM (and that is in the first
-	copy of the ram, not the duplicates, i.e. < kRAM_Size).
-*/
-
-#ifndef ln2mtb
-
-
-#define get_ram_byte(addr) do_get_mem_byte((addr) + RAM)
-#define get_ram_word(addr) do_get_mem_word((addr) + RAM)
-#define get_ram_long(addr) do_get_mem_long((addr) + RAM)
-
-#define put_ram_byte(addr, b) do_put_mem_byte((addr) + RAM, (b))
-#define put_ram_word(addr, w) do_put_mem_word((addr) + RAM, (w))
-#define put_ram_long(addr, l) do_put_mem_long((addr) + RAM, (l))
-
-#else
-
-#define get_ram_byte get_vm_byte
-#define get_ram_word get_vm_word
-#define get_ram_long get_vm_long
-
-#define put_ram_byte put_vm_byte
-#define put_ram_word put_vm_word
-#define put_ram_long put_vm_long
-
-#endif
-
-#define get_ram_address(addr) ((addr) + RAM)
-
-/*
 	accessing addresses that don't map to
 	real memory, i.e. memory mapped devices
 */

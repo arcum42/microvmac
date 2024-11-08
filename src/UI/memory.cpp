@@ -7,8 +7,8 @@ extern void MacMsg(char *briefMsg, char *longMsg, bool fatal);
 extern void Extn_Access(uint32_t Data, CPTR addr);
 extern bool InterruptButton;
 
- uimr ReserveAllocOffset;
- uint8_t * ReserveAllocBigBlock = nullptr;
+uimr ReserveAllocOffset;
+uint8_t *ReserveAllocBigBlock = nullptr;
 
 enum
 {
@@ -38,19 +38,24 @@ enum
 
 static void SetLongs(uint32_t *p, long n)
 {
-	for (long i = n; --i >= 0; ) {
-		*p++ = (uint32_t) -1;
+	for (long i = n; --i >= 0;)
+	{
+		*p++ = (uint32_t)-1;
 	}
 }
 
-void ReserveAllocOneBlock(uint8_t * *p, uimr n, uint8_t align, bool FillOnes)
+void ReserveAllocOneBlock(uint8_t **p, uimr n, uint8_t align, bool FillOnes)
 {
 	ReserveAllocOffset = CeilPow2Mult(ReserveAllocOffset, align);
-	if (nullptr == ReserveAllocBigBlock) {
+	if (nullptr == ReserveAllocBigBlock)
+	{
 		*p = nullptr;
-	} else {
+	}
+	else
+	{
 		*p = ReserveAllocBigBlock + ReserveAllocOffset;
-		if (FillOnes) {
+		if (FillOnes)
+		{
 			SetLongs((uint32_t *)*p, n / 4);
 		}
 	}
@@ -71,7 +76,7 @@ void EmulationReserveAlloc(void)
 #endif
 }
 
-extern uint8_t * ROM;
+extern uint8_t *ROM;
 
 #include "UI/video_sdl2.h"
 #include "UI/sound_sdl2.h"
@@ -139,7 +144,6 @@ void UnallocMemory(void)
 		free((char *)ReserveAllocBigBlock);
 	}
 }
-
 
 static ATTer ATTListA[MaxATTListN];
 static uint16_t LastATTel;

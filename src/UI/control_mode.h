@@ -14,7 +14,7 @@
 
 extern uimr SpecialModes;
 extern bool NeedWholeScreenDraw;
-extern uint8_t * CntrlDisplayBuff;
+extern uint8_t *CntrlDisplayBuff;
 
 /* Public Functions */
 void MacMsgOverride(const char *title, const char *msg);

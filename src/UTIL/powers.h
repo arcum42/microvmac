@@ -14,7 +14,7 @@ static inline uimr Pow2Mask(uimr n)
 
 static inline uimr ModPow2(uimr n, uint8_t align)
 {
-	return ((n) & Pow2Mask(align));
+	return ((n)&Pow2Mask(align));
 }
 
 static inline uimr FloorDivPow2(uimr n, uint8_t align)
@@ -24,10 +24,9 @@ static inline uimr FloorDivPow2(uimr n, uint8_t align)
 
 static inline uimr FloorPow2Mult(uimr n, uint8_t align)
 {
-	return ((n) & (~ Pow2Mask(align)));
+	return ((n) & (~Pow2Mask(align)));
 }
 
-/* warning - CeilPow2Mult evaluates p twice */
 static inline uimr CeilPow2Mult(uimr n, uint8_t align)
 {
 	return FloorPow2Mult((n) + Pow2Mask(align), (align));

@@ -39,43 +39,48 @@
 /*
 	ReportAbnormalID unused 0x0603 - 0x06FF
 */
+enum klines
+{
+	kph0L = 0x00,	  /* CA0 off (0) */
+	kph0H = 0x01,	  /* CA0 on (1) */
+	kph1L = 0x02,	  /* CA1 off (0) */
+	kph1H = 0x03,	  /* CA1 on (1) */
+	kph2L = 0x04,	  /* CA2 off (0) */
+	kph2H = 0x05,	  /* CA2 on (1) */
+	kph3L = 0x06,	  /* LSTRB off (low) */
+	kph3H = 0x07,	  /* LSTRB on (high) */
+	kmtrOff = 0x08,	  /* disk enable off */
+	kmtrOn = 0x09,	  /* disk enable on */
+	kintDrive = 0x0A, /* select internal drive */
+	kextDrive = 0x0B, /* select external drive */
+	kq6L = 0x0C,	  /* Q6 off */
+	kq6H = 0x0D,	  /* Q6 on */
+	kq7L = 0x0E,	  /* Q7 off */
+	kq7H = 0x0F		  /* Q7 on */
+};
 
-#define kph0L     0x00 /* CA0 off (0) */
-#define kph0H     0x01 /* CA0 on (1) */
-#define kph1L     0x02 /* CA1 off (0) */
-#define kph1H     0x03 /* CA1 on (1) */
-#define kph2L     0x04 /* CA2 off (0) */
-#define kph2H     0x05 /* CA2 on (1) */
-#define kph3L     0x06 /* LSTRB off (low) */
-#define kph3H     0x07 /* LSTRB on (high) */
-#define kmtrOff   0x08 /* disk enable off */
-#define kmtrOn    0x09 /* disk enable on */
-#define kintDrive 0x0A /* select internal drive */
-#define kextDrive 0x0B /* select external drive */
-#define kq6L      0x0C /* Q6 off */
-#define kq6H      0x0D /* Q6 on */
-#define kq7L      0x0E /* Q7 off */
-#define kq7H      0x0F /* Q7 on */
-
-#define kph0 0x01
-#define kph1 0x02
-#define kph2 0x04
-#define kph3 0x08
-#define kmtr 0x10
-#define kdrv 0x20
-#define kq6  0x40
-#define kq7  0x80
+enum kline
+{
+	kph0 = 0x01,
+	kph1 = 0x02,
+	kph2 = 0x04,
+	kph3 = 0x08,
+	kmtr = 0x10,
+	kdrv = 0x20,
+	kq6 = 0x40,
+	kq7 = 0x80
+};
 
 typedef struct
 {
-	uint8_t DataIn;    /* Read Data Register */
+	uint8_t DataIn;	   /* Read Data Register */
 	uint8_t Handshake; /* Read Handshake Register */
-	uint8_t Status;    /* Read Status Register */
+	uint8_t Status;	   /* Read Status Register */
 	uint8_t Mode;
-		/* Drive Off : Write Mode Register */
-		/* Drive On  : Write Data Register */
-	uint8_t DataOut;   /* Write Data Register */
-	uint8_t Lines;     /* Used to Access Disk Drive Registers */
+	/* Drive Off : Write Mode Register */
+	/* Drive On  : Write Data Register */
+	uint8_t DataOut; /* Write Data Register */
+	uint8_t Lines;	 /* Used to Access Disk Drive Registers */
 } IWM_Ty;
 
 IWM_Ty IWM;
@@ -86,58 +91,67 @@ void IWM_Reset(void)
 		IWM.DataOut = IWM.Lines = 0;
 }
 
-typedef enum {On, Off} Mode_Ty;
+typedef enum
+{
+	On,
+	Off
+} Mode_Ty;
 
 static void IWM_Set_Lines(uint8_t line, Mode_Ty the_mode)
 {
-	if (the_mode == Off) {
+	if (the_mode == Off)
+	{
 		IWM.Lines &= (0xFF - line);
-	} else {
+	}
+	else
+	{
 		IWM.Lines |= line;
 	}
 }
 
 static uint8_t IWM_Read_Reg(void)
 {
-	switch ((IWM.Lines & (kq6 + kq7)) >> 6) {
-		case 0 :
+	switch ((IWM.Lines & (kq6 + kq7)) >> 6)
+	{
+	case 0:
 #if (CurEmMd >= kEmMd_SE) && (CurEmMd <= kEmMd_IIx)
-			/* don't report */
+		/* don't report */
 #else
-			ReportAbnormalID(0x0601, "IWM Data Read");
+		ReportAbnormalID(0x0601, "IWM Data Read");
 #endif
 #ifdef _IWM_Debug
-			printf("IWM Data Read\n");
+		printf("IWM Data Read\n");
 #endif
-			return IWM.DataIn;
-			break;
-		case 1 :
+		return IWM.DataIn;
+		break;
+	case 1:
 #ifdef _IWM_Debug
-			printf("IWM Status Read\n");
+		printf("IWM Status Read\n");
 #endif
-			return IWM.Status;
-			break;
-		case 2 :
-			ReportAbnormalID(0x0602, "IWM Handshake Read");
+		return IWM.Status;
+		break;
+	case 2:
+		ReportAbnormalID(0x0602, "IWM Handshake Read");
 #ifdef _IWM_Debug
-			printf("IWM Handshake Read\n");
+		printf("IWM Handshake Read\n");
 #endif
-			return IWM.Handshake;
-			break;
-		case 3 :
-		default :
-			/*
-				should alway be in 0-3,
-				but compiler warnings don't know that
-			*/
-			return 0;
-			break;
+		return IWM.Handshake;
+		break;
+	case 3:
+	default:
+		/*
+			should alway be in 0-3,
+			but compiler warnings don't know that
+		*/
+		return 0;
+		break;
 	}
 }
 
 static void IWM_Write_Reg(uint8_t in)
 {
-	if (((IWM.Lines & kmtr) >> 4) == 0) {
+	if (((IWM.Lines & kmtr) >> 4) == 0)
+	{
 #ifdef _IWM_Debug
 		printf("IWM Mode Register Write\n");
 #endif
@@ -146,65 +160,68 @@ static void IWM_Write_Reg(uint8_t in)
 	}
 }
 
- uint32_t IWM_Access(uint32_t Data, bool WriteMem, CPTR addr)
+uint32_t IWM_Access(uint32_t Data, bool WriteMem, CPTR addr)
 {
-	switch (addr) {
-		case kph0L :
-			IWM_Set_Lines(kph0, Off);
-			break;
-		case kph0H :
-			IWM_Set_Lines(kph0, On);
-			break;
-		case kph1L :
-			IWM_Set_Lines(kph1, Off);
-			break;
-		case kph1H :
-			IWM_Set_Lines(kph1, On);
-			break;
-		case kph2L :
-			IWM_Set_Lines(kph2, Off);
-			break;
-		case kph2H :
-			IWM_Set_Lines(kph2, On);
-			break;
-		case kph3L :
-			IWM_Set_Lines(kph3, Off);
-			break;
-		case kph3H :
-			IWM_Set_Lines(kph3, On);
-			break;
-		case kmtrOff :
-			IWM.Status &= 0xDF;
-			IWM_Set_Lines(kmtr, Off);
-			break;
-		case kmtrOn :
-			IWM.Status |= 0x20;
-			IWM_Set_Lines(kmtr, On);
-			break;
-		case kintDrive :
-			IWM_Set_Lines(kdrv, Off);
-			break;
-		case kextDrive :
-			IWM_Set_Lines(kdrv, On);
-			break;
-		case kq6L :
-			IWM_Set_Lines(kq6, Off);
-			break;
-		case kq6H :
-			IWM_Set_Lines(kq6, On);
-			break;
-		case kq7L :
-			if (! WriteMem) {
-				Data = IWM_Read_Reg();
-			}
-			IWM_Set_Lines(kq7, Off);
-			break;
-		case kq7H :
-			if (WriteMem) {
-				IWM_Write_Reg(Data);
-			}
-			IWM_Set_Lines(kq7, On);
-			break;
+	switch (addr)
+	{
+	case kph0L:
+		IWM_Set_Lines(kph0, Off);
+		break;
+	case kph0H:
+		IWM_Set_Lines(kph0, On);
+		break;
+	case kph1L:
+		IWM_Set_Lines(kph1, Off);
+		break;
+	case kph1H:
+		IWM_Set_Lines(kph1, On);
+		break;
+	case kph2L:
+		IWM_Set_Lines(kph2, Off);
+		break;
+	case kph2H:
+		IWM_Set_Lines(kph2, On);
+		break;
+	case kph3L:
+		IWM_Set_Lines(kph3, Off);
+		break;
+	case kph3H:
+		IWM_Set_Lines(kph3, On);
+		break;
+	case kmtrOff:
+		IWM.Status &= 0xDF;
+		IWM_Set_Lines(kmtr, Off);
+		break;
+	case kmtrOn:
+		IWM.Status |= 0x20;
+		IWM_Set_Lines(kmtr, On);
+		break;
+	case kintDrive:
+		IWM_Set_Lines(kdrv, Off);
+		break;
+	case kextDrive:
+		IWM_Set_Lines(kdrv, On);
+		break;
+	case kq6L:
+		IWM_Set_Lines(kq6, Off);
+		break;
+	case kq6H:
+		IWM_Set_Lines(kq6, On);
+		break;
+	case kq7L:
+		if (!WriteMem)
+		{
+			Data = IWM_Read_Reg();
+		}
+		IWM_Set_Lines(kq7, Off);
+		break;
+	case kq7H:
+		if (WriteMem)
+		{
+			IWM_Write_Reg(Data);
+		}
+		IWM_Set_Lines(kq7, On);
+		break;
 	}
 
 	return Data;
