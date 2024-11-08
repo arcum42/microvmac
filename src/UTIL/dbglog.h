@@ -18,7 +18,6 @@
 
 #include "spdlog/spdlog.h"
 #include "sys_dependencies.h"
-#include "UI/math.h"
 
 /* --- sending debugging info to file --- */
 

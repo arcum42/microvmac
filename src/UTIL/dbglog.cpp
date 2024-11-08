@@ -26,6 +26,7 @@
 
 #include "HW/SCREEN/screen.h"
 #include "dbglog.h"
+#include "UTIL/powers.h"
 
 extern void SetInterruptButton(bool v);
 

@@ -1,7 +1,7 @@
 #include "sys_dependencies.h"
 
 #include "HW/hardware.h"
-#include "UI/math.h"
+#include "UTIL/powers.h"
 
 extern void MacMsg(char *briefMsg, char *longMsg, bool fatal);
 extern void Extn_Access(uint32_t Data, CPTR addr);
