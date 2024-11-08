@@ -33,7 +33,7 @@
 #include "UTIL/date_to_seconds.h"
 #include "HW/KBRD/keycodes.h"
 #include "error_codes.h"
-#include "UI/SDL2/sound_sdl2.h"
+#include "UI/sound_sdl2.h"
 
 #if WantAbnormalReports
 extern void WarnMsgAbnormalID(uint16_t id);

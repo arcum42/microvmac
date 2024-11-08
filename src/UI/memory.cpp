@@ -73,8 +73,8 @@ void EmulationReserveAlloc(void)
 
 extern uint8_t * ROM;
 
-#include "UI/SDL2/video_sdl2.h"
-#include "UI/SDL2/sound_sdl2.h"
+#include "UI/video_sdl2.h"
+#include "UI/sound_sdl2.h"
 
 extern tpSoundSamp TheSoundBuffer;
 

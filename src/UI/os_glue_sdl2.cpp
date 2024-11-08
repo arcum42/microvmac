@@ -39,7 +39,7 @@
 
 #include "UI/event_queue.h"
 #include "UI/memory.h"
-#include "UI/SDL2/video_sdl2.h"
+#include "UI/video_sdl2.h"
 
 bool RequestMacOff = false;
 bool ForceMacOff = false;

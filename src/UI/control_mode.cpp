@@ -28,8 +28,8 @@
 #include "UTIL/endian.h"
 
 #include "UI/control_mode.h"
-#include "UI/SDL2/os_glue_sdl2.h"
-#include "UI/SDL2/video_sdl2.h"
+#include "UI/os_glue_sdl2.h"
+#include "UI/video_sdl2.h"
 
 /* Constants and globals */
 

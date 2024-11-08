@@ -12,7 +12,7 @@
 #include "os_glue_sdl2.h"
 
 #include "UI/event_queue.h"
-#include "UI/SDL2/video_sdl2.h"
+#include "UI/video_sdl2.h"
 
 /* --- mouse --- */
 
