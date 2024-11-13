@@ -1,4 +1,10 @@
+#include <fstream>
 #include "config.h"
+#include "spdlog/spdlog.h"
+#include <iostream>
+using json = nlohmann::json;   
+
+json vmac_config;
 
 // Configuration variables
 uint16_t vMacScreenHeight;
@@ -14,3 +20,37 @@ uint32_t vMacScreenMonoByteWidth;
 bool UseLargeScreenHack;
 char *ScreenColorBlack = nullptr;
 char *ScreenColorWhite = nullptr;
+
+void set_to_defaults()
+{
+    if (vmac_config["Video"]["Height"].is_null()) vmac_config["Video"]["Height"] = 342;
+    if (vmac_config["Video"]["Width"].is_null()) vmac_config["Video"]["Width"] = 512;
+    if (vmac_config["Video"]["Depth"].is_null()) vmac_config["Video"]["Depth"] = 1;
+
+    if (vmac_config["Video"]["ColorBlack"].is_null()) vmac_config["Video"]["ColorBlack"] = "#000000";
+    if (vmac_config["Video"]["ColorWhite"].is_null()) vmac_config["Video"]["ColorWhite"] = "#FFFFFF";
+    
+    if (vmac_config["Video"]["UseLargeScreenHack"].is_null()) vmac_config["Video"]["UseLargeScreenHack"] = false;
+}
+
+void print_config()
+{
+    std::cout << "VideoHeight: " << vmac_config["Video"]["Height"] << "\n";
+    std::cout << "VideoWidth: " << vmac_config["Video"]["Width"] << "\n";
+    std::cout << "Video Depth: " << vmac_config["Video"]["Depth"] << "\n";
+    std::cout << "VideoColorBlack: " << vmac_config["Video"]["ColorBlack"] << "\n";
+    std::cout << "VideoColorWhite: " << vmac_config["Video"]["ColorWhite"] << "\n";
+    std::cout << "UseLargeScreenHack: " << vmac_config["Video"]["UseLargeScreenHack"] << "\n";
+}
+
+void config_init()
+{
+    std::ifstream f("vmac.json");
+    if (f.good()) 
+    {
+        vmac_config = json::parse(f);
+    }
+
+    set_to_defaults();
+    print_config();
+}
