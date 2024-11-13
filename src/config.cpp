@@ -20,6 +20,8 @@ uint32_t vMacScreenByteWidth;
 uint32_t vMacScreenMonoNumBytes;
 uint32_t vMacScreenMonoByteWidth;
 
+const std::string config_file = "vmac.json";
+
 void set_to_defaults()
 {
     if (vmac_config["Video"]["Height"].is_null()) vmac_config["Video"]["Height"] = 342;
@@ -45,19 +47,27 @@ void print_config()
     std::cout << "Rom Filename: " << vmac_config["Rom"]["Filename"] << "\n";
 }
 
-void config_init()
+void config_load()
 {
-    std::ifstream f("vmac.json");
+    std::ifstream f(config_file);
     if (f.good()) 
     {
         vmac_config = json::parse(f);
     }
+}
 
+void config_save()
+{
+    std::ofstream o(config_file);
+    o << std::setw(4) << vmac_config << std::endl;
+}
+
+void config_init()
+{
+    config_load();
     set_to_defaults();
     print_config();
-
-    std::ofstream o("vmac.json");
-    o << std::setw(4) << vmac_config << std::endl;
+    config_save();
 
     Screen_LoadCfg();
 }
