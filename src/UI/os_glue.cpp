@@ -51,20 +51,12 @@ bool RunInBackground = (WantInitRunInBackground != 0);
 bool RequestInsertDisk = false;
 uint8_t RequestIthDisk = 0;
 
-extern bool ReCreateMainWindow();
-extern void ZapWinStateVars();
-extern bool CreateMainWindow();
-extern void CloseMainWindow();
-extern bool SDL_InitDisplay();
-
 /* --- some simple utilities --- */
 
 void MoveBytes(anyp srcPtr, anyp destPtr, int32_t byteCount)
 {
 	(void)memcpy((char *)destPtr, (char *)srcPtr, byteCount);
 }
-
-/* --- information about the environment --- */
 
 /* --- basic dialogs --- */
 

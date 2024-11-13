@@ -66,3 +66,9 @@ extern bool GrabMachine;
 extern void GrabTheMachine();
 extern void UngrabMachine();
 #endif
+
+extern bool ReCreateMainWindow();
+extern void ZapWinStateVars();
+extern bool CreateMainWindow();
+extern void CloseMainWindow();
+extern bool SDL_InitDisplay();
