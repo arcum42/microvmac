@@ -1,7 +1,7 @@
 /*
 	dbglog.cpp
 
-    Based on GLOBGLUE.c.
+	Based on GLOBGLUE.c.
 
 	Copyright (C) 2003 Bernd Schmidt, Philip Cummins, Paul C. Pratt
 
@@ -47,15 +47,18 @@ void dbglog_StartLine(void)
 #if dbglog_HAVE
 void dbglog_WriteMemArrow(bool WriteMem)
 {
-	if (WriteMem) {
+	if (WriteMem)
+	{
 		dbglog_writeCStr(" <- ");
-	} else {
+	}
+	else
+	{
 		dbglog_writeCStr(" -> ");
 	}
 }
 
 void dbglog_AddrAccess(char *s, uint32_t Data,
-	bool WriteMem, uint32_t addr)
+					   bool WriteMem, uint32_t addr)
 {
 	dbglog_StartLine();
 	dbglog_writeCStr(s);
@@ -80,9 +83,12 @@ void dbglog_WriteSetBool(char *s, bool v)
 	dbglog_StartLine();
 	dbglog_writeCStr(s);
 	dbglog_writeCStr(" <- ");
-	if (v) {
+	if (v)
+	{
 		dbglog_writeCStr("1");
-	} else {
+	}
+	else
+	{
 		dbglog_writeCStr("0");
 	}
 	dbglog_writeReturn();
@@ -96,9 +102,10 @@ static bool GotOneAbnormal = false;
 #if WantAbnormalReports
 void DoReportAbnormalID(uint16_t id
 #if dbglog_HAVE
-	, char *s
+						,
+						char *s
 #endif
-	)
+)
 {
 #if dbglog_HAVE
 	dbglog_StartLine();
@@ -107,7 +114,8 @@ void DoReportAbnormalID(uint16_t id
 	dbglog_writeReturn();
 #endif
 
-	if (! GotOneAbnormal) {
+	if (!GotOneAbnormal)
+	{
 		WarnMsgAbnormalID(id);
 #if ReportAbnormalInterrupt
 		SetInterruptButton(true);

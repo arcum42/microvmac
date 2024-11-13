@@ -1,8 +1,8 @@
 /*
  * CFGMAN.c
- * 
+ *
  * Configuration Management
- * 
+ *
  */
 
 #include "tomlc99/toml.h"
@@ -13,24 +13,26 @@
 #include <string.h>
 #include "HW/SCREEN/screen.h"
 
-toml_table_t* CONFIG;
+toml_table_t *CONFIG;
 const char CONFIG_PATH[] = "uvmac-cfg.toml";
 
 /* Load existing config */
 static bool Config_TryLoad()
 {
-	FILE* fp;
+	FILE *fp;
 	char errbuf[200];
 
 	/* Open the file. */
 	fp = fopen("uvmac-cfg.toml", "r");
-	if (fp == nullptr) {
+	if (fp == nullptr)
+	{
 		return false;
 	}
 
 	/* Run the file through the parser. */
 	CONFIG = toml_parse_file(fp, errbuf, sizeof(errbuf));
-	if (CONFIG == nullptr) {
+	if (CONFIG == nullptr)
+	{
 		fclose(fp);
 		return false;
 	}
@@ -53,13 +55,22 @@ bool Config_TryInit()
 {
 	bool okay;
 	okay = Config_TryLoad();
-	if (!okay) { okay = Config_TryCreate(); }
-	if (!okay) { return false; }
-	
+	if (!okay)
+	{
+		okay = Config_TryCreate();
+	}
+	if (!okay)
+	{
+		return false;
+	}
+
 	// Initialize per-device configuration
 	okay = Screen_LoadCfg();
-	if (!okay) { return false; }
-	
+	if (!okay)
+	{
+		return false;
+	}
+
 	return true;
 }
 
@@ -67,14 +78,20 @@ bool Config_TryInit()
 static bool Config_GetRawValue(const char table[], const char key[], toml_raw_t *value)
 {
 	toml_table_t *table_raw;
-	
+
 	/* Locate the table. */
 	table_raw = toml_table_in(CONFIG, table);
-	if (table_raw == nullptr) { return false; }
-	
+	if (table_raw == nullptr)
+	{
+		return false;
+	}
+
 	/* Locate the key */
 	*value = toml_raw_in(table_raw, key);
-	if (*value == nullptr) { return false; }
+	if (*value == nullptr)
+	{
+		return false;
+	}
 	return true;
 }
 
@@ -91,14 +108,15 @@ bool Config_GetBool(const char table[], const char key[], bool *value, bool defa
 	toml_raw_t value_raw;
 	bool found, okay;
 	int result;
-	
+
 	found = Config_GetRawValue(table, key, &value_raw);
-	if (!found) { 
+	if (!found)
+	{
 		// TODO: write default to TOML file
 		*value = defaultValue;
 		return true;
 	}
-	
+
 	okay = (toml_rtob(value_raw, &result) == 0);
 	*value = result;
 	return okay;
@@ -109,14 +127,15 @@ bool Config_GetInt(const char table[], const char key[], int64_t *value, int64_t
 {
 	toml_raw_t value_raw;
 	bool found;
-	
+
 	found = Config_GetRawValue(table, key, &value_raw);
-	if (!found) { 
+	if (!found)
+	{
 		// TODO: write default to TOML file
 		*value = defaultValue;
 		return true;
 	}
-	
+
 	return (toml_rtoi(value_raw, value) == 0);
 }
 
@@ -125,14 +144,15 @@ bool Config_GetFloat(const char table[], const char key[], double *value, double
 {
 	toml_raw_t value_raw;
 	bool found;
-	
+
 	found = Config_GetRawValue(table, key, &value_raw);
-	if (!found) { 
+	if (!found)
+	{
 		// TODO: write default to TOML file
 		*value = defaultValue;
 		return true;
 	}
-	
+
 	return (toml_rtod(value_raw, value) == 0);
 }
 
@@ -141,16 +161,17 @@ bool Config_GetString(const char table[], const char key[], char **value, const 
 {
 	toml_raw_t value_raw;
 	bool found;
-	
+
 	found = Config_GetRawValue(table, key, &value_raw);
-	if (!found) { 
+	if (!found)
+	{
 		// TODO: write default to TOML file
-		int defaultLen = strlen(defaultValue)+1;
-		*value = (char*)malloc(defaultLen);
+		int defaultLen = strlen(defaultValue) + 1;
+		*value = (char *)malloc(defaultLen);
 		strncpy(*value, defaultValue, defaultLen);
-		
+
 		return true;
 	}
-	
+
 	return (toml_rtos(value_raw, value) == 0);
 }

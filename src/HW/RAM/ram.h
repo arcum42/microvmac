@@ -1,6 +1,7 @@
 #pragma once
 
 #include <cstdint>
+#include "sys_dependencies.h"
 
 /* map of address space */
 
@@ -111,4 +112,34 @@ constexpr uint32_t Overlay_ROM_CmpZeroMask = 0;
 constexpr uint32_t Overlay_ROM_CmpZeroMask = 0;
 #else
 #error "Overlay_ROM_CmpZeroMask not defined"
+#endif
+
+
+static constexpr uint32_t RAMSafetyMarginFudge = 4;
+
+static constexpr uint32_t kRAM_Size = (kRAMa_Size + kRAMb_Size);
+
+extern uint8_t * RAM;
+	/*
+		allocated by MYOSGLUE to be at least
+			kRAM_Size + RAMSafetyMarginFudge
+		bytes. Because of shortcuts taken in GLOBGLUE.c, it is in theory
+		possible for the emulator to write up to 3 bytes past kRAM_Size.
+	*/
+
+#if EmVidCard
+extern uint8_t * VidROM;
+#endif
+
+#if IncludeVidMem
+extern uint8_t * VidMem;
+#endif
+#if !IncludeVidMem
+static constexpr uint32_t kMain_Offset = 0x5900;
+static constexpr uint32_t kAlternate_Offset = 0xD900;
+static constexpr uint32_t kMain_Buffer = (kRAM_Size - kMain_Offset);
+static constexpr uint32_t kAlternate_Buffer = (kRAM_Size - kAlternate_Offset);
+
+#define get_ram_address(addr) ((addr) + RAM)
+
 #endif

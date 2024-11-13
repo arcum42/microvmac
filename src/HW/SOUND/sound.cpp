@@ -29,6 +29,7 @@
 #include "HW/M68K/cpu_68k.h"
 
 #include "HW/SOUND/sound.h"
+#include "HW/RAM/ram.h"
 
 
 #if SoundEnabled

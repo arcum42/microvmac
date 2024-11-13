@@ -30,8 +30,6 @@
 uint32_t jdate(int day, int month, int year);
 
 uint32_t Date2MacSeconds(
-	int second, int minute, int hour, int day, int month, int year
-);
-
+	int second, int minute, int hour, int day, int month, int year);
 
 #endif

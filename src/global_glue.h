@@ -32,26 +32,6 @@ extern bool RequestInsertDisk;
 extern uint8_t RequestIthDisk;
 extern bool ControlKeyPressed;
 
-static constexpr uint32_t RAMSafetyMarginFudge = 4;
-
-static constexpr uint32_t kRAM_Size = (kRAMa_Size + kRAMb_Size);
-
-extern uint8_t * RAM;
-	/*
-		allocated by MYOSGLUE to be at least
-			kRAM_Size + RAMSafetyMarginFudge
-		bytes. Because of shortcuts taken in GLOBGLUE.c, it is in theory
-		possible for the emulator to write up to 3 bytes past kRAM_Size.
-	*/
-
-#if EmVidCard
-extern uint8_t * VidROM;
-#endif
-
-#if IncludeVidMem
-extern uint8_t * VidMem;
-#endif
-
 extern void MemOverlay_ChangeNtfy(void);
 
 #if (CurEmMd == kEmMd_II) || (CurEmMd == kEmMd_IIx)

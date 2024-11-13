@@ -22,25 +22,24 @@
 
 /* BPF and devices */
 static unsigned char device_address[6] = {
-	0
-};
+	0};
 static unsigned int device_buffer_size = 0;
 static int fd = -1; /* BPF file descriptor */
 static struct bpf_version bpf_version;
 static struct bpf_program bpf_program;
 static struct bpf_insn insns[] =
-{
-	/* Program for BPF to filter out non-LTOE packets */
-	BPF_STMT(BPF_LD + BPF_H + BPF_ABS, 12),
-	BPF_JUMP(BPF_JMP + BPF_JEQ + BPF_K, 0x809B, 0, 1),
-	BPF_STMT(BPF_RET + BPF_K, 65535),
-	BPF_STMT(BPF_RET + BPF_K, 0),
+	{
+		/* Program for BPF to filter out non-LTOE packets */
+		BPF_STMT(BPF_LD + BPF_H + BPF_ABS, 12),
+		BPF_JUMP(BPF_JMP + BPF_JEQ + BPF_K, 0x809B, 0, 1),
+		BPF_STMT(BPF_RET + BPF_K, 65535),
+		BPF_STMT(BPF_RET + BPF_K, 0),
 };
 
- uint8_t * LT_TxBuffer = nullptr;
+uint8_t *LT_TxBuffer = nullptr;
 
 /* Transmit state */
- uint16_t LT_TxBuffSz = 0;
+uint16_t LT_TxBuffSz = 0;
 
 /*
 	Transmit buffer that is reused from tx packet to tx packet.
@@ -61,10 +60,10 @@ static unsigned char tx_buffer[20 + LT_TxBfMxSz] =
 	"\xFF\xFF\xFF\xFF\xFF\xFFssssss\x80\x9BppppSS";
 
 /* Receive state */
- uint8_t * LT_RxBuffer = nullptr;
-	/* When data pending, this is used */
- uint32_t LT_RxBuffSz = 0;
-	/* When data pending, this is used */
+uint8_t *LT_RxBuffer = nullptr;
+/* When data pending, this is used */
+uint32_t LT_RxBuffSz = 0;
+/* When data pending, this is used */
 
 /* Macro used by only the get_sockaddrs function for readability. */
 #define ROUNDUP(a, size) \
@@ -74,19 +73,23 @@ static unsigned char tx_buffer[20 + LT_TxBfMxSz] =
 	Utility function needed for walking the addresses of the
 	kernel route lookup
 */
-static void get_sockaddrs(int addrs, struct sockaddr* sa,
-	struct sockaddr** rti_info)
+static void get_sockaddrs(int addrs, struct sockaddr *sa,
+						  struct sockaddr **rti_info)
 {
 	int loop;
 	int incr;
 
-	for (loop = 0; loop < RTAX_MAX; loop++) {
-		if (addrs & (1 << loop)) {
+	for (loop = 0; loop < RTAX_MAX; loop++)
+	{
+		if (addrs & (1 << loop))
+		{
 			rti_info[loop] = sa;
 			incr = sa->sa_len ? ROUNDUP(sa->sa_len, sizeof(uint32_t))
-				: sizeof(uint32_t);
-			sa = (struct sockaddr*)((unsigned long int)sa + incr);
-		} else {
+							  : sizeof(uint32_t);
+			sa = (struct sockaddr *)((unsigned long int)sa + incr);
+		}
+		else
+		{
 			rti_info[loop] = nullptr;
 		}
 	}
@@ -109,9 +112,9 @@ static int get_ethernet(void)
 {
 	int result;
 	int size;
-	struct rt_msghdr* message;
-	struct sockaddr_in* addrs;
-	struct sockaddr* sa_list[RTAX_MAX];
+	struct rt_msghdr *message;
+	struct sockaddr_in *addrs;
+	struct sockaddr *sa_list[RTAX_MAX];
 	int loop;
 	char filename[64];
 	struct ifreq ifreq;
@@ -124,33 +127,35 @@ static int get_ethernet(void)
 
 	/* Get a socket to routed for IPv4 */
 	fd = socket(PF_ROUTE, SOCK_RAW, AF_INET);
-	if (fd == -1) {
+	if (fd == -1)
+	{
 		return false;
 	}
 
 	/* Allocate a message */
 	size = sizeof(struct rt_msghdr) + 16 * sizeof(struct sockaddr_in);
-	message = (struct rt_msghdr*)malloc(size);
-	if (! message) {
+	message = (struct rt_msghdr *)malloc(size);
+	if (!message)
+	{
 		close(fd);
 		return false;
 	}
 	memset(message, 0, size);
-	addrs = (struct sockaddr_in*)(message + 1);
+	addrs = (struct sockaddr_in *)(message + 1);
 
 	/* Fill in the request */
-	message->rtm_msglen    = size;
-	message->rtm_version   = RTM_VERSION;
-	message->rtm_type      = RTM_GET;
-	message->rtm_addrs
-		= RTA_DST | RTA_GATEWAY | RTA_NETMASK | RTA_IFP | RTA_IFA;
-	addrs->sin_len         = sizeof(struct sockaddr_in);
-	addrs->sin_family      = AF_INET;
+	message->rtm_msglen = size;
+	message->rtm_version = RTM_VERSION;
+	message->rtm_type = RTM_GET;
+	message->rtm_addrs = RTA_DST | RTA_GATEWAY | RTA_NETMASK | RTA_IFP | RTA_IFA;
+	addrs->sin_len = sizeof(struct sockaddr_in);
+	addrs->sin_family = AF_INET;
 	addrs->sin_addr.s_addr = 0; /* 0.0.0.0 is default route */
 
 	/* Send the message to the kernel */
 	result = write(fd, message, size);
-	if (result < 0) {
+	if (result < 0)
+	{
 		close(fd);
 		free(message);
 		return false;
@@ -158,7 +163,8 @@ static int get_ethernet(void)
 
 	/* Read the result from the kernel */
 	result = read(fd, message, size);
-	if (result < 0) {
+	if (result < 0)
+	{
 		close(fd);
 		free(message);
 		return false;
@@ -168,86 +174,95 @@ static int get_ethernet(void)
 	close(fd);
 
 	/* Get pointer to the result then parse it */
-	struct sockaddr* sa = (struct sockaddr*)
-		((unsigned long int)message + sizeof(struct rt_msghdr));
+	struct sockaddr *sa = (struct sockaddr *)((unsigned long int)message + sizeof(struct rt_msghdr));
 	get_sockaddrs(message->rtm_addrs, sa, sa_list);
 
 	/* Must have a LINK (Ethernet) */
-	if ((! sa_list[RTAX_IFP])
-		|| (sa_list[RTAX_IFP]->sa_family != AF_LINK))
+	if ((!sa_list[RTAX_IFP]) || (sa_list[RTAX_IFP]->sa_family != AF_LINK))
 	{
 		return false;
 	}
 
-	int namelen = ((struct sockaddr_dl*)sa_list[RTAX_IFP])->sdl_nlen;
+	int namelen = ((struct sockaddr_dl *)sa_list[RTAX_IFP])->sdl_nlen;
 #if 0
 	int addrlen = ((struct sockaddr_dl*)sa_list[RTAX_IFP])->sdl_alen;
 #endif
 
 	strncpy(device,
-		&((struct sockaddr_dl*)sa_list[RTAX_IFP])->sdl_data[0],
-		namelen);
+			&((struct sockaddr_dl *)sa_list[RTAX_IFP])->sdl_data[0],
+			namelen);
 	device[namelen] = 0;
 	memcpy(device_address,
-		&((struct sockaddr_dl*)sa_list[RTAX_IFP])->sdl_data[namelen],
-		6);
+		   &((struct sockaddr_dl *)sa_list[RTAX_IFP])->sdl_data[namelen],
+		   6);
 	memcpy(&(tx_buffer[6]),
-		&((struct sockaddr_dl*)sa_list[RTAX_IFP])->sdl_data[namelen],
-		6);
+		   &((struct sockaddr_dl *)sa_list[RTAX_IFP])->sdl_data[namelen],
+		   6);
 
 	result = sysctlbyname("debug.bpf_maxdevices", &kp, &len, nullptr, 0);
-	if (result == -1) {
+	if (result == -1)
+	{
 		return false;
 	}
 	max = *((int *)&kp);
 
-	for (loop = 0; loop < max; loop++) {
+	for (loop = 0; loop < max; loop++)
+	{
 		sprintf(filename, "/dev/bpf%d", loop);
 		fd = open(filename, O_RDWR | O_NONBLOCK | O_EXLOCK);
-		if (fd >= 0) {
+		if (fd >= 0)
+		{
 			/* sprintf(buffer, "using %s\n", filename); */
 			break;
 		}
 	}
 
-	if (fd <= 0) {
+	if (fd <= 0)
+	{
 		return false;
 	}
 
 	memset(&ifreq, 0, sizeof(struct ifreq));
 	strncpy(ifreq.ifr_name, device, IFNAMSIZ);
 	result = ioctl(fd, BIOCSETIF, &ifreq);
-	if (result) {
+	if (result)
+	{
 		return false;
 	}
 
 	result = ioctl(fd, BIOCGBLEN, &device_buffer_size);
-	if (result) {
+	if (result)
+	{
 		return false;
 	}
 
 	result = ioctl(fd, BIOCPROMISC, &enable);
-	if (result) {
+	if (result)
+	{
 		return false;
 	}
 
 	result = ioctl(fd, BIOCSSEESENT, &enable);
-	if (result) {
+	if (result)
+	{
 		return false;
 	}
 
 	result = ioctl(fd, BIOCSHDRCMPLT, &enable);
-	if (result) {
+	if (result)
+	{
 		return false;
 	}
 
 	result = ioctl(fd, BIOCIMMEDIATE, &enable);
-	if (result) {
+	if (result)
+	{
 		return false;
 	}
 
 	result = ioctl(fd, BIOCVERSION, &bpf_version);
-	if (result) {
+	if (result)
+	{
 		return false;
 	}
 
@@ -255,7 +270,8 @@ static int get_ethernet(void)
 	bpf_program.bf_insns = insns;
 
 	result = ioctl(fd, BIOCSETF, &bpf_program);
-	if (result) {
+	if (result)
+	{
 		return false;
 	}
 
@@ -278,12 +294,13 @@ static int InitLocalTalk(void)
 		later to uniquely identify the sender to identify collisions
 		in dynamic llap node address assignment.
 	*/
-	*((uint32_t*)(&tx_buffer[14])) = htonl(getpid());
+	*((uint32_t *)(&tx_buffer[14])) = htonl(getpid());
 
 	LT_TxBuffer = (uint8_t *)&tx_buffer[20];
 
 	RxBuffer = malloc(device_buffer_size);
-	if (nullptr == RxBuffer) {
+	if (nullptr == RxBuffer)
+	{
 		return false;
 	}
 
@@ -301,7 +318,7 @@ void LT_TransmitPacket(void)
 		will enforce on TX.  Without the size, a simple 3 byte LLAP
 		packet would look like a (60 - 14 =) 46 byte LLAP packet.
 	*/
-	*((uint16_t*)(&tx_buffer[18])) = htons(LT_TxBuffSz);
+	*((uint16_t *)(&tx_buffer[18])) = htons(LT_TxBuffSz);
 
 	/* Send the packet to Ethernet */
 	count = write(fd, tx_buffer, 20 + LT_TxBuffSz);
@@ -309,15 +326,16 @@ void LT_TransmitPacket(void)
 	(void)count; /* unused */
 }
 
-static unsigned char* NextPacket = nullptr;
-static unsigned char* EndPackets = nullptr;
+static unsigned char *NextPacket = nullptr;
+static unsigned char *EndPackets = nullptr;
 
 static void LocalTalkTick0(void)
 {
 	/* Get a single buffer worth of packets from BPF */
-	unsigned char* device_buffer = RxBuffer;
+	unsigned char *device_buffer = RxBuffer;
 	int bytes = read(fd, device_buffer, device_buffer_size);
-	if (bytes > 0) {
+	if (bytes > 0)
+	{
 		/* Maybe multiple packets in this buffer */
 #if 0
 		spdlog::debug("SCC founds packets from BPF");
@@ -330,37 +348,44 @@ static void LocalTalkTick0(void)
 void LT_ReceivePacket(void)
 {
 label_retry:
-	if (NextPacket == nullptr) {
+	if (NextPacket == nullptr)
+	{
 		LocalTalkTick0();
-		if (NextPacket != nullptr) {
+		if (NextPacket != nullptr)
+		{
 			goto label_retry;
 		}
-	} else if (NextPacket >= EndPackets) {
+	}
+	else if (NextPacket >= EndPackets)
+	{
 #if 0
 		spdlog::debug("SCC finished set of packets from BPF");
 #endif
 		NextPacket = nullptr;
 		goto label_retry;
-	} else {
-		unsigned char* packet = NextPacket;
+	}
+	else
+	{
+		unsigned char *packet = NextPacket;
 		/* Get pointer to BPF header */
-		struct bpf_hdr* header = (struct bpf_hdr *)packet;
+		struct bpf_hdr *header = (struct bpf_hdr *)packet;
 
 		/* Advance to next packet in buffer */
-		NextPacket += BPF_WORDALIGN(header->bh_hdrlen
-			+ header->bh_caplen);
+		NextPacket += BPF_WORDALIGN(header->bh_hdrlen + header->bh_caplen);
 
 		/* Get clean references to data */
 		int ethernet_length = header->bh_caplen - 14;
-		int llap_length = htons(*((uint16_t*)(packet
-			+ header->bh_hdrlen + 18)));
-		unsigned char* start = packet + header->bh_hdrlen + 20;
+		int llap_length = htons(*((uint16_t *)(packet + header->bh_hdrlen + 18)));
+		unsigned char *start = packet + header->bh_hdrlen + 20;
 
-		if (llap_length <= ethernet_length) {
+		if (llap_length <= ethernet_length)
+		{
 			/* Start the receiver */
-			LT_RxBuffer    = (uint8_t *)start;
-			LT_RxBuffSz    = llap_length;
-		} else {
+			LT_RxBuffer = (uint8_t *)start;
+			LT_RxBuffSz = llap_length;
+		}
+		else
+		{
 			goto label_retry;
 		}
 	}

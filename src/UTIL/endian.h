@@ -30,30 +30,31 @@
 #define ENDIANAC_H
 #endif
 
+#include "HW/RAM/ram.h"
 
-#define do_get_mem_byte(a) ((uint8_t)*((uint8_t *)(a)))
+#define do_get_mem_byte(a) ((uint8_t) * ((uint8_t *)(a)))
 
 #if BigEndianUnaligned
-#define do_get_mem_word(a) ((uint16_t)*((uint16_t *)(a)))
+#define do_get_mem_word(a) ((uint16_t) * ((uint16_t *)(a)))
 #else
-[[maybe_unused]] static uint16_t do_get_mem_word(uint8_t * a)
+[[maybe_unused]] static uint16_t do_get_mem_word(uint8_t *a)
 {
 #if LittleEndianUnaligned
 	uint16_t b = (*((uint16_t *)(a)));
 
 	return ((b & 0x00FF) << 8) | ((b >> 8) & 0x00FF);
 #else
-	return (((uint16_t)*a) << 8) | ((uint16_t)*(a + 1));
+	return (((uint16_t)*a) << 8) | ((uint16_t) * (a + 1));
 #endif
 }
 #endif
 
 #if BigEndianUnaligned
-#define do_get_mem_long(a) ((uint32_t)*((uint32_t *)(a)))
+#define do_get_mem_long(a) ((uint32_t) * ((uint32_t *)(a)))
 #elif HaveSwapUi5r && LittleEndianUnaligned
-#define do_get_mem_long(a) (SwapUi5r((uint32_t)*((uint32_t *)(a))))
+#define do_get_mem_long(a) (SwapUi5r((uint32_t) * ((uint32_t *)(a))))
 #else
-[[maybe_unused]] static uint32_t do_get_mem_long(uint8_t * a)
+[[maybe_unused]] static uint32_t do_get_mem_long(uint8_t *a)
 {
 #if LittleEndianUnaligned
 #if 0
@@ -86,8 +87,7 @@
 		instruction with apple tools for intel.
 	*/
 #else
-	return (((uint32_t)*a) << 24) | (((uint32_t)*(a + 1)) << 16)
-		| (((uint32_t)*(a + 2)) << 8) | ((uint32_t)*(a + 3));
+	return (((uint32_t)*a) << 24) | (((uint32_t) * (a + 1)) << 16) | (((uint32_t) * (a + 2)) << 8) | ((uint32_t) * (a + 3));
 #endif
 }
 #endif
@@ -97,7 +97,7 @@
 #if BigEndianUnaligned
 #define do_put_mem_word(a, v) ((*((uint16_t *)(a))) = (v))
 #else
-[[maybe_unused]] static void do_put_mem_word(uint8_t * a, uint16_t v)
+[[maybe_unused]] static void do_put_mem_word(uint8_t *a, uint16_t v)
 {
 #if LittleEndianUnaligned
 	uint16_t b = ((v & 0x00FF) << 8) | ((v >> 8) & 0x00FF);
@@ -115,7 +115,7 @@
 #elif HaveSwapUi5r && LittleEndianUnaligned
 #define do_put_mem_long(a, v) ((*((uint32_t *)(a))) = SwapUi5r(v))
 #else
-[[maybe_unused]] static void do_put_mem_long(uint8_t * a, uint32_t v)
+[[maybe_unused]] static void do_put_mem_long(uint8_t *a, uint32_t v)
 {
 #if LittleEndianUnaligned
 	uint16_t b1 = v;

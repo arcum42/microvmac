@@ -31,15 +31,7 @@
 #include "global_glue.h"
 #include "HW/SCREEN/screen.h"
 #include "config_manage.h"
-
-#if ! IncludeVidMem
-#define kMain_Offset      0x5900
-#define kAlternate_Offset 0xD900
-#define kMain_Buffer      (kRAM_Size - kMain_Offset)
-#define kAlternate_Buffer (kRAM_Size - kAlternate_Offset)
-#endif
-
-#define get_ram_address(addr) ((addr) + RAM)
+#include "HW/RAM/ram.h"
 
 // Configuration variables
 uint16_t vMacScreenHeight;
@@ -67,23 +59,41 @@ bool Screen_LoadCfg()
 	// Load configuration
 	int64_t temp;
 	bool okay;
-	
+
 	okay = Config_GetInt(CONFIG_VIDEO_HEIGHT, &temp, 342);
-	if (!okay) { return false; }
+	if (!okay)
+	{
+		return false;
+	}
 	vMacScreenHeight = temp;
 	okay = Config_GetInt(CONFIG_VIDEO_WIDTH, &temp, 512);
-	if (!okay) { return false; }
-	vMacScreenWidth  = temp;
+	if (!okay)
+	{
+		return false;
+	}
+	vMacScreenWidth = temp;
 	okay = Config_GetInt(CONFIG_VIDEO_DEPTH, &temp, 0);
-	if (!okay) { return false; }
-	vMacScreenDepth  = temp;
+	if (!okay)
+	{
+		return false;
+	}
+	vMacScreenDepth = temp;
 	okay = Config_GetBool(CONFIG_VIDEO_USEHACK, &UseLargeScreenHack, false);
-	if (!okay) { return false; }
+	if (!okay)
+	{
+		return false;
+	}
 	okay = Config_GetString(CONFIG_VIDEO_BLACK, &ScreenColorBlack, "#000000");
-	if (!okay) { return false; }
+	if (!okay)
+	{
+		return false;
+	}
 	okay = Config_GetString(CONFIG_VIDEO_WHITE, &ScreenColorWhite, "#FFFFFF");
-	if (!okay) { return false; }
-	
+	if (!okay)
+	{
+		return false;
+	}
+
 	// Compute the other sorts of things
 	vMacScreenNumPixels = vMacScreenHeight * vMacScreenWidth;
 	vMacScreenNumBits = vMacScreenNumPixels << vMacScreenDepth;
@@ -97,14 +107,17 @@ bool Screen_LoadCfg()
 
 void Screen_EndTickNotify(void)
 {
-	uint8_t * screencurrentbuff;
+	uint8_t *screencurrentbuff;
 
 #if IncludeVidMem
 	screencurrentbuff = VidMem;
 #else
-	if (SCRNvPage2 == 1) {
+	if (SCRNvPage2 == 1)
+	{
 		screencurrentbuff = get_ram_address(kMain_Buffer);
-	} else {
+	}
+	else
+	{
 		screencurrentbuff = get_ram_address(kAlternate_Buffer);
 	}
 #endif

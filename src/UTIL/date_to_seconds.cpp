@@ -25,7 +25,6 @@
 	by Bradford L. Barrett.
 */
 
-
 /*
 	The function jdate was found at the end of the file
 	webalizer.c in the program webalizer at
@@ -49,25 +48,21 @@
 
 uint32_t jdate(int day, int month, int year)
 {
-	uint32_t days;                      /* value returned */
+	uint32_t days; /* value returned */
 	int mtable[] = {
-		0,    31,  59,  90, 120, 151,
-		181, 212, 243, 273, 304, 334
-	};
+		0, 31, 59, 90, 120, 151,
+		181, 212, 243, 273, 304, 334};
 
 	/*
 		First, calculate base number including leap
 		and Centenial year stuff
 	*/
 
-	days = (((uint32_t)year * 365) + day + mtable[month - 1]
-		+ ((year + 4) / 4) - ((year / 100) - (year / 400)));
+	days = (((uint32_t)year * 365) + day + mtable[month - 1] + ((year + 4) / 4) - ((year / 100) - (year / 400)));
 
 	/* now adjust for leap year before March 1st */
 
-	if ((year % 4 == 0)
-		&& (! ((year % 100 == 0) && (year % 400 != 0)))
-		&& (month < 3))
+	if ((year % 4 == 0) && (!((year % 100 == 0) && (year % 400 != 0))) && (month < 3))
 	{
 		--days;
 	}
@@ -78,13 +73,12 @@ uint32_t jdate(int day, int month, int year)
 }
 
 uint32_t Date2MacSeconds(int second, int minute, int hour,
-	int day, int month, int year)
+						 int day, int month, int year)
 {
 	uint32_t curjdate;
 	uint32_t basejdate;
 
 	curjdate = jdate(day, month, year);
 	basejdate = jdate(1, 1, 1904);
-	return (((curjdate - basejdate) * 24 + hour) * 60
-		+ minute) * 60 + second;
+	return (((curjdate - basejdate) * 24 + hour) * 60 + minute) * 60 + second;
 }

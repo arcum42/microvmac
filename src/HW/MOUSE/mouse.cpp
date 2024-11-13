@@ -33,6 +33,7 @@
 #include "HW/SCC/serial_comm.h"
 #include "HW/M68K/cpu_68k.h"
 #include "HW/MOUSE/mouse.h"
+#include "HW/RAM/ram.h"
 
 uint16_t CurMouseV = 0;
 uint16_t CurMouseH = 0;
