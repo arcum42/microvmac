@@ -92,10 +92,6 @@ void ReserveAllocAll(void)
 
 	ReserveAllocOneBlock(&screencomparebuff,
 						 vMacScreenNumBytes, 5, true);
-#if UseControlKeys
-	ReserveAllocOneBlock(&CntrlDisplayBuff,
-						 vMacScreenNumBytes, 5, false);
-#endif
 
 	ReserveAllocOneBlock(&CLUT_final, CLUT_finalsz, 5, false);
 #if SoundEnabled

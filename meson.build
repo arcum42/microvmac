@@ -37,8 +37,6 @@ conf = configuration_data({
 	'NeedDoMoreCommandsMsg': 1,
 	# Enable about dialog
 	'NeedDoAboutMsg': 1,
-	# Enable Control Mode (options menu)
-	'UseControlKeys': 0,
 	# Include international characters for Control Mode
 	'NeedIntlChars': 0,
 	# Force keyboard to match Mac layout on Windows
@@ -185,7 +183,6 @@ MAC_SRC = {
 # User interface definitions
 UI_SRC = [
 	'src/UI/event_queue.cpp',
-	'src/UI/control_mode.cpp',
 	'src/UI/memory.cpp',
 	'src/UI/os_glue.cpp',
 	'src/UI/clipboard_sdl2.cpp',

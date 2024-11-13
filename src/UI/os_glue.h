@@ -86,6 +86,7 @@ extern bool CurSpeedStopped;
 
 // Functions
 
+extern void MacMsgOverride(const char *title, const char *msg);
 extern void DoKeyCode(SDL_Keysym *r, bool down);
 
 /*** Might be SDL2-specific? ***/

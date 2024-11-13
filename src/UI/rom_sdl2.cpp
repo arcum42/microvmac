@@ -6,7 +6,6 @@
 #include "error_codes.h"
 
 #include "UI/os_glue.h"
-#include "UI/control_mode.h"
 #include "HW/ROM/rom.h"
 
 /* --- ROM --- */

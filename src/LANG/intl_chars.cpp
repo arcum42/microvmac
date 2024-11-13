@@ -34,7 +34,6 @@
 #include "STRCONST.h"
 
 #include "UI/os_glue.h"
-#include "UI/control_mode.h"
 #include "LANG/intl_chars.h"
 
 extern uint8_t SpeedValue;
@@ -1416,15 +1415,6 @@ const char * GetSubstitutionStr(const char x)
 		case 'm':
 			return kUnMappedKey;
 			break;
-#if UseControlKeys
-		case 'k':
-			if (ControlKeyPressed) {
-				return kStrPressed;
-			} else {
-				return kStrReleased;
-			}
-			break;
-#endif
 		case 'g':
 			if (WantMagnify) {
 				return kStrOn;

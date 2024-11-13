@@ -40,8 +40,8 @@
 #include "UI/event_queue.h"
 #include "UI/memory.h"
 #include "UI/video_sdl2.h"
-#include "UI/control_mode.h"
 
+bool NeedWholeScreenDraw = false;
 bool RequestMacOff = false;
 bool ForceMacOff = false;
 bool WantMacInterrupt = false;
@@ -140,6 +140,22 @@ static void CheckSavedMacMsg(void)
 
 		SavedBriefMsg = nullptr;
 	}
+}
+
+void MacMsgOverride(const char *title, const char *msg)
+{
+	SDL_ShowSimpleMessageBox(SDL_MESSAGEBOX_ERROR, title, msg, main_wind);
+}
+
+[[maybe_unused]] static void WarnMsgCorruptedROM(void)
+{
+	MacMsgOverride(kStrCorruptedROMTitle, kStrCorruptedROMMessage);
+}
+
+[[maybe_unused]] static void WarnMsgUnsupportedROM(void)
+{
+	MacMsgOverride(kStrUnsupportedROMTitle,
+				   kStrUnsupportedROMMessage);
 }
 
 /* --- event handling for main window --- */

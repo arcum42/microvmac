@@ -11,7 +11,6 @@
 #include "HW/ROM/rom.h"
 #include "HW/DISK/sony_floppy.h"
 
-#include "UI/control_mode.h"
 #include "UI/os_glue.h"
 
 extern void MacMsg(char *briefMsg, char *longMsg, bool fatal);
