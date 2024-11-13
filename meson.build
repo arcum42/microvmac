@@ -204,6 +204,7 @@ EMU_SRC = [
 	'src/global_glue.cpp',
 	'src/ticks.cpp',
 	'src/config_manage.cpp',
+	'src/config.cpp',
 	'src/PATCHES/rom.cpp',
 	'src/UTIL/date_to_seconds.cpp',
 	'src/UTIL/dbglog.cpp',
