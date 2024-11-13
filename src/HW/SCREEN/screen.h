@@ -34,8 +34,5 @@ extern uint32_t vMacScreenBitWidth;
 extern uint32_t vMacScreenByteWidth;
 extern uint32_t vMacScreenMonoNumBytes;
 extern uint32_t vMacScreenMonoByteWidth;
-extern bool UseLargeScreenHack;
-extern char *ScreenColorBlack;
-extern char *ScreenColorWhite;
 
 #endif

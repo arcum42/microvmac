@@ -27,6 +27,7 @@
 #include "incbin/incbin.h"
 #include "PATCHES/rom.h"
 #include "HW/SCREEN/screen.h"
+#include "config.h"
 
 static void ScreenHack_Install_64K(uint8_t **pto)
 {
@@ -417,7 +418,7 @@ void ScreenHack_Install_256K(uint8_t **pto)
 
 void ScreenHack_Install(uint8_t **pto)
 {
-	if (!UseLargeScreenHack) { return; }
+	if (!vmac_config["Video"]["UseLargeScreenHack"]) { return; }
 	
 	switch(CurEmMd) {
 	case kEmMd_Twiggy:

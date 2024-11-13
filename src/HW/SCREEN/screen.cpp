@@ -42,45 +42,9 @@ bool Screen_Init(void)
 bool Screen_LoadCfg()
 {
 	// Load configuration
-	//int64_t temp;
-	//bool okay;
-
-	//okay = Config_GetInt(CONFIG_VIDEO_HEIGHT, &temp, 342);
-	//if (!okay)
-	//{
-	//	return false;
-	//}
 	vMacScreenHeight = vmac_config["Video"]["Height"];
-	//okay = Config_GetInt(CONFIG_VIDEO_WIDTH, &temp, 512);
-	// if (!okay)
-	// {
-	// 	return false;
-	// }
 	vMacScreenWidth = vmac_config["Video"]["Width"];
-	// okay = Config_GetInt(CONFIG_VIDEO_DEPTH, &temp, 0);
-	// if (!okay)
-	// {
-	// 	return false;
-	// }
 	vMacScreenDepth = vmac_config["Video"]["Depth"];
-	UseLargeScreenHack = vmac_config["Video"]["UseLargeScreenHack"];
-	//ScreenColorBlack = vmac_config["Video"]["ColorBlack"];
-	//ScreenColorWhite = vmac_config["Video"]["ColorWhite"];
-	// okay = Config_GetBool(CONFIG_VIDEO_USEHACK, &UseLargeScreenHack, false);
-	// if (!okay)
-	// {
-	// 	return false;
-	// }
-	// okay = Config_GetString(CONFIG_VIDEO_BLACK, &ScreenColorBlack, "#000000");
-	// if (!okay)
-	// {
-	// 	return false;
-	// }
-	// okay = Config_GetString(CONFIG_VIDEO_WHITE, &ScreenColorWhite, "#FFFFFF");
-	// if (!okay)
-	// {
-	// 	return false;
-	// }
 
 	// Compute the other sorts of things
 	vMacScreenNumPixels = vMacScreenHeight * vMacScreenWidth;
