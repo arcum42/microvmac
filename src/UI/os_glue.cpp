@@ -450,43 +450,48 @@ static void CheckForSystemEvents(void)
 
 void WaitForNextTick(void)
 {
-label_retry:
-	CheckForSystemEvents();
-	CheckForSavedTasks();
+	bool waiting = true;
 
-	if (ForceMacOff)
+	do
 	{
-		return;
-	}
+		CheckForSystemEvents();
+		CheckForSavedTasks();
 
-	if (CurSpeedStopped)
-	{
-		DoneWithDrawingForTick();
-		WaitForTheNextEvent();
-		goto label_retry;
-	}
+		if (ForceMacOff)
+		{
+			return;
+		}
 
-	if (ExtraTimeNotOver())
-	{
-		(void)SDL_Delay(NextIntTime - LastTime);
-		goto label_retry;
-	}
+		if (CurSpeedStopped)
+		{
+			DoneWithDrawingForTick();
+			WaitForTheNextEvent();
+			continue;
+		}
 
-	if (CheckDateTime())
-	{
-		Sound_SecondNotify();
-	}
+		if (ExtraTimeNotOver())
+		{
+			(void)SDL_Delay(NextIntTime - LastTime);
+			continue;
+		}
 
-	if ((!gBackgroundFlag) && (!CaughtMouse))
-	{
-		CheckMouseState();
-	}
+		if (CheckDateTime())
+		{
+			Sound_SecondNotify();
+		}
 
-	OnTrueTime = TrueEmulatedTime;
+		if ((!gBackgroundFlag) && (!CaughtMouse))
+		{
+			CheckMouseState();
+		}
+
+		OnTrueTime = TrueEmulatedTime;
+		waiting = false;
 
 #if dbglog_TimeStuff
-	spdlog::debug("WaitForNextTick, OnTrueTime = {}", OnTrueTime);
+		spdlog::debug("WaitForNextTick, OnTrueTime = {}", OnTrueTime);
 #endif
+	} while (waiting);
 }
 
 void ZapOSGLUVars(void)
