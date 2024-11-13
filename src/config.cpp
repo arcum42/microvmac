@@ -2,6 +2,7 @@
 #include "config.h"
 #include "spdlog/spdlog.h"
 #include <iostream>
+#include "HW/SCREEN/screen.h"
 using json = nlohmann::json;   
 
 json vmac_config;
@@ -51,4 +52,5 @@ void config_init()
 
     set_to_defaults();
     print_config();
+    Screen_LoadCfg();
 }

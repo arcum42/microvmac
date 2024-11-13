@@ -526,8 +526,8 @@ static void UninitWhereAmI(void)
 bool InitOSGLU(void)
 {
 	config_init();
-	if (!Config_TryInit())
-		return false;
+	//if (!Config_TryInit())
+	//	return false;
 	if (!AllocMemory())
 		return false;
 #if CanGetAppPath
