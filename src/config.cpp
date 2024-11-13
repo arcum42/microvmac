@@ -25,7 +25,7 @@ void set_to_defaults()
 {
     if (vmac_config["Video"]["Height"].is_null()) vmac_config["Video"]["Height"] = 342;
     if (vmac_config["Video"]["Width"].is_null()) vmac_config["Video"]["Width"] = 512;
-    if (vmac_config["Video"]["Depth"].is_null()) vmac_config["Video"]["Depth"] = 1;
+    if (vmac_config["Video"]["Depth"].is_null()) vmac_config["Video"]["Depth"] = 0; // Crashes if not 0.
 
     if (vmac_config["Video"]["ColorBlack"].is_null()) vmac_config["Video"]["ColorBlack"] = "#000000";
     if (vmac_config["Video"]["ColorWhite"].is_null()) vmac_config["Video"]["ColorWhite"] = "#FFFFFF";

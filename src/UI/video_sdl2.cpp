@@ -2,6 +2,7 @@
 #include <string.h>
 #include <stdio.h>
 #include <assert.h>
+#include <iostream>
 
 #include <SDL.h>
 #include <SDL_pixels.h>
@@ -14,6 +15,7 @@
 #include "video_sdl2.h"
 #include "UI/os_glue.h"
 #include "UI/event_queue.h"
+#include "config.h"
 
 /* --- video out --- */
 
@@ -169,17 +171,21 @@ static int SetPalette(SDL_Palette *palette, const SDL_Color *macColors, int ncol
 	return SDL_SetPaletteColors(palette, macColors, 0, ncolors);
 }
 
-static SDL_Color HexToColor(const char *hexIn, SDL_Color fallback)
+static SDL_Color HexToColor(std::string input) 
 {
-	unsigned char r, g, b;
-	assert(hexIn != nullptr);
-	int numRead = sscanf(hexIn, "#%02hhx%02hhx%02hhx", &r, &g, &b);
-	if (numRead != 3)
-	{
-		return fallback;
-	}
-	SDL_Color result = {.r = r, .g = g, .b = b, .a = 255};
-	return result;
+    if (input[0] == '#')
+        input.erase(0, 1);
+
+    unsigned long value = stoul(input, nullptr, 16);
+
+    SDL_Color color;
+
+    color.a = 0xff;
+    color.r = (value >> 16) & 0xff;
+    color.g = (value >> 8) & 0xff;
+    color.b = (value >> 0) & 0xff;
+
+    return color;
 }
 
 void LoadCustomPalette()
@@ -188,9 +194,9 @@ void LoadCustomPalette()
 	{
 		return;
 	}
-	SDL_Color fallbacks[] = {{.r = 255, .g = 255, .b = 255, .a = 255}, {.r = 0, .g = 0, .b = 0, .a = 255}};
-	bwpalette[0] = HexToColor(ScreenColorWhite, fallbacks[0]);
-	bwpalette[1] = HexToColor(ScreenColorBlack, fallbacks[1]);
+	//SDL_Color fallbacks[] = {{.r = 255, .g = 255, .b = 255, .a = 255}, {.r = 0, .g = 0, .b = 0, .a = 255}};
+	bwpalette[0] = HexToColor(vmac_config["Video"]["ColorWhite"]);
+	bwpalette[1] = HexToColor(vmac_config["Video"]["ColorBlack"]);
 	bwpalette_loaded = true;
 }
 
