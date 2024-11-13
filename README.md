@@ -1,12 +1,14 @@
 This is a fork of µvMac 0.37.0, which is a fork of mini vMac, which is a fork of vMac. Forks all around.
 
 To compile, right now, what you'd want to do is:
-```mkdir subprojects
+```bash
+mkdir subprojects
 meson wrap install spdlog
 meson wrap install nlohmann_json
 mkdir builddir
 meson setup builddir && cd builddir
-meson compile```
+meson compile
+```
 Then you'll need to copy the resulting microvmac binary into a directory with a rom called vMac.ROM as well as up to 6 disks named disk1.dsk, etc.
 
 This will probably all change, and may even be out of date as you are reading this.
