@@ -22,6 +22,4 @@
 #define SNDEMDEV_H
 #endif
 
-#if SoundEnabled
 extern void MacSound_SubTick(int SubTick);
-#endif

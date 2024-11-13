@@ -94,10 +94,8 @@ void ReserveAllocAll(void)
 						 vMacScreenNumBytes, 5, true);
 
 	ReserveAllocOneBlock(&CLUT_final, CLUT_finalsz, 5, false);
-#if SoundEnabled
 	ReserveAllocOneBlock((uint8_t **)&TheSoundBuffer,
 						 dbhBufferSize, 5, false);
-#endif
 
 	EmulationReserveAlloc();
 }

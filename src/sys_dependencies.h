@@ -37,7 +37,6 @@
 
 /* capabilities provided by platform specific code */
 
-#define SoundEnabled 1
 #define kLn2SoundSampSz 3
 
 #define dbglog_HAVE 0

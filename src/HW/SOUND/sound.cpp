@@ -31,9 +31,6 @@
 #include "HW/SOUND/sound.h"
 #include "HW/RAM/ram.h"
 
-
-#if SoundEnabled
-
 #define kSnd_Main_Offset   0x0300
 #define kSnd_Alt_Offset    0x5F00
 
@@ -217,5 +214,3 @@ label_retry:
 		}
 	}
 }
-
-#endif

@@ -261,7 +261,7 @@ const DevMethods_t sound_device =
 	.reset = nullptr,
 	.starttick = nullptr,
 	.endtick = nullptr,
-	.subtick = (SoundEnabled && (CurEmMd != kEmMd_PB100)) ? MacSound_SubTick : nullptr,
+	.subtick = (CurEmMd != kEmMd_PB100) ? MacSound_SubTick : nullptr,
 	.timebegin = nullptr,
 	.timeend = nullptr
 };
@@ -329,7 +329,7 @@ void devices_setup()
 	else
 		DEVICES[DEV_ASC] = null_device;
 
-	if (SoundEnabled && (CurEmMd != kEmMd_PB100))
+	if (CurEmMd != kEmMd_PB100)
 		DEVICES[DEV_SOUND] = sound_device;
 	else
 		DEVICES[DEV_SOUND] = null_device;

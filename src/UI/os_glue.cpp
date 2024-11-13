@@ -315,18 +315,14 @@ static void EnterBackground(void)
 
 void LeaveSpeedStopped(void)
 {
-#if SoundEnabled
 	Sound_Start();
-#endif
 
 	StartUpTimeAdjust();
 }
 
 void EnterSpeedStopped(void)
 {
-#if SoundEnabled
 	Sound_Stop();
-#endif
 }
 
 static void CheckForSavedTasks(void)
@@ -490,9 +486,7 @@ label_retry:
 
 	if (CheckDateTime())
 	{
-#if SoundEnabled
 		Sound_SecondNotify();
-#endif
 	}
 
 	if ((!gBackgroundFlag)
@@ -562,10 +556,8 @@ bool InitOSGLU(void)
 		return false;
 	if (!SDL_InitDisplay())
 		return false; // Switched before initting sound because SDL is initialized in SDL_InitDisplay. Probably should be initialised earlier.
-#if SoundEnabled
 	if (!Sound_Init())
 		return false;
-#endif
 	if (!CreateMainWindow())
 		return false;
 	if (WaitForRom())
@@ -581,12 +573,8 @@ void UnInitOSGLU(void)
 #if MayFullScreen
 	UngrabMachine();
 #endif
-#if SoundEnabled
 	Sound_Stop();
-#endif
-#if SoundEnabled
 	Sound_UnInit();
-#endif
 #if IncludePbufs
 	UnInitPbufs();
 #endif

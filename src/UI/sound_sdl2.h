@@ -41,10 +41,7 @@ constexpr uint32_t kCenterSound = 0x8000;
 #error "unsupported kLn2SoundSampSz"
 #endif
 
-#if SoundEnabled
-
 extern tpSoundSamp Sound_BeginWrite(uint16_t n, uint16_t *actL);
 extern void Sound_EndWrite(uint16_t actL);
 
 /* 370 samples per tick = 22,254.54 per second */
-#endif

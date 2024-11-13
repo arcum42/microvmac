@@ -12,8 +12,6 @@
 
 /* --- sound --- */
 
-#if SoundEnabled
-
 typedef uint16_t trSoundTemp;
 
 const trSoundTemp kCenterTempSound = 0x8000;
@@ -457,5 +455,3 @@ void Sound_SecondNotify(void)
 		Sound_SecondNotify0();
 	}
 }
-
-#endif
