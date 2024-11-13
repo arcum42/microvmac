@@ -16,6 +16,7 @@ typedef uint16_t trSoundTemp;
 
 const trSoundTemp kCenterTempSound = 0x8000;
 const trSoundTemp AudioStepVal = 0x0040;
+const uint32_t SOUND_SAMPLERATE = 22255; /* = round(7833600 * 2 / 704) */
 
 struct SoundR
 {
@@ -324,7 +325,6 @@ label_retry:
 }
 
 static SoundR cur_audio;
-
 static bool HaveSoundOut = false;
 
 void Sound_Stop(void)
@@ -363,7 +363,8 @@ void Sound_Stop(void)
 			goto label_retry;
 		}
 
-		SDL_PauseAudioDevice(audio_device, 1);
+		// In SDL 3, becomes SDL_PauseAudioDevice(audio_device);
+		SDL_PauseAudioDevice(audio_device, 1); // Pause
 	}
 
 	spdlog::debug("leave Sound_Stop");
@@ -378,7 +379,8 @@ void Sound_Start(void)
 		cur_audio.HaveStartedPlaying = false;
 		cur_audio.wantplaying = true;
 
-		SDL_PauseAudioDevice(audio_device, 0);
+		// In SDL 3, becomes SDL_ResumeAudioDevice(audio_device);
+		SDL_PauseAudioDevice(audio_device, 0); // Unpause
 	}
 }
 
@@ -389,8 +391,6 @@ void Sound_UnInit(void)
 		SDL_CloseAudioDevice(audio_device);
 	}
 }
-
-const uint32_t SOUND_SAMPLERATE = 22255; /* = round(7833600 * 2 / 704) */
 
 bool Sound_Init(void)
 {
@@ -420,6 +420,7 @@ bool Sound_Init(void)
 	desired.userdata = (void *)&cur_audio;
 
 	/* Open the audio device */
+	// SDL 3: audio_device = SDL_OpenAudioDevice(SDL_AUDIO_DEVICE_DEFAULT_PLAYBACK, &desired);
 	audio_device = SDL_OpenAudioDevice(nullptr, 0, &desired, nullptr, SDL_AUDIO_ALLOW_ANY_CHANGE);
 
 	if (audio_device == 0)

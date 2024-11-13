@@ -152,11 +152,7 @@ void MacMsgOverride(const char *title, const char *msg)
 
 /* --- event handling for main window --- */
 
-#define UseMotionEvents 1
-
-#if UseMotionEvents
 static bool CaughtMouse = false;
-#endif
 
 static void HandleTheEvent(SDL_Event *event)
 {
@@ -481,11 +477,7 @@ label_retry:
 		Sound_SecondNotify();
 	}
 
-	if ((!gBackgroundFlag)
-#if UseMotionEvents
-		&& (!CaughtMouse)
-#endif
-	)
+	if ((!gBackgroundFlag) && (!CaughtMouse))
 	{
 		CheckMouseState();
 	}
@@ -496,8 +488,6 @@ label_retry:
 	spdlog::debug("WaitForNextTick, OnTrueTime = {}", OnTrueTime);
 #endif
 }
-
-/* --- platform independent code can be thought of as going here --- */
 
 void ZapOSGLUVars(void)
 {
