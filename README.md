@@ -3,6 +3,7 @@ This is actually a fork of µvMac 0.37.0, so a fork of a fork of a fork. I'll co
 To compile, right now, what you'd want to do is:
 mkdir subprojects
 meson wrap install spdlog
+meson wrap install nlohmann_json
 mkdir builddir
 meson setup builddir && cd builddir
 meson compile

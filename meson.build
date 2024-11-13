@@ -59,6 +59,8 @@ configure_file(
 
 # Dependencies
 lSDL2 = dependency('SDL2')
+lspdlog = dependency('spdlog')
+ljson = dependency('nlohmann_json')
 
 # Windows resources
 if target_machine.system() == 'windows'
@@ -231,14 +233,12 @@ EMU_INC = include_directories([
 	'lib/imgui/backends'
 ])
 
-spdlog = dependency('spdlog')
-
 ## Final compiled program definition
 # Just gonna do an SDL2 Mac Plus for now
 executable(
 	'microvmac',
 	sources: MAC_SRC['All'] + UI_SRC + EMU_SRC + IMGUI_SRC + WIN_RSRC,
-	dependencies: [lSDL2, spdlog],
+	dependencies: [lSDL2, lspdlog, ljson],
 	include_directories: EMU_INC,
 	win_subsystem: 'windows'
 )
