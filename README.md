@@ -1,4 +1,4 @@
-This is actually a fork of µvMac 0.37.0, so a fork of a fork of a fork. I'll come up with a name for it later.
+This is a fork of µvMac 0.37.0, which is a fork of mini vMac, which is a fork of vMac. Forks all around.
 
 To compile, right now, what you'd want to do is:
 mkdir subprojects
@@ -14,6 +14,9 @@ This will probably all change, and may even be out of date as you are reading th
 
 Feel free to open an issue if it is, but this is very early, and µvMac didn't even have all of vMac's functionality yet. Mostly a personal project at the moment, though that could change. (And I'm open to merging this all back with µvMac, too...)
 
+A lot of what I'm doing is cleanups, moving to full C++, modernizing code, rewriting ui, etc. I'm planning to use imgui, and make the screen be a subwindow at some point, and after SDL 3 comes out, I'll work on porting it. (Or possibly before.)
+
+It'd obviously be nice to get this to the point where it works for more than just a Mac +, and I'd like to unhardcode a lot of things.
 
 # µvMac 0.37.0
 
