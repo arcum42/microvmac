@@ -30,6 +30,8 @@ void set_to_defaults()
     if (vmac_config["Video"]["ColorWhite"].is_null()) vmac_config["Video"]["ColorWhite"] = "#FFFFFF";
     
     if (vmac_config["Video"]["UseLargeScreenHack"].is_null()) vmac_config["Video"]["UseLargeScreenHack"] = false;
+
+    if (vmac_config["Rom"]["Filename"].is_null()) vmac_config["Rom"]["Filename"] = "vMac.ROM";
 }
 
 void print_config()
@@ -40,6 +42,7 @@ void print_config()
     std::cout << "VideoColorBlack: " << vmac_config["Video"]["ColorBlack"] << "\n";
     std::cout << "VideoColorWhite: " << vmac_config["Video"]["ColorWhite"] << "\n";
     std::cout << "UseLargeScreenHack: " << vmac_config["Video"]["UseLargeScreenHack"] << "\n";
+    std::cout << "Rom Filename: " << vmac_config["Rom"]["Filename"] << "\n";
 }
 
 void config_init()
@@ -52,5 +55,9 @@ void config_init()
 
     set_to_defaults();
     print_config();
+
+    std::ofstream o("vmac.json");
+    o << std::setw(4) << vmac_config << std::endl;
+
     Screen_LoadCfg();
 }
