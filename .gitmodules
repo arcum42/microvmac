@@ -1,9 +1,6 @@
 [submodule "src/incbin"]
 	path = lib/incbin
 	url = https://github.com/graphitemaster/incbin
-[submodule "src/tomlc99"]
-	path = lib/tomlc99
-	url = https://github.com/cktan/tomlc99
 [submodule "lib/imgui"]
 	path = lib/imgui
 	url = https://github.com/ocornut/imgui.git

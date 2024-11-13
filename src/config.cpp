@@ -1,9 +1,9 @@
 #include <fstream>
+#include <iostream>
+
 #include "config.h"
 #include "spdlog/spdlog.h"
-#include <iostream>
 #include "HW/SCREEN/screen.h"
-using json = nlohmann::json;   
 
 json vmac_config;
 

@@ -1,5 +1,4 @@
 #include <stdint.h>
-//#include "config_manage.h"
 #include <nlohmann/json.hpp>
 #include <spdlog/spdlog.h>
 
