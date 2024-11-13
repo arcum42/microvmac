@@ -30,7 +30,7 @@
 #include "UTIL/endian.h"
 #include "global_glue.h"
 #include "HW/SCREEN/screen.h"
-#include "config_manage.h"
+#include "config.h"
 #include "HW/RAM/ram.h"
 
 // Configuration variables

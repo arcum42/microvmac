@@ -27,7 +27,7 @@
 #include <SDL.h>
 
 #include "sys_dependencies.h"
-#include "config_manage.h"
+#include "config.h"
 
 #include "UTIL/endian.h"
 #include "UTIL/param_buffers.h"
