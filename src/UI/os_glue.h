@@ -45,6 +45,12 @@ extern char *app_parent;
 extern char *pref_dir;
 #endif
 
+#ifdef _WIN32
+#define PathSep '\\'
+#else
+#define PathSep '/'
+#endif
+
 extern MacErr_t ChildPath(char *x, char *y, char **r);
 extern void MayFree(char *p);
 
@@ -99,9 +105,6 @@ extern bool CurSpeedStopped;
 // Functions
 extern void MacMsgOverride(const char *title, const char *msg);
 extern void DoKeyCode(SDL_Keysym *r, bool down);
-
-// INTL.c
-extern void NativeStrFromCStr(char *r, char *s);
 
 // DRIVES.c
 extern void InitDrives();

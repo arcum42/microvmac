@@ -187,7 +187,6 @@ UI_SRC = [
 	'src/UI/os_glue.cpp',
 	'src/UI/clipboard_sdl2.cpp',
 	'src/UI/drives_sdl2.cpp',
-	'src/UI/intl_sdl2.cpp',
 	'src/UI/keyboard_sdl2.cpp',
 	'src/UI/mouse_sdl2.cpp',
 	'src/UI/rom_sdl2.cpp',
