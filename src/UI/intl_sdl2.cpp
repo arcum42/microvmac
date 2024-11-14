@@ -11,18 +11,6 @@
 #include "UI/os_glue.h"
 #include "LANG/intl_chars.h"
 
-#ifndef CanGetAppPath
-#define CanGetAppPath 1
-#endif
-
-[[maybe_unused]] static char *d_arg = nullptr;
-[[maybe_unused]] static char *n_arg = nullptr;
-
-#if CanGetAppPath
-[[maybe_unused]] static char *app_parent = nullptr;
-[[maybe_unused]] static char *pref_dir = nullptr;
-#endif
-
 #ifdef _WIN32
 #define PathSep '\\'
 #else

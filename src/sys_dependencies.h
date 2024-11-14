@@ -73,9 +73,6 @@ typedef int32_t simr;
 
 #define anyp uint8_t *
 
-/* pascal string, single byte characters */
-#define ps3p uint8_t *
-
 #ifndef reg_call
 #define reg_call
 #endif
@@ -114,15 +111,16 @@ typedef int32_t simr;
 #define HaveSwapUi5r 0
 #endif
 
-#define MaxATTListN 32
-#define IncludeExtnPbufs 1
 // temporary
 #define IncludeExtnHostTextClipExchange 0
 
+// Sony Floppy
 #define Sony_SupportDC42 1
 #define Sony_SupportTags 0
 #define Sony_WantChecksumsUpdated 0
 #define Sony_VerifyChecksums 0
+
+// RTC
 #define CaretBlinkTime 0x03
 #define SpeakerVol 0x07
 #define DoubleClickTime 0x05

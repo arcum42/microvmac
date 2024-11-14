@@ -23,6 +23,8 @@
 #include "UTIL/dbglog.h"
 #include "ticks.h"
 
+#define IncludeExtnPbufs 1
+
 // various globals
 extern bool SpeedStopped;
 extern bool RunInBackground;

@@ -36,6 +36,18 @@
 #include <SDL.h>
 #include "UI/sound_sdl2.h"
 
+#ifndef CanGetAppPath
+#define CanGetAppPath 1
+#endif
+
+#if CanGetAppPath
+extern char *app_parent;
+extern char *pref_dir;
+#endif
+
+extern MacErr_t ChildPath(char *x, char *y, char **r);
+extern void MayFree(char *p);
+
 #if WantAbnormalReports
 extern void WarnMsgAbnormalID(uint16_t id);
 #endif
@@ -85,43 +97,50 @@ extern bool gTrueBackgroundFlag;
 extern bool CurSpeedStopped;
 
 // Functions
-
 extern void MacMsgOverride(const char *title, const char *msg);
 extern void DoKeyCode(SDL_Keysym *r, bool down);
 
-/*** Might be SDL2-specific? ***/
 // INTL.c
-void NativeStrFromCStr(char *r, char *s);
+extern void NativeStrFromCStr(char *r, char *s);
+
 // DRIVES.c
-void InitDrives();
-bool Sony_Insert1a(char *drivepath, bool silentfail);
-bool LoadInitialImages();
-void UnInitDrives();
+extern void InitDrives();
+extern bool Sony_Insert1a(char *drivepath, bool silentfail);
+extern bool LoadInitialImages();
+extern void UnInitDrives();
+
 // MOUSE.c
-void ForceShowCursor();
-void CheckMouseState();
+extern void ForceShowCursor();
+extern void CheckMouseState();
+
 // KEYBOARD.c
-void DisconnectKeyCodes3();
-void ReconnectKeyCodes3();
-void DisableKeyRepeat();
-void RestoreKeyRepeat();
+extern void DisconnectKeyCodes3();
+extern void ReconnectKeyCodes3();
+extern void DisableKeyRepeat();
+extern void RestoreKeyRepeat();
+
 // SOUND.c
-void Sound_Start();
-void Sound_Stop();
-void Sound_SecondNotify();
-bool Sound_Init();
-void Sound_UnInit();
+extern void Sound_Start();
+extern void Sound_Stop();
+extern void Sound_SecondNotify();
+extern bool Sound_Init();
+extern void Sound_UnInit();
+
 // TIMEDATE.c
-void StartUpTimeAdjust();
-bool UpdateTrueEmulatedTime();
-bool CheckDateTime();
-bool InitLocationDat();
-void IncrNextTime(void);
+extern void StartUpTimeAdjust();
+extern bool UpdateTrueEmulatedTime();
+extern bool CheckDateTime();
+extern bool InitLocationDat();
+extern void IncrNextTime(void);
+
 // ROM.c
-bool LoadMacRom();
-MacErr_t LoadMacRomFrom(const char *path);
+extern bool LoadMacRom();
+extern MacErr_t LoadMacRomFrom(const char *path);
+
 // OSGLUSD2.c
-void EnterSpeedStopped();
-void LeaveSpeedStopped();
+extern void EnterSpeedStopped();
+extern void LeaveSpeedStopped();
+
+extern void MacMsg(char *briefMsg, char *longMsg, bool fatal);
 
 #endif

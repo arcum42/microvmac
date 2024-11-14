@@ -13,8 +13,6 @@
 
 #include "UI/os_glue.h"
 
-extern void MacMsg(char *briefMsg, char *longMsg, bool fatal);
-
 /* --- drives --- */
 
 SDL_RWops *Drives[NumDrives]; /* open disk image files */

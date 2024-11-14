@@ -12,6 +12,9 @@
 
 static char *rom_path = nullptr;
 
+[[maybe_unused]] static char *d_arg = nullptr;
+[[maybe_unused]] static char *n_arg = nullptr;
+
 #if CanGetAppPath
 static MacErr_t LoadMacRomFromPrefDir(void)
 {

@@ -21,10 +21,7 @@
 	SDL Library should go here.
 */
 
-#include <stdlib.h>
-#include <string.h>
 #include <stdio.h>
-#include <SDL.h>
 
 #include "sys_dependencies.h"
 #include "config.h"
@@ -40,6 +37,11 @@
 #include "UI/event_queue.h"
 #include "UI/memory.h"
 #include "UI/video_sdl2.h"
+
+#if CanGetAppPath
+[[maybe_unused]] char *app_parent = nullptr;
+[[maybe_unused]] char *pref_dir = nullptr;
+#endif
 
 bool NeedWholeScreenDraw = false;
 bool RequestMacOff = false;
@@ -258,30 +260,6 @@ static void HandleTheEvent(SDL_Event *event)
 		SDL_free(s);
 	}
 	break;
-#if 0
-		case Expose: /* SDL doesn't have an expose event */
-			int x0 = event->expose.x;
-			int y0 = event->expose.y;
-			int x1 = x0 + event->expose.width;
-			int y1 = y0 + event->expose.height;
-
-			if (x0 < 0) {
-				x0 = 0;
-			}
-			if (x1 > vMacScreenWidth) {
-				x1 = vMacScreenWidth;
-			}
-			if (y0 < 0) {
-				y0 = 0;
-			}
-			if (y1 > vMacScreenHeight) {
-				y1 = vMacScreenHeight;
-			}
-			if ((x0 < x1) && (y0 < y1)) {
-				HaveChangedScreenBuff(y0, x0, y1, x1);
-			}
-			break;
-#endif
 	}
 }
 
