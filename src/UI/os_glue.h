@@ -30,10 +30,20 @@
 #ifndef MYOSGLUE_H
 #define MYOSGLUE_H
 
-#include "UTIL/date_to_seconds.h"
-#include "HW/KBRD/keycodes.h"
-#include "error_codes.h"
+#include <stdlib.h>
+#include <string.h>
+#include <stdio.h>
+#include <stdint.h>
+
 #include <SDL.h>
+
+#include "sys_dependencies.h"
+
+#include "UTIL/endian.h"
+#include "UTIL/date_to_seconds.h"
+#include "error_codes.h"
+#include "HW/KBRD/keycodes.h"
+
 #include "UI/sound_sdl2.h"
 
 #ifndef CanGetAppPath

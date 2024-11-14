@@ -1,8 +1,3 @@
-#include <stdlib.h>
-#include <string.h>
-#include <stdio.h>
-
-#include "sys_dependencies.h"
 #include "error_codes.h"
 
 #include "UI/os_glue.h"

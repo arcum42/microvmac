@@ -1,13 +1,3 @@
-#include <stdlib.h>
-#include <string.h>
-#include <stdio.h>
-
-#include <SDL.h>
-
-#include "sys_dependencies.h"
-
-#include "UTIL/endian.h"
-
 #include "HW/ROM/rom.h"
 #include "HW/DISK/sony_floppy.h"
 

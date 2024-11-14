@@ -21,19 +21,15 @@
 	SDL Library should go here.
 */
 
-#include <stdio.h>
-
-#include "sys_dependencies.h"
+#include "UI/os_glue.h"
 #include "config.h"
 
-#include "UTIL/endian.h"
 #include "UTIL/param_buffers.h"
 
 #include "LANG/intl_chars.h"
 #include "HW/SCREEN/screen.h"
 #include "HW/ROM/rom.h"
 
-#include "UI/os_glue.h"
 #include "UI/event_queue.h"
 #include "UI/memory.h"
 #include "UI/video_sdl2.h"

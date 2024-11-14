@@ -1,21 +1,12 @@
-#include <stdlib.h>
-#include <string.h>
-#include <stdio.h>
 #include <assert.h>
 #include <iostream>
+#include "UI/event_queue.h"
+#include "config.h"
 
-#include <SDL.h>
-#include <SDL_pixels.h>
-
-#include "sys_dependencies.h"
-
-#include "UTIL/endian.h"
 #include "HW/SCREEN/screen.h"
 
 #include "video_sdl2.h"
 #include "UI/os_glue.h"
-#include "UI/event_queue.h"
-#include "config.h"
 
 /* --- video out --- */
 

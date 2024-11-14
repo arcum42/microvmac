@@ -1,6 +1,8 @@
 #include "sys_dependencies.h"
 #include "HW/VIDCARD/video.h"
+#include "UI/os_glue.h"
 #include <SDL.h>
+#include <SDL_pixels.h>
 
 #ifndef GrabKeysFullScreen
 #define GrabKeysFullScreen 1

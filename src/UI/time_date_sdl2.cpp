@@ -1,13 +1,3 @@
-#include <stdlib.h>
-#include <string.h>
-#include <stdio.h>
-#include <stdint.h>
-
-#include <SDL.h>
-
-#include "sys_dependencies.h"
-
-#include "UTIL/endian.h"
 #include "UI/os_glue.h"
 
 /* --- time, date, location --- */

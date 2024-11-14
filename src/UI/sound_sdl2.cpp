@@ -1,14 +1,4 @@
-#include <stdlib.h>
-#include <string.h>
-#include <stdio.h>
-
-#include <SDL.h>
-
-#include "sys_dependencies.h"
-
 #include "UI/os_glue.h"
-
-#include "UTIL/endian.h"
 
 /* --- sound --- */
 
